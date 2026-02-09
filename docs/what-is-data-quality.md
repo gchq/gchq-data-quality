@@ -14,10 +14,19 @@ We follow the **DAMA Framework**, grouping rules under six core dimensions. We w
 |--|-|
 | **Uniqueness**   | Checks there are no duplicates (e.g., employee number should be unique).                                 |
 | **Completeness** | Ensures each required value is present (i.e., not NULL, blank, or 'N/A').                                |
-| **Accuracy**     | Data correctly reflects the real-world "truth" (usually by checking against an authoritative source or by spot-checking). Example: using ISO country codes, verifying birth dates from certificates. In our code, we just check against a known list |
+| **Accuracy**     | Data correctly reflects the real-world "truth" (usually by checking against an authoritative source or by spot-checking). Example: using ISO country codes, verifying birth dates from certificates. In our code, we just check against a known list. Whilst this doesn't guarantee it's accurate, if it fails we know it must be in-accurate. It is useful for insights to split apart regular expression checks form authoritative list checks, so we use accuracy for this purpose. |
 | **Validity**     | Data matches expected syntax (format, type, or range)—e.g., positive ages, valid email addresses — regular expressions or range checks. |
-| **Timeliness**   | Data is up-to-date and times are plausible (e.g., no future birth dates, all records “fresh” enough to be useful). |
+| **Timeliness**   | Data is up-to-date and times are plausible (e.g., all records “fresh” enough to be useful). |
 | **Consistency**  | Logical relationships between data points hold true (e.g., date of birth is before date of death; codes match reference values in other datasets). |
+
+## What is the right dimension to use?
+We have found that people want to pick the correct data quality dimension for a particular rule. As the DAMA definitions are not specified as code in the DAMA Book it leaves some things open to interpretation.
+
+Take date of birth. If it is in the future, is that a failure on timeliness, validity, accuracy or consistency? One could argue that it is both invalid, inaccurate and inconsistent.
+
+We take the approach (supported by our code - the dimension can be overwritten for any rule), that you should just pick a dimension and apply it consistently, especially if you are measuring the same data at different points along its lifecycle. It's less important that the dimension is 'correct', but more important to gain useful insights and have a common understanding in whoever looks at the data.
+
+Basically don't worry about it too much!
 
 ## How We Measure Data Quality
 

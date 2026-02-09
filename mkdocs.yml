@@ -33,6 +33,7 @@ nav:
   - 01 - Basic Tutorial: python-basic.md
   - 02 - Running from Configuration Files: python-advanced.md
   - 03 - PySpark & Nested Data: python-pyspark.md
+  - 04 - Insights from a Dashboard: insights.md
   - API Reference: api.md
 
 markdown_extensions:
