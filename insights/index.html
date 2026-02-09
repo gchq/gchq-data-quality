@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../what-is-data-quality/">
+        <link rel="prev" href="../python-pyspark/">
       
       
-        <link rel="next" href="../python-basic/">
+        <link rel="next" href="../api/">
       
       
         
@@ -23,7 +23,7 @@
     
     
       
-        <title>00 - Installation - GCHQ Data Quality</title>
+        <title>04 - Insights from a Dashboard - GCHQ Data Quality</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#installation" class="md-skip">
+        <a href="#insights-from-a-data-quality-dashboard" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              00 - Installation
+              04 - Insights from a Dashboard
             
           </span>
         </div>
@@ -285,37 +285,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    00 - Installation
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
         
   
   
@@ -331,148 +304,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Prerequisites
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Installation Steps
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Installation Steps">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#core-package" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Core Package
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optional-dependencies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Optional Dependencies
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Optional Dependencies">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pyspark-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PySpark Integration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#elasticsearch-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Elasticsearch Integration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#multiple-extras" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Multiple Extras
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#development-installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Development Installation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#verification-and-testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verification and Testing
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Uninstall
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -562,10 +393,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../insights/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 - Insights from a Dashboard
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -581,6 +439,232 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dashboard-advice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dashboard advice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-1-weekend-dips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern 1: Weekend dips
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 1: Weekend dips">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-image-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding (image description)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insight
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-2-weekend-data-arriving-late" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern 2: Weekend data arriving late
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 2: Weekend data arriving late">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-image-description_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding (image description)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insight_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insight
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-3-duplicate-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern 3: Duplicate data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 3: Duplicate data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-image-description_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding (image description)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insight_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insight
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-4-pipeline-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern 4: Pipeline failure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 4: Pipeline failure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-image-description_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding (image description)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insight_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insight
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-5-new-entries-in-a-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern 5: New entries in a list
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 5: New entries in a list">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-image-description_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding (image description)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insight_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insight
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -639,10 +723,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#dashboard-advice" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        Dashboard advice
       
     </span>
   </a>
@@ -650,22 +734,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#installation-steps" class="md-nav__link">
+  <a href="#pattern-1-weekend-dips" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Installation Steps
+        Pattern 1: Weekend dips
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Installation Steps">
+    <nav class="md-nav" aria-label="Pattern 1: Weekend dips">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#core-package" class="md-nav__link">
+  <a href="#finding-image-description" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Core Package
+        Finding (image description)
       
     </span>
   </a>
@@ -673,44 +757,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#optional-dependencies" class="md-nav__link">
+  <a href="#insight" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Optional Dependencies
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Optional Dependencies">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pyspark-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PySpark Integration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#elasticsearch-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Elasticsearch Integration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#multiple-extras" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Multiple Extras
+        Insight
       
     </span>
   </a>
@@ -721,6 +771,40 @@
     </nav>
   
 </li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-2-weekend-data-arriving-late" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern 2: Weekend data arriving late
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 2: Weekend data arriving late">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-image-description_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding (image description)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insight_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insight
+      
+    </span>
+  </a>
+  
+</li>
         
       </ul>
     </nav>
@@ -728,35 +812,119 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#development-installation" class="md-nav__link">
+  <a href="#pattern-3-duplicate-data" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Development Installation
+        Pattern 3: Duplicate data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 3: Duplicate data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-image-description_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding (image description)
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#verification-and-testing" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#insight_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Verification and Testing
+        Insight
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
+  <a href="#pattern-4-pipeline-failure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Uninstall
+        Pattern 4: Pipeline failure
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Pattern 4: Pipeline failure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-image-description_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding (image description)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insight_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insight
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-5-new-entries-in-a-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern 5: New entries in a list
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 5: New entries in a list">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-image-description_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding (image description)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insight_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insight
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -777,70 +945,47 @@
 
 
 
-<h1 id="installation">Installation</h1>
-<p>The <code>gchq-data-quality</code> package is designed to be modular, allowing you to install its core feature (Pandas dataframe code) as well as optional components for Spark (<code>pyspark</code>) and/or Elasticsearch (Elasticsearch is not yet implemented).</p>
-<h2 id="prerequisites">Prerequisites</h2>
-<p>Before installing <code>gchq-data-quality</code>, ensure the following:
-- <strong>Python</strong>: Version 3.11 or later is required.
-- <strong>Package Manager</strong>: <code>pip</code> (Python's package manager) should be up-to-date. Run:
-  <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
-</code></pre></div></p>
-<h2 id="installation-steps">Installation Steps</h2>
-<h3 id="core-package">Core Package</h3>
-<p>To install the core functionality of <code>gchq-data-quality</code> using Python's <code>pip</code>, run:
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>gchq-data-quality
-</code></pre></div></p>
-<h3 id="optional-dependencies">Optional Dependencies</h3>
-<h4 id="pyspark-integration">PySpark Integration</h4>
-<p>To use <code>gchq-data-quality</code> with <strong>Apache Spark</strong>, install the package with the <code>pyspark</code> extra:
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>gchq-data-quality<span class="o">[</span>pyspark<span class="o">]</span>
-</code></pre></div></p>
-<p>This additionally installs:</p>
-<ul>
-<li><strong>pyspark</strong> (this is quite a large package, hence having it as an optional extra)</li>
-</ul>
-<h4 id="elasticsearch-integration">Elasticsearch Integration</h4>
-<p>To use <code>gchq-data-quality</code> with <strong>Elasticsearch</strong>, install the package with the <code>elasticsearch</code> extra:
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>gchq-data-quality<span class="o">[</span>elasticsearch<span class="o">]</span>
-</code></pre></div></p>
-<p>This additionally installs:</p>
-<ul>
-<li><strong>elasticsearch</strong></li>
-</ul>
-<h4 id="multiple-extras">Multiple Extras</h4>
-<p>You can combine multiple optional integrations in a single command. For example, to install both PySpark and Elasticsearch support:
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>gchq-data-quality<span class="o">[</span>pyspark,elasticsearch<span class="o">]</span>
-</code></pre></div></p>
-<h2 id="development-installation">Development Installation</h2>
-<p>For local development, clone the repository and install the package in <strong>editable mode</strong>:</p>
-<ol>
-<li>
-<p>Clone the repository:
-   <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/gchq/gchq-data-quality.git
-<span class="nb">cd</span><span class="w"> </span>gchq-data-quality
-</code></pre></div></p>
-</li>
-<li>
-<p>Install dependencies:
-   <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
-</code></pre></div></p>
-</li>
-</ol>
-<p>The <code>dev</code> group includes:
-- Testing tools (<code>pytest</code>, <code>coverage</code>)
-- Pre-commit hooks (<code>pre-commit</code>)
-- Formatting and linting tools (<code>ruff</code>)
-- <code>ipykernel</code> so you can edit the Tutorial Notebooks if required
-- Packages to build documentation with MkDocs.</p>
-<h2 id="verification-and-testing">Verification and Testing</h2>
-<p>After installation, verify that the package was installed correctly:</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import gchq_data_quality; print(gchq_data_quality.__version__)&quot;</span>
-</code></pre></div>
-<h2 id="uninstall">Uninstall</h2>
-<p>To uninstall the package and its dependencies, run:
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>uninstall<span class="w"> </span>gchq-data-quality
-</code></pre></div></p>
-<p>If you installed optional dependencies, repeat the command for each extra name (<code>pyspark</code>, <code>elasticsearch</code>, etc.).</p>
+<h1 id="insights-from-a-data-quality-dashboard">Insights from a Data Quality dashboard</h1>
+<p>We present some patterns we have seen in our dashboards and what that meant in practice. This shows how a particular dashboard design can give useful insights as to the origin of a data quality issue.</p>
+<h2 id="dashboard-advice">Dashboard advice</h2>
+<p>It is useful to plot the change in the <code>pass_rate</code> over <code>measurement_time</code>, broken down by the <code>data_quality_dimension</code>. Position this directly above a plot showing the number of <code>records_evaluated</code>, such that the values for <code>measurement_time</code> line up along the vertical.</p>
+<p>See mock-up images linked to each insight article below.</p>
+<h2 id="pattern-1-weekend-dips">Pattern 1: Weekend dips</h2>
+<p><img alt="Weekend Completeness Dips" src="../media/dq_insights_weekend_completeness_dips.png" /></p>
+<h3 id="finding-image-description">Finding (image description)</h3>
+<p>The validity score is constant over time, but the completeness score dips at weekends. There are no changes to the number of records evaluated.</p>
+<h3 id="insight">Insight</h3>
+<p>We are getting fewer fields populated at weekends. Perhaps, at the source of this data, people fill it out less diligently at the weekend.
+Our high validity score and the fact that completeness bounces back up to a high level after the weekend suggests our data extraction pipeline is working fine. This is likely a source data problem.</p>
+<h2 id="pattern-2-weekend-data-arriving-late">Pattern 2: Weekend data arriving late</h2>
+<p><img alt="Weekend Data Arriving Late" src="../media/dq_insights_weekend_data_late.png" /></p>
+<h3 id="finding-image-description_1">Finding (image description)</h3>
+<p>The timeliness score is lower after weekends. Also the records evaluated for that low timeliness score are a lot higher.
+There are very few records being evaluated during the weekends.</p>
+<h3 id="insight_1">Insight</h3>
+<p>Data for the weekend is being sent on a Monday and Tuesday (in addition to the data for Mon &amp; Tue). This means we get an increase in records as we are measuring the backlog from the weekend. If the timeliness rule states data should be no older than 24hrs, then much of the backlog data we get will fail that rule, resulting in a low timeliness score.</p>
+<h2 id="pattern-3-duplicate-data">Pattern 3: Duplicate data</h2>
+<p><img alt="Duplicate Data" src="../media/dq_insights_duplicate_data.png" /></p>
+<h3 id="finding-image-description_2">Finding (image description)</h3>
+<p>The uniqueness score drops to 0.5. At the same time, the record counts double.</p>
+<h3 id="insight_2">Insight</h3>
+<p>We are getting sent duplicate data (quite probably an exact duplicate as a score of 0.5 means 50% of the values are duplicated, the other 50% are a copy).</p>
+<p>A uniqueness score close to zero would been all values in a column are the same (1 value / large number of records)</p>
+<p>If the timeliness score also drop – then it means you are being sent duplicates of old data</p>
+<h2 id="pattern-4-pipeline-failure">Pattern 4: Pipeline failure</h2>
+<p><img alt="Pipeline Failure" src="../media/dq_insights_pipeline_failure.png" /></p>
+<h3 id="finding-image-description_3">Finding (image description)</h3>
+<p>Both completeness and validity pass rate plummet suddenly. We are also checking fewer records at the same time</p>
+<h3 id="insight_3">Insight</h3>
+<p>This is likely to be something changing in the data pipeline as we ingest the data. The upstream data could have changed, or something has changed in our pipeline. It means we are not extracting values as expected, and we are now missing some values as well.</p>
+<h2 id="pattern-5-new-entries-in-a-list">Pattern 5: New entries in a list</h2>
+<p><img alt="New List Entries" src="../media/dq_insights_new_values_appearing.png" /></p>
+<h3 id="finding-image-description_4">Finding (image description)</h3>
+<p>The accuracy pass rate decreases, no other changes</p>
+<h3 id="insight_4">Insight</h3>
+<p>The Accuracy rule checks values against an authoritative list. If the score reduces, it means we have values that aren’t in that list. It could be we need to update our authoritative list, or there is a data entry problem and invalid values are being sent.</p>
+<p>For example, if this was looking at capital cities, and somewhere in the world a city got a name change, or the capital moved, then we would expect the accuracy score to drop (if we didn’t update our authoritative list to match).</p>
+<p>We would also expect this to reduce if there was a typo in one of the capital cities suddenly being sent.</p>
 
 
 

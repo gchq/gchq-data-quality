@@ -332,6 +332,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-is-the-right-dimension-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the right dimension to use?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-we-measure-data-quality" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -487,6 +498,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../insights/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 - Insights from a Dashboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../api/" class="md-nav__link">
         
   
@@ -538,6 +576,17 @@
     <span class="md-ellipsis">
       
         The DAMA Six Dimensions of Data Quality
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-right-dimension-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the right dimension to use?
       
     </span>
   </a>
@@ -617,7 +666,7 @@
 </tr>
 <tr>
 <td><strong>Accuracy</strong></td>
-<td>Data correctly reflects the real-world "truth" (usually by checking against an authoritative source or by spot-checking). Example: using ISO country codes, verifying birth dates from certificates. In our code, we just check against a known list</td>
+<td>Data correctly reflects the real-world "truth" (usually by checking against an authoritative source or by spot-checking). Example: using ISO country codes, verifying birth dates from certificates. In our code, we just check against a known list. Whilst this doesn't guarantee it's accurate, if it fails we know it must be in-accurate. It is useful for insights to split apart regular expression checks form authoritative list checks, so we use accuracy for this purpose.</td>
 </tr>
 <tr>
 <td><strong>Validity</strong></td>
@@ -625,7 +674,7 @@
 </tr>
 <tr>
 <td><strong>Timeliness</strong></td>
-<td>Data is up-to-date and times are plausible (e.g., no future birth dates, all records “fresh” enough to be useful).</td>
+<td>Data is up-to-date and times are plausible (e.g., all records “fresh” enough to be useful).</td>
 </tr>
 <tr>
 <td><strong>Consistency</strong></td>
@@ -633,6 +682,11 @@
 </tr>
 </tbody>
 </table>
+<h2 id="what-is-the-right-dimension-to-use">What is the right dimension to use?</h2>
+<p>We have found that people want to pick the correct data quality dimension for a particular rule. As the DAMA definitions are not specified as code in the DAMA Book it leaves some things open to interpretation.</p>
+<p>Take date of birth. If it is in the future, is that a failure on timeliness, validity, accuracy or consistency? One could argue that it is both invalid, inaccurate and inconsistent.</p>
+<p>We take the approach (supported by our code - the dimension can be overwritten for any rule), that you should just pick a dimension and apply it consistently, especially if you are measuring the same data at different points along its lifecycle. It's less important that the dimension is 'correct', but more important to gain useful insights and have a common understanding in whoever looks at the data.</p>
+<p>Basically don't worry about it too much!</p>
 <h2 id="how-we-measure-data-quality">How We Measure Data Quality</h2>
 <p>For each rule:</p>
 <ul>
