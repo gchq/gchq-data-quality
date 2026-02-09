@@ -1,0 +1,80 @@
+# Test cases for extract_and_sort_array_paths(flatten_cols: list[str])
+
+- description: Single array at second level
+  inputs:
+    flatten_cols:
+      - children[*].name
+  expected:
+    array_paths: ["children[*]"]
+
+- description: Two-level nested arrays
+  inputs:
+    flatten_cols:
+      - children[*].pets[*].name
+  expected:
+    array_paths: ["children[*]", "children[*].pets[*]"]
+
+- description: Multiple columns referencing the same array path
+  inputs:
+    flatten_cols:
+      - children[*].name
+      - children[*].age
+  expected:
+    array_paths: ["children[*]"]
+
+- description: Two different top-level arrays, same depth
+  inputs:
+    flatten_cols:
+      - animals[*].type
+      - people[*].name
+  expected:
+    array_paths: ["animals[*]", "people[*]"]
+
+- description: Mixed array notations, [*] and []
+  inputs:
+    flatten_cols:
+      - customers[*].orders[].id
+      - customers[*].orders[].date
+  expected:
+    array_paths: ["customers[*]", "customers[*].orders[]"]
+
+- description: Array at the root level
+  inputs:
+    flatten_cols:
+      - orders[*]
+      - orders[*].id
+  expected:
+    array_paths: ["orders[*]"]
+
+- description: No arrays present in any column
+  inputs:
+    flatten_cols:
+      - name
+      - address.street
+  expected:
+    array_paths: []
+
+- description: More deeply nested arrays
+  inputs:
+    flatten_cols:
+      - a[*].b[*].c[*].d.id
+  expected:
+    array_paths: ["a[*]", "a[*].b[*]", "a[*].b[*].c[*]"]
+
+- description: Mixed existence of arrays and plain columns
+  inputs:
+    flatten_cols:
+      - x[*].y.z
+      - x[*].y[*].w
+      - flat_col
+  expected:
+    array_paths: ["x[*]", "x[*].y[*]"]
+
+- description: Mixed existence of arrays and plain columns (reversed order)
+  inputs:
+    flatten_cols:
+      - flat_col
+      - x[*].y[*].w
+      - x[*].y.z
+  expected:
+    array_paths: ["x[*]", "x[*].y[*]"]

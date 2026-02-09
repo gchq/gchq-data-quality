@@ -1,0 +1,139 @@
+- description: All values are valid
+  inputs:
+    df:
+      color: ["red", "green", "blue", "red"]
+    field: color
+    valid_values: ["red", "green", "blue"]
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 4
+
+- description: All values are invalid
+  inputs:
+    df:
+      status: ["fail", "bad", "none", "error"]
+    field: status
+    valid_values: ["ok", "good", "pass"]
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 4
+
+- description: All values are valid (numerical)
+  inputs:
+    df:
+      value: [1, 2, 3, 1]
+    field: value
+    valid_values: [1, 2, 3]
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 4
+
+- description: All values are invalid (numerical)
+  inputs:
+    df:
+      score: [10, 20, 30, 40]
+    field: score
+    valid_values: [100, 200, 300]
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 4
+    records_failed_ids: [0,1,2,3]
+    records_failed_sample: [{"score": 10}, {"score": 20}, {"score": 30}, {"score": 40}]
+
+- description: Three valid, two invalid
+  inputs:
+    df:
+      type: ["dog", "cat", "cat", "hamster", "snake"]
+    field: type
+    valid_values: ["dog", "cat"]
+  expected:
+    pass_rate: 0.6
+    records_evaluated: 5
+
+
+- description: Case sensitivity test
+  inputs:
+    df:
+      code: ["X", "x", "Y", "Y", "y"]
+    field: code
+    valid_values: ["X", "Y"]
+  expected:
+    pass_rate: 0.6
+    records_evaluated: 5
+
+- description: Using na_values, one excluded from checks
+  inputs:
+    df:
+      status: ["on", "off", "unknown", "off", "missed"]
+    field: status
+    valid_values: ["on", "off"]
+    na_values: "unknown"
+  expected:
+    pass_rate: 0.75
+    records_evaluated: 4
+
+- description: All missing/na_values
+  inputs:
+    df:
+      comment: [null, "none", "N/A", "none"]
+    field: comment
+    valid_values: ["yes", "ok"]
+    na_values: ["none", "N/A"]
+  expected:
+    pass_rate: null
+    records_evaluated: 0
+
+- description: inverse check - values NOT in valid_values
+  inputs:
+    df:
+      tag: ["banana", "banana", "orange", "orange"]
+    field: tag
+    valid_values: ["banana", "orange"]
+    inverse: true
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 4
+    records_failed_sample: [{"tag": "banana"}, {"tag": "orange"}]
+
+- description: inverse check - values NOT in valid_values (partial match)
+  inputs:
+    df:
+      tag: ["banana", "banana", "orange", "this_passes"]
+    field: tag
+    valid_values: ["banana", "orange"]
+    inverse: true
+  expected:
+    pass_rate: 0.25
+    records_evaluated: 4
+
+- description: Inverse - all non-matches should pass
+  inputs:
+    df:
+      answer: ["no", "maybe", "ok", "pass"]
+    field: answer
+    valid_values: ["yes"]
+    inverse: true
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 4
+
+- description: Null values in data
+  inputs:
+    df:
+      answer: ["yes", "no", "no", "no", null]
+    field: answer
+    valid_values: ["yes"]
+  expected:
+    pass_rate: 0.25
+    records_evaluated: 4
+
+- description: Null values in data (inverse)
+  inputs:
+    df:
+      answer: ["yes", "no", "no", "no", null]
+    field: answer
+    valid_values: ["no"]
+    inverse: true
+  expected:
+    pass_rate: 0.25
+    records_evaluated: 4

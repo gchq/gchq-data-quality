@@ -1,0 +1,67 @@
+# Test cases for get_parent_column(nested_col_name: str)
+
+- description: Simple column, no nesting
+  inputs:
+    nested_col_name: name
+  expected:
+    parent_column: "name"
+
+- description: Single nested column
+  inputs:
+    nested_col_name: customers.name
+  expected:
+    parent_column: "customers"
+
+- description: Single array with [*] notation
+  inputs:
+    nested_col_name: children[*].name
+  expected:
+    parent_column: "children"
+
+- description: Single array with [] notation
+  inputs:
+    nested_col_name: children[].name
+  expected:
+    parent_column: "children"
+
+- description: Double-nested arrays with [*] notation
+  inputs:
+    nested_col_name: children[*].pets[*].name
+  expected:
+    parent_column: "children"
+
+- description: Double-nested arrays with [] notation
+  inputs:
+    nested_col_name: children[].pets[].name
+  expected:
+    parent_column: "children"
+
+- description: Array is the only segment, with [*] notation
+  inputs:
+    nested_col_name: children[*]
+  expected:
+    parent_column: "children"
+
+- description: Array is the only segment, with [] notation
+  inputs:
+    nested_col_name: children[]
+  expected:
+    parent_column: "children"
+
+- description: Triple-nested, only parent wanted
+  inputs:
+    nested_col_name: outer[*].middle[].inner.name
+  expected:
+    parent_column: "outer"
+
+- description: asterisk in parent name
+  inputs:
+    nested_col_name: outer*
+  expected:
+    parent_column: "outer*"
+
+- description: asterisk in parent name 2
+  inputs:
+    nested_col_name: outer*[*].name
+  expected:
+    parent_column: "outer*"

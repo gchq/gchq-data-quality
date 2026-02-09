@@ -1,0 +1,82 @@
+- description: All passing values
+  inputs:
+    df:
+      id: ["a", "b", "c", "d"]
+    field: id
+    regex_pattern: '[a-z]+'
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 4
+
+- description: All failing values
+  inputs:
+    df:
+      username: ["123", "456", "789", "000"]
+    field: username
+    regex_pattern: '[a-z]+'
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 4
+
+- description: Two passing values, two failing
+  inputs:
+    df:
+      code: ["abc", "123", "def", "xyz", "456"]
+    field: code
+    regex_pattern: '[a-z]+'
+  expected:
+    pass_rate: 0.6
+    records_evaluated: 5
+
+
+- description: Case sensitivity test (one matching lowercase)
+  inputs:
+    df:
+      item: ["abc", "Abc", "ABC", "DEF"]
+    field: item
+    regex_pattern: '[a-z]+'
+  expected:
+    pass_rate: 0.25
+    records_evaluated: 4
+
+- description: Using na_values, one excluded from checks
+  inputs:
+    df:
+      note: ["ok", "error", "N/A", "fail", "ok"]
+    field: note
+    regex_pattern: 'ok|fail'
+    na_values: "N/A"
+  expected:
+    pass_rate: 0.75
+    records_evaluated: 4
+
+- description: Null values in data
+  inputs:
+    df:
+      note: ["ok", "error", null, "error", "error"]
+    field: note
+    regex_pattern: 'ok'
+  expected:
+    pass_rate: 0.25
+    records_evaluated: 4
+
+- description: All missing/na_values
+  inputs:
+    df:
+      comment: [null, "N/A", "", "N/A"]
+    field: comment
+    regex_pattern: '.*'
+    na_values: ["N/A", ""]
+  expected:
+    pass_rate: null
+    records_evaluated: 0
+
+- description: Special character pattern
+  inputs:
+    df:
+      email: ["bob@hotmail.com", "alice.gmail.com","alice@gmail.com", "tom@domain.org", "no_at_symbol"]
+    field: email
+    regex_pattern: '.*@.*'
+  expected:
+    pass_rate: 0.6
+    records_evaluated: 5

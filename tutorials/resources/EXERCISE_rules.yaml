@@ -1,0 +1,9 @@
+dataset_name: Tutorial Data
+measurement_time: 2025-01-01
+rules:
+- field: id
+  function: # this has got your started, you need 4 rules in total. Write them in this order so we can check your answers.
+  # id > uniqueness
+  # name > completeness
+  # category > accuracy (A,B,C,D) valid values
+  # email > validity (regulary expression)  - regex for an email is: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'

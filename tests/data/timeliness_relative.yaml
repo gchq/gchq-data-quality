@@ -1,0 +1,131 @@
+- description: All events valid, 0-30 days after fixed reference date
+  inputs:
+    df:
+      event_date: ["2024-01-02", "2024-01-10", "2024-01-30"]
+    field: event_date
+    start_timedelta: "0d"
+    end_timedelta: "30d"
+    reference_date: "2024-01-01"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 3
+
+- description: All events valid, Check for 365 days multiples in timedelta
+  inputs:
+    df:
+      event_date: ["2023-01-02", "2024-01-10", "2024-01-30"]
+    field: event_date
+    start_timedelta: "-730d"
+    end_timedelta: "365d"
+    reference_date: "2024-01-01"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 3
+
+- description: All values before window (all invalid, output sample with bounds)
+  inputs:
+    df:
+      event_date: ["2023-12-31", "2023-12-25"]
+    field: event_date
+    start_timedelta: "0d"
+    end_timedelta: "30d"
+    reference_date: "2024-01-01"
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 2
+    records_failed_ids: [0, 1]
+    records_failed_sample: [{"event_date": 2023-12-31 00:00:00+00:00}, {"event_date": 2023-12-25 00:00:00+00:00}]
+
+- description: Mixed validity, some outside window after reference
+  inputs:
+    df:
+      event_date: ["2024-01-02", "2024-02-05", "2024-01-15", "2024-01-14", "2024-03-01"]
+    field: event_date
+    start_timedelta: "0d"
+    end_timedelta: "30d"
+    reference_date: "2024-01-01 00:00:00+00:00"
+  expected:
+    pass_rate: 0.6 # anything not 2024-01 will fail
+    records_evaluated: 5
+    records_failed_ids: [1, 4]
+    records_failed_sample: [{"event_date": 2024-02-05 00:00:00+00:00}, {"event_date": 2024-03-01 00:00:00+00:00}]
+
+- description: All valid, window is -7 to +7 days around reference date
+  inputs:
+    df:
+      event_date: ["2024-01-08", "2024-01-01", "2023-12-26"]
+    field: event_date
+    start_timedelta: "-7d"
+    end_timedelta: "7d"
+    reference_date: "2024-01-01"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 3
+
+- description: Using per-row reference_column, mixed validity
+  inputs:
+    df: # first two rows valid, last 2 invalid
+      date_of_event: ["2024-03-15", "2024-04-15", "2024-03-15", "2024-04-15", "2024-04-15"]
+      feedback_date: ["2024-03-15", "2024-04-16", "2024-03-10", "2024-04-01", "2024-04-20"]
+    field: feedback_date
+    start_timedelta: "0d"
+    end_timedelta: "5d"
+    reference_column: date_of_event
+  expected:
+    pass_rate: 0.6
+    records_evaluated: 5
+    records_failed_ids: [2,3]
+    records_failed_sample: [{"date_of_event": 2024-03-15 00:00:00+00:00, "feedback_date": 2024-03-10 00:00:00+00:00}, {"date_of_event": 2024-04-15 00:00:00+00:00, "feedback_date": 2024-04-01 00:00:00+00:00}]
+
+- description: Null values (should be excluded from scoring)
+  inputs:
+    df:
+      event_time: [null, "2022-04-01", "2024-04-04","2024-04-03","2024-04-03", null, null]
+    field: event_time
+    start_timedelta: "-1d"
+    end_timedelta: "1d"
+    reference_date: "2024-04-03"
+  expected:
+    pass_rate: 0.75
+    records_evaluated: 4
+    records_failed_ids: [1]
+    records_failed_sample: [{"event_time": 2022-04-01 00:00:00+00:00}]
+
+- description: All values invalid, 0d window
+  inputs:
+    df:
+      event_time: ["2024-04-01", "2024-04-02"]
+    field: event_time
+    start_timedelta: "0d"
+    end_timedelta: "0d"
+    reference_date: "2024-05-01"
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 2
+    records_failed_ids: [0, 1]
+
+- description: Only upper bound, all before or at end_timedelta (should pass)
+  inputs:
+    df:
+      event_date: ["2020-01-01", "2024-01-15", "2024-01-31"]
+    field: event_date
+    start_timedelta: null
+    end_timedelta: "30d"
+    reference_date: "2024-01-01"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 3
+
+- description: Only lower bound, all after or at start_timedelta (should pass)
+  inputs:
+    df:
+      event_date: ["2024-01-01","2024-01-02", "2026-02-01", "2023-01-01"]
+    field: event_date
+    start_timedelta: "-10d"
+    end_timedelta: null
+    reference_date: "2024-01-05"
+  expected:
+    pass_rate: 0.75
+    records_evaluated: 4
+    records_failed_ids: [3]
+    records_failed_sample: [{"event_date": 2023-01-01 00:00:00+00:00}]

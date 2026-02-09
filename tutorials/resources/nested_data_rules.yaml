@@ -1,0 +1,20 @@
+dataset_name: Nested Pet Shop Data
+measurement_time: 2025-01-01
+rules:
+- field: customers.age
+  function: validity_numerical_range
+  min_value: 18
+  max_value: 120
+- field: customers.pets[*].appointments[*].date
+  rule_description: All dates are no more than a year in the future from 1st Jan 2022
+  function: timeliness_static
+  start_date: 2022-01-31
+  end_date: 2023-01-01
+- field: customers.pets[].name
+  function: completeness
+- field: customers.name
+  function: consistency
+  rule_description: If the customer is a child they can't be a Mr or a Mrs
+  expression:
+    if: '`customers.age` < 18'
+    then: '~`customers.name`.str.startswith("Mr")'

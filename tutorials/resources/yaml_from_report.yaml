@@ -1,0 +1,41 @@
+dataset_name: Overwrite Dataset Name
+dataset_id: null
+measurement_sample: Our Test Data
+lifecycle_stage: null
+measurement_time: 2026-01-19 16:25:24.679688+00:00
+rules:
+- field: id
+  rule_id: null
+  rule_description: null
+  na_values: null
+  skip_if_null: any
+  data_quality_dimension: Uniqueness
+  function: uniqueness
+- field: name
+  rule_id: null
+  rule_description: null
+  na_values: null
+  skip_if_null: never
+  data_quality_dimension: Completeness
+  function: completeness
+- field: category
+  rule_id: null
+  rule_description: null
+  na_values: null
+  skip_if_null: any
+  data_quality_dimension: Accuracy
+  function: accuracy
+  valid_values:
+  - A
+  - B
+  - C
+  - D
+  inverse: false
+- field: email
+  rule_id: null
+  rule_description: null
+  na_values: null
+  skip_if_null: any
+  data_quality_dimension: Validity
+  function: validity_regex
+  regex_pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$

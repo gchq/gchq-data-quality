@@ -1,0 +1,52 @@
+- description: All values are None
+  inputs:
+    records_failed_sample_series: [null, null]
+  expected:
+    records_failed_sample: null
+
+- description: All values are non-null and valid (simple sequential dicts)
+  inputs:
+    records_failed_sample_series:
+      - [{'a': 1}]
+      - [{'b': 2}]
+      - [{'c': 3}]
+  expected:
+    records_failed_sample:
+      - {'a': 1}
+      - {'b': 2}
+      - {'c': 3}
+
+- description: Mixture of null and valid values
+  inputs:
+    records_failed_sample_series:
+      - [{'x': 10}]
+      - null
+      - [{'y': 20}]
+  expected:
+    records_failed_sample:
+      - {'x': 10}
+      - {'y': 20}
+
+- description: Multiple valid lists, function limit applies
+  inputs:
+    records_failed_sample_series:
+      - [{'a': 1}]
+      - [{'b': 2}]
+      - [{'c': 3}]
+      - [{'d': 4}]
+    limit: 3
+  expected:
+    records_failed_sample:
+      - {'a': 1}
+      - {'b': 2}
+      - {'c': 3}
+
+- description: One valid, one None, one empty list
+  inputs:
+    records_failed_sample_series:
+      - [{'x': 2}]
+      - null
+      - []
+  expected:
+    records_failed_sample:
+      - {'x': 2}

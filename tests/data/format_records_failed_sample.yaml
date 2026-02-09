@@ -1,0 +1,68 @@
+- description: Empty list of values
+  inputs:
+    values: []
+    n_items: 10
+  expected:
+    formatted_sample: null
+
+- description: List of integers, fewer than n_items
+  inputs:
+    values: [{"id": 1}, {"id": 2}, {"id": 3}]
+    n_items: 10
+  expected:
+    formatted_sample: [{"id": 1}, {"id": 2}, {"id": 3}]
+
+- description: List of strings, with duplicates, under n_items
+  inputs:
+    values: [{"id": "a"}, {"id": "b"}, {"id": "a"}, {"id": "c"}]
+    n_items: 10
+  expected:
+    formatted_sample: [{"id": "a"}, {"id": "b"}, {"id": "a"}, {"id": "c"}]
+
+- description: List of floats, exceeding n_items limit
+  inputs:
+    values: [{"id": 0.1}, {"id": 0.2}, {"id": 0.3}, {"id": 0.4}, {"id": 0.5}, {"id": 0.6}]
+    n_items: 3
+  expected:
+    formatted_sample: [{"id": 0.1}, {"id": 0.2}, {"id": 0.3}]
+
+- description: List of dicts, fewer than n_items, mixed value types
+  inputs:
+    values:
+      - {colA: 1, colB: "foo"}
+      - {colA: 2, colB: "bar"}
+    n_items: 10
+  expected:
+    formatted_sample: [{"colA": 1, "colB": "foo"}, {"colA": 2, "colB": "bar"}]
+
+- description: List of dicts with duplicate dicts, deduplicated
+  inputs:
+    values:
+      - {colX: 1, colY: "yes"}
+      - {colX: 1, colY: "yes"}
+      - {colX: 2, colY: "no"}
+    n_items: 10
+  expected:
+    formatted_sample: [{"colX": 1, "colY": "yes"}, {"colX": 1, "colY": "yes"}, {"colX": 2, "colY": "no"}]
+
+- description: Single-element list (one dict)
+  inputs:
+    values:
+      - {id: 42, status: "ok"}
+    n_items: 10
+  expected:
+    formatted_sample: [{"id": 42, "status": "ok"}]
+
+- description: All identical values, de-duplication happens outside this function
+  inputs:
+    values: [{"id": "repeat"}, {"id": "repeat"}, {"id": "repeat"}]
+    n_items: 10
+  expected:
+    formatted_sample: [{"id": "repeat"}, {"id": "repeat"}, {"id": "repeat"}]
+
+- description: All values, but n_items set lower than values
+  inputs:
+    values: [{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}, {"id": 6}]
+    n_items: 4
+  expected:
+    formatted_sample: [{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}]

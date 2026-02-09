@@ -1,0 +1,43 @@
+# Test cases for extract_backticked_fields
+
+- description: No backticked fields in input string
+  inputs:
+    expression: "age > 18 and id == 5"
+  expected:
+    extracted_list: []
+
+- description: Single backticked field in input string
+  inputs:
+    expression: "`age` > 18"
+  expected:
+    extracted_list: ["age"]
+
+- description: Two backticked fields separated by AND
+  inputs:
+    expression: "`age` > 18 and `id` == 5"
+  expected:
+    extracted_list: ["age", "id"]
+
+- description: Nested or dotted backticked field
+  inputs:
+    expression: "`customer.age` > 18"
+  expected:
+    extracted_list: ["customer.age"]
+
+- description: Array-style backticked fields
+  inputs:
+    expression: "`orders[].id` == 5"
+  expected:
+    extracted_list: ["orders[].id"]
+
+- description: Multiple identical backticked fields
+  inputs:
+    expression: "`a` > 1 or `a` < 5"
+  expected:
+    extracted_list: ["a", "a"]
+
+- description: Only a backticked field
+  inputs:
+    expression: "`age`"
+  expected:
+    extracted_list: ["age"]

@@ -1,0 +1,119 @@
+- description: standard two-level nesting
+  inputs:
+    array_paths: ["children[*]", "children[*].pets[*]"]
+  expected:
+    renamed_paths: ["children[*]", "children_all.pets[*]"]
+
+- description: Single element input, nothing changes
+  inputs:
+    array_paths: ["customers[*]"]
+  expected:
+    renamed_paths: ["customers[*]"]
+
+- description: Three-level deep arrays, renames propagate down
+  inputs:
+    array_paths:
+      - "grandparent[*]"
+      - "grandparent[*].parent[*]"
+      - "grandparent[*].parent[*].child[*]"
+  expected:
+    renamed_paths:
+      - "grandparent[*]"
+      - "grandparent_all.parent[*]"
+      - "grandparent_all_parent_all.child[*]"
+
+- description: Distinct top-level arrays, no renaming to each other
+  inputs:
+    array_paths: ["children[*]", "animals[*]"]
+  expected:
+    renamed_paths: ["children[*]", "animals[*]"]
+
+- description: Edge case — empty input list should return empty list
+  inputs:
+    array_paths: []
+  expected:
+    renamed_paths: []
+
+- description: Edge case — repeated array path, renaming is consistent
+  inputs:
+    array_paths: ["children[*]", "children[*]"]
+  expected:
+    renamed_paths: ["children[*]", "children_all"]
+
+- description: Multiple paths, one not a subpath and remains unchanged
+  inputs:
+    array_paths: ["children[*]", "children[*].pets[*]", "animals[*]"]
+  expected:
+    renamed_paths: ["children[*]", "children_all.pets[*]", "animals[*]"]
+
+- description: Deeper subarray with similar segment names
+  inputs:
+    array_paths: ["groups[*]", "groups[*].groups[*]"]
+  expected:
+    renamed_paths: ["groups[*]", "groups_all.groups[*]"]
+
+- description: Path with non-array segment between arrays
+  inputs:
+    array_paths: ["families[*]", "families[*].members.details[*]"]
+  expected:
+    renamed_paths: ["families[*]", "families_all.members.details[*]"]
+
+- description: Single [] array path — gets no renaming
+  inputs:
+    array_paths: ["customers[]"]
+  expected:
+    renamed_paths: ["customers[]"]
+
+- description: Two-level [] arrays, second gets _first
+  inputs:
+    array_paths: ["customers[]", "customers[].orders[]"]
+  expected:
+    renamed_paths: ["customers[]", "customers_first.orders[]"]
+
+- description: Mixed [*] and [] at nested levels, [*] parent
+  inputs:
+    array_paths: ["customers[*]", "customers[*].orders[]"]
+  expected:
+    renamed_paths: ["customers[*]", "customers_all.orders[]"]
+
+- description: Mixed [*] and [] at nested levels, [] parent
+  inputs:
+    array_paths: ["customers[]", "customers[].orders[*]"]
+  expected:
+    renamed_paths: ["customers[]", "customers_first.orders[*]"]
+
+- description: Three-level nested arrays with all [], renaming propagates _first
+  inputs:
+    array_paths:
+      - "grandparent[]"
+      - "grandparent[].parent[]"
+      - "grandparent[].parent[].child[]"
+  expected:
+    renamed_paths:
+      - "grandparent[]"
+      - "grandparent_first.parent[]"
+      - "grandparent_first_parent_first.child[]"
+
+- description: Mixed deeply — [*], [], [*]
+  inputs:
+    array_paths:
+      - "families[*]"
+      - "families[*].members[]"
+      - "families[*].members[].pets[*]"
+  expected:
+    renamed_paths:
+      - "families[*]"
+      - "families_all.members[]"
+      - "families_all_members_first.pets[*]"
+
+- description: Mixed deeply — [], [*], []
+  inputs:
+    array_paths:
+      - "groups[]"
+      - "groups[].teams[*]"
+      - "groups[].teams[*].members[]"
+  expected:
+    renamed_paths:
+      - "groups[]"
+      - "groups_first.teams[*]"
+      - "groups_first_teams_all.members[]"

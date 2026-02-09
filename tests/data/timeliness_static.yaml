@@ -1,0 +1,186 @@
+- description: All dates within the static allowed range
+  inputs:
+    df:
+      event_date: ["2023-01-01", "2023-01-02", "2023-01-03"]
+    field: event_date
+    start_date: "2023-01-01"
+    end_date: "2023-01-03"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 3
+
+- description: All dates before static start_date (all invalid)
+  inputs:
+    df:
+      event_date: ["2022-12-30", "2022-12-31"]
+    field: event_date
+    start_date: "2023-01-01"
+    end_date: "2023-12-31"
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 2
+    records_failed_ids: [0, 1]
+    records_failed_sample: [{"event_date": 2022-12-30 00:00:00+00:00}, {"event_date": 2022-12-31 00:00:00+00:00}]
+
+- description: All dates after static end_date (all invalid)
+  inputs:
+    df:
+      event_date: ["2024-01-01", "2024-02-01"]
+    field: event_date
+    start_date: "2022-01-01"
+    end_date: "2023-12-31"
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 2
+    records_failed_ids: [0, 1]
+
+- description: All data values are NULL
+  inputs:
+    df:
+      event_date: [null, null]
+    field: event_date
+    start_date: "2022-01-01"
+    end_date: "2023-12-31"
+  expected:
+    pass_rate: null
+    records_evaluated: 0
+    records_failed_ids: null
+    records_failed_sample: null
+
+- description: An invalid datetime string
+  inputs:
+    df:
+      event_date: ["2024-01-01", "2024-02-01", "not-a-date"]
+    field: event_date
+    start_date: "2024-01-01"
+    end_date: "2024-03-01"
+  expected:
+    pass_rate: 1.0 #invalid dates turn to NULL - validity picks up these issues
+    records_evaluated: 2
+
+- description: Some valid, some invalid dates in static range
+  inputs:
+    df:
+      event_date: ["2022-12-31", "2023-01-15", "2023-02-10", "2023-12-31", "2024-01-01"]
+    field: event_date
+    start_date: "2023-01-01"
+    end_date: "2023-12-31"
+  expected:
+    pass_rate: 0.6
+    records_evaluated: 5
+    records_failed_ids: [0, 4]
+
+- description: Range covers only one valid date
+  inputs:
+    df:
+      event_date: ["2022-05-20", "2023-01-01", "2023-01-01","2023-01-01",]
+    field: event_date
+    start_date: "2023-01-01"
+    end_date: "2023-01-01"
+  expected:
+    pass_rate: 0.75
+    records_evaluated: 4
+    records_failed_ids: [0]
+
+- description: Data contains partial null values, all dates valid
+  inputs:
+    df:
+      event_date: ["2023-01-02", null, "2023-01-03", null]
+    field: event_date
+    start_date: "2023-01-01"
+    end_date: "2023-01-05"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 2
+
+- description: Data contains partial null values and failing records
+  inputs:
+    df:
+      event_date: ["2022-01-02", null, "2023-01-03","2023-01-03","2023-01-03", null]
+    field: event_date
+    start_date: "2023-01-01"
+    end_date: "2023-01-05"
+  expected:
+    pass_rate: 0.75
+    records_evaluated: 4
+
+- description: start date NULL
+  inputs:
+    df:
+      event_date: ["2023-01-02", null, "2023-01-03", null]
+    field: event_date
+    start_date: null
+    end_date: "2025-01-01"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 2
+
+- description: end date NULL
+  inputs:
+    df:
+      event_date: ["2023-01-02", null, "2023-01-03", null]
+    field: event_date
+    start_date: "1980-01-01"
+    end_date: null
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 2
+
+- description: All tz-naive values (should be parsed as UTC) within allowed UTC range
+  inputs:
+    df:
+      event_date: ["2023-06-01T08:00:00", "2023-06-01T16:00:00"]
+    field: event_date
+    start_date: "2023-06-01 00:00:00+00:00"
+    end_date: "2023-06-01T23:59:59+00:00"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 2
+
+- description: All tz-aware UTC values within allowed UTC range
+  inputs:
+    df:
+      event_date: ["2023-06-01 00:10:00+00:00", "2023-06-01T23:30:00+00:00"]
+    field: event_date
+    start_date: "2023-06-01" # should resolve to 00:00hrs UTC
+    end_date: "2023-06-01T23:59:59"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 2
+
+
+- description: Naive value after UTC max allowed (should be invalid)
+  inputs:
+    df:
+      event_date: ["2023-06-02T01:00:00"]
+    field: event_date
+    start_date: "2023-06-01 00:00:00+00:00"
+    end_date: "2023-06-01T23:59:59+00:00"
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 1
+    records_failed_ids: [0]
+
+- description: Tz-aware value after UTC max allowed (should be invalid)
+  inputs:
+    df:
+      event_date: ["2023-06-02T01:00:00+00:00"]
+    field: event_date
+    start_date: "2023-06-01 00:00:00"
+    end_date: "2023-06-01T23:59:59"
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 1
+    records_failed_ids: [0]
+
+- description: Tz-aware value before min allowed (should be invalid)
+  inputs:
+    df:
+      event_date: ["2023-05-31T23:59:59+00:00"]
+    field: event_date
+    start_date: "2023-06-01 00:00:00"
+    end_date: "2023-06-01T23:59:59"
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 1
+    records_failed_ids: [0]

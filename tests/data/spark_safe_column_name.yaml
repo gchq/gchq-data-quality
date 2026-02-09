@@ -1,0 +1,47 @@
+- description: Plain field name, nothing to change
+  inputs:
+    field: "name"
+  expected:
+    column_name: "name"
+
+- description: Field with dot separator
+  inputs:
+    field: "customer.name"
+  expected:
+    column_name: "customer_name"
+
+- description: Field contains '[*]' array wildcard
+  inputs:
+    field: "orders[*].id"
+  expected:
+    column_name: "orders_all_id"
+
+- description: Field contains '[]' array first element
+  inputs:
+    field: "items[].cost"
+  expected:
+    column_name: "items_first_cost"
+
+- description: All combined - dots, [*], []
+  inputs:
+    field: "data.points[*].values[].entry"
+  expected:
+    column_name: "data_points_all_values_first_entry"
+
+- description: Leading and trailing underscores should be stripped
+  inputs:
+    field: ".outer.value[].."
+  expected:
+    column_name: "outer_value_first"
+
+- description: Ends with [*]
+  inputs:
+    field: "records[*]"
+  expected:
+    column_name: "records_all"
+
+- description: Ends with []
+  inputs:
+    field: "records[]"
+  expected:
+    column_name: "records_first"

@@ -1,0 +1,78 @@
+- description: No null values
+  inputs:
+    df:
+      id: [1, 2, 3, 4]
+    field: id
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 4
+
+- description: Some null values
+  inputs:
+    df:
+      id: [1, 2, null, null, null]
+    field: id
+  expected:
+    pass_rate: 0.4
+    records_evaluated: 5
+
+- description: All null values
+  inputs:
+    df:
+      id: [null, null]
+    field: id
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 2
+
+- description: Use of na_values (single) in list
+  inputs:
+    df:
+      id: ['a','b','missing', null]
+    field: id
+    na_values: ['missing']
+  expected:
+    pass_rate: 0.5
+    records_evaluated: 4
+
+- description: Use of na_values (single) in str
+  inputs:
+    df:
+      id: ['a','b','missing', null, null]
+    field: id
+    na_values: 'missing'
+  expected:
+    pass_rate: 0.4
+    records_evaluated: 5
+
+- description: Use of more than one na_values
+  inputs:
+    df:
+      id: ['a','n/a','missing', 'b', 'c']
+    field: id
+    na_values: ['missing', 'n/a']
+  expected:
+    pass_rate: 0.6
+    records_evaluated: 5
+
+- description: Extra kwargs
+  inputs:
+    df:
+      id: [1, 2, 3, 4]
+    field: id
+    rule_id: My Rule ID
+    rule_description: My Rule Description
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 4
+    rule_id: My Rule ID
+    rule_description: My Rule Description
+
+- description: Override data quality dimension
+  inputs:
+    df:
+      id: [1, 2, 3, 4]
+    field: id
+    data_quality_dimension: Consistency
+  expected:
+    data_quality_dimension: Consistency

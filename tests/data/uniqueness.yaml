@@ -1,0 +1,87 @@
+- description: All unique values
+  inputs:
+    df:
+      id: [1, 2, 3, 4]
+    field: id
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 4
+
+- description: All duplicates
+  inputs:
+    df:
+      id: [1, 1, 2, 2]
+    field: id
+  expected:
+    pass_rate: 0.5
+    records_evaluated: 4
+    records_failed_sample: [{"id": 1}, {"id": 2}]
+
+- description: All duplicates with null
+  inputs:
+    df:
+      id: [1, 1, 2, 2, null, null]
+    field: id
+  expected:
+    pass_rate: 0.5
+    records_evaluated: 4
+    records_failed_sample: [{"id": 1}, {"id": 2}]
+
+- description: All null values
+  inputs:
+    df:
+      id: [null, null]
+    field: id
+  expected:
+    pass_rate: null
+    records_evaluated: 0
+
+- description: Partial null values
+  inputs:
+    df:
+      id: [1,2,null, null]
+    field: id
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 2
+
+- description: Use of na_values
+  inputs:
+    df:
+      id: [1,2,0, null]
+    field: id
+    na_values: [0.0]
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 2
+
+- description: Extra kwargs
+  inputs:
+    df:
+      id: [1, 2, 3, 4]
+    field: id
+    rule_id: My Rule ID
+    rule_description: My Rule Description
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 4
+    rule_id: My Rule ID
+    rule_description: My Rule Description
+
+- description: Override data quality dimension
+  inputs:
+    df:
+      id: [1, 2, 3, 4]
+    field: id
+    data_quality_dimension: Completeness
+  expected:
+    data_quality_dimension: Completeness
+
+- description: Override data quality dimension lowercase
+  inputs:
+    df:
+      id: [1, 2, 3, 4]
+    field: id
+    data_quality_dimension: completeness
+  expected:
+    data_quality_dimension: Completeness

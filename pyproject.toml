@@ -1,0 +1,87 @@
+[build-system]
+requires = ["uv_build>=0.7.11,<0.8.0"]
+build-backend = "uv_build"
+
+[project]
+name = "gchq-data-quality"
+version = "1.0.0"
+description = "Tools for data quality measurement in Pandas and Spark"
+requires-python = ">=3.11"
+keywords = ["data quality"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Intended Audience :: Developers",
+    "Topic :: Utilities",
+]
+
+dependencies = [
+    "numpy>=2.4.1",
+    "pandas>=2.2.3,<3",
+    "pydantic>=2.9",
+    "pyyaml>=6.0.3",
+]
+
+
+authors = [{ name = "GCHQ", email = "oss@gchq.gov.uk" }]
+
+readme = "README.md"
+license = "Apache-2.0"
+
+[project.urls]
+Homepage = "https://github.com/gchq/gchq-data-quality"
+Issues = "https://github.com/gchq/gchq-data-quality/issues"
+Documentation = "https://gchq.github.io/gchq-data-quality/"
+Respository = "https://github.com/gchq/gchq-data-quality"
+
+[project.optional-dependencies]
+pyspark = ["pyspark>=3.5", "pyarrow>=23.0.0"]
+
+elasticsearch = ["elasticsearch>=8.17"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.9, <1",
+    "pre-commit>=3.0",
+    "nbconvert>=7.0,<8",
+    "ipykernel>=7.1.0",
+    { include-group = "docs" },
+    { include-group = "test" },
+]
+
+test = ["pytest>=7.0", "coverage>=7.9.2,<8"]
+docs = ["mkdocs", "mkdocs-material", "mkdocstrings[python]"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "I", "N", "UP", "S", "B", "COM", "ANN"]
+ignore = ["E501", "COM812", "N813", "N806"]
+fixable = ["ALL"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["aws_cdk.Duration.minutes"]

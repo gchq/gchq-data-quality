@@ -1,0 +1,127 @@
+- description: All rows satisfy a simple string comparison rule
+  inputs:
+    df:
+      a: [1, 2, 3, 4]
+      b: [10, 20, 30, 40]
+    field: a
+    expression: "`a` < `b`"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 4
+
+- description: All rows fail a simple string comparison rule
+  inputs:
+    df:
+      a: [1, 2, 3]
+      b: [10, 20, 30]
+    field: a
+    expression: "`a` > `b`"
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 3
+    records_failed_ids: [0, 1, 2]
+    records_failed_sample: [{"a": 1, "b": 10}, {"a": 2, "b": 20}, {"a": 3, "b": 30}]
+
+- description: Mixed valid and invalid records for a numerical check
+  inputs:
+    df:
+      score: [10, 0, 2000, 100]
+      pass_score: [50, 50, 50, 50]
+    field: score
+    expression: "`score` >= `pass_score`"
+  expected:
+    pass_rate: 0.5
+    records_evaluated: 4
+    records_failed_ids: [0, 1]
+    records_failed_sample: [{"score": 10, "pass_score": 50}, {"score": 0, "pass_score": 50}]
+
+- description: Dict expression, all pass condition
+  inputs:
+    df:
+      status: ['active', 'active', 'inactive']
+      email: ['x@example.com', 'y@example.com', null]
+    field: status
+    expression:
+      if: "`status` == 'active'"
+      then: "`email`.notnull()"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 2
+
+- description: Dict expression, some fail consequence
+  inputs:
+    df:
+      status: ['active', 'active', 'inactive']
+      email: ['x@example.com', null, null]
+    field: status
+    expression:
+      if: "`status` == 'active'"
+      then: "`email`.notnull()"
+  expected:
+    pass_rate: 0.5
+    records_evaluated: 2
+    records_failed_ids: [1]
+    records_failed_sample: [{"status": "active", "email": null}]
+
+- description: Skip if any relevant column is null (skip_if_null = any)
+  inputs:
+    df:
+      a: [1, null, 3, null]
+      b: [10, 10, null, null]
+    field: a
+    expression: "`a` < `b`"
+    skip_if_null: any
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 1
+
+- description: Skip if any relevant column is null (skip_if_null = all)
+  inputs:
+    df: # we only skip 1 record (out of 5)
+      a: [1, 1, null, 3, null, 1]
+      b: [10, 10, 10, null, null, 10]
+    field: a
+    expression: "`a` < `b`"
+    skip_if_null: all
+  expected:
+    pass_rate: 0.6
+    records_evaluated: 5
+
+- description: Skip if any relevant column is null (skip_if_null = never)
+  inputs:
+    df: # we check all 4 records
+      a: [1, null, 3, null]
+      b: [10, 10, null, null]
+    field: a
+    expression: "`a` < `b`"
+    skip_if_null: never
+  expected:
+    pass_rate: 0.25
+    records_evaluated: 4
+
+- description: String functions with .str.endswith, conditional expression
+  inputs:
+    df:
+      email: ["alice@company.com", "bob@gmail.com", "carol@company.com", "dan@other.com"]
+      email_type: ["internal", "external", "internal", "external"]
+    field: email_type
+    expression:
+      if: "`email`.str.endswith('@company.com')"
+      then: "`email_type` == 'internal'"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 2
+
+
+- description: All rows invalid, only columns used in expression in records_failed_sample
+  inputs:
+    df:
+      employee_id: [1,2,3]
+      department: ['HR', 'Sales', 'IT']
+    field: employee_id
+    expression: "`employee_id` == 999"
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 3
+    records_failed_ids: [0, 1, 2]
+    records_failed_sample: [{"employee_id": 1}, {"employee_id": 2}, {"employee_id": 3}]

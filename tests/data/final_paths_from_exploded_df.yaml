@@ -1,0 +1,100 @@
+# Test cases for final_paths_from_exploded_df(flatten_cols: list[str])
+
+- description: Single plain column, no arrays
+  inputs:
+    flatten_cols:
+      - name
+  expected:
+    final_paths: ["name"]
+
+- description: Single array with [*] notation
+  inputs:
+    flatten_cols:
+      - children[*].name
+  expected:
+    final_paths: ["children_all.name"]
+
+- description: Single array with [] notation
+  inputs:
+    flatten_cols:
+      - children[].name
+  expected:
+    final_paths: ["children_first.name"]
+
+- description: Two-level nested arrays with [*] notation
+  inputs:
+    flatten_cols:
+      - children[*].pets[*].name
+  expected:
+    final_paths: ["children_all_pets_all.name"]
+
+- description: Mixed array notations at different depths
+  inputs:
+    flatten_cols:
+      - children[*].pets[].name
+  expected:
+    final_paths: ["children_all_pets_first.name"]
+
+- description: Array is the final segment, no trailing attribute
+  inputs:
+    flatten_cols:
+      - children[*]
+  expected:
+    final_paths: ["children_all"]
+
+- description: Deeply nested array is the final segment, no trailing attribute
+  inputs:
+    flatten_cols:
+      - children[*].pets[]
+  expected:
+    final_paths: ["children_all_pets_first"]
+
+# Additional test cases for multiple entries in flatten_cols
+
+- description: Two plain columns, no arrays
+  inputs:
+    flatten_cols:
+      - name
+      - age
+  expected:
+    final_paths: ["name", "age"]
+
+- description: Two nested non-array columns
+  inputs:
+    flatten_cols:
+      - name.name
+      - age.age
+  expected:
+    final_paths: ["name.name", "age.age"]
+
+- description: Mixture of plain and array column
+  inputs:
+    flatten_cols:
+      - children
+      - children[*].name
+  expected:
+    final_paths: ["children", "children_all.name"]
+
+- description: Two arrays at root level with different notations
+  inputs:
+    flatten_cols:
+      - children[*].name
+      - pets[].type
+  expected:
+    final_paths: ["children_all.name", "pets_first.type"]
+
+- description: Nested arrays and a plain column
+  inputs:
+    flatten_cols:
+      - family[*].parent.name
+      - id
+  expected:
+    final_paths: ["family_all.parent.name", "id"]
+
+- description: Multiple nested arrays with mixed notations
+  inputs:
+    flatten_cols:
+      - children[*].pets[*].name
+      - children[*].pets[*].type
+  expected:
+    final_paths: ["children_all_pets_all.name", "children_all_pets_all.type"]

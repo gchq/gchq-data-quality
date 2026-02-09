@@ -1,0 +1,84 @@
+# The expected values are the number of NULLS to count
+
+- description: Replace "missing" in 'strings', one value nullified
+  inputs:
+    df:
+      strings: ["ok", "missing"]
+    na_values: "missing"
+    columns: ["strings"]
+  expected:
+    strings: 1
+
+- description: Replace -999 in 'numbers', testing numeric
+  inputs:
+    df:
+      numbers: [-999, 1]
+    na_values: -999
+    columns: ["numbers"]
+  expected:
+    numbers: 1
+
+- description: Replace multiple integers
+  inputs:
+    df:
+      numbers: [-1, -2, 1, 2, 3]
+    na_values: [-1,-2]
+    columns: ["numbers"]
+  expected:
+    numbers: 2
+
+- description: Check only columns provided are nulled
+  inputs:
+    df:
+      strings: ["gone", "keep"]
+      strings_unchanged: ["gone", "keep"]
+    na_values: ["gone"]
+    columns: ["strings"]
+  expected:
+    strings: 1  # "gone" replaced
+    strings_unchanged: 0 
+
+- description: No value matches, nothing is replaced
+  inputs:
+    df:
+      strings: ["keep", "hold"]
+    na_values: "absent"
+    columns: ["strings"]
+  expected:
+    strings: 0
+
+- description: No value matches, nothing is replaced, 1 pre-existsing null
+  inputs:
+    df:
+      strings: ["keep", "hold", null]
+    na_values: "absent"
+    columns: ["strings"]
+  expected:
+    strings: 1
+
+- description: All pre-existing nulls
+  inputs:
+    df:
+      strings: [null, null]
+    na_values: "absent"
+    columns: ["strings"]
+  expected:
+    strings: 2
+
+- description: All nulls after replacement
+  inputs:
+    df:
+      strings: ["absent", "absent"]
+    na_values: "absent"
+    columns: ["strings"]
+  expected:
+    strings: 2
+
+- description: Pre-existing null value in integer df
+  inputs:
+    df:
+      id: [1,2,0, null]
+    na_values: [0]
+    columns: ['id']
+  expected:
+    id: 2

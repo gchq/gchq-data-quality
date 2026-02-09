@@ -1,0 +1,14 @@
+dataset_name: "dataset"
+measurement_sample: "all"
+lifecycle_stage: "01_ingest"
+rules:
+  - field: "id"
+    function: "uniqueness"
+  - field: "name"
+    function: "completeness"
+  - field: "email"
+    function: "validity_regex"
+    regex_pattern: EMAIL_REGEX
+  - field: "name"
+    function: "validity_regex"
+    regex_pattern: '^[a-zA-Z\s]+$'

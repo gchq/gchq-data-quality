@@ -1,0 +1,129 @@
+# Test Case 1: Array with all nulls
+- description: Array contains only nulls, result should be null
+  inputs:
+    df:
+      id: [1]
+      arr_col: [[null, null, null]]
+    array_col_ref: arr_col
+    new_column_name: first_non_null
+    keep_cols: [id]
+  expected:
+    id: [1]
+    first_non_null: [null]
+
+# Test Case 2: Empty array
+- description: Array is empty, result should be null
+  inputs:
+    df:
+      id: [2]
+      arr_col: [[]]
+    array_col_ref: arr_col
+    new_column_name: first_non_null
+    keep_cols: [id]
+  expected:
+    id: [2]
+    first_non_null: [null]
+
+# Test Case 3: Array with single null value
+- description: Array with single null, result should be null
+  inputs:
+    df:
+      id: [3]
+      arr_col: [[null]]
+    array_col_ref: arr_col
+    new_column_name: first_non_null
+    keep_cols: [id]
+  expected:
+    id: [3]
+    first_non_null: [null]
+
+# Test Case 4: First value in array is non-null
+- description: Array has non-null as first element
+  inputs:
+    df:
+      id: [4]
+      arr_col: [[5, null, null]]
+    array_col_ref: arr_col
+    new_column_name: first_non_null
+    keep_cols: [id]
+  expected:
+    id: [4]
+    first_non_null: [5]
+
+# Test Case 5: First non-null is in second position
+- description: Array with leading null, then non-null value
+  inputs:
+    df:
+      id: [5]
+      arr_col: [[null, 8, 9]]
+    array_col_ref: arr_col
+    new_column_name: first_non_null
+    keep_cols: [id]
+  expected:
+    id: [5]
+    first_non_null: [8]
+
+# Test Case 6: Array with all values non-null
+- description: Array with no nulls, first value should be chosen
+  inputs:
+    df:
+      id: [6]
+      arr_col: [[10, 11, 12]]
+    array_col_ref: arr_col
+    new_column_name: first_non_null
+    keep_cols: [id]
+  expected:
+    id: [6]
+    first_non_null: [10]
+
+# a) Keep two columns 'id' and 'id2'
+- description: Keep id and id2, with a valid non-null in array
+  inputs:
+    df:
+      id: [1]
+      id2: ['A']
+      arr_col: [[null, 7]]
+    array_col_ref: arr_col
+    new_column_name: first_non_null
+    keep_cols: [id, id2]
+  expected:
+    id: [1]
+    id2: ['A']
+    first_non_null: [7]
+
+- description: Keep id and id2, with all nulls in array
+  inputs:
+    df:
+      id: [2]
+      id2: ['B']
+      arr_col: [[null, null]]
+    array_col_ref: arr_col
+    new_column_name: first_non_null
+    keep_cols: [id, id2]
+  expected:
+    id: [2]
+    id2: ['B']
+    first_non_null: [null]
+
+# b) Keep no columns, only new_column_name should be present
+- description: No keep_cols, array has non-null element
+  inputs:
+    df:
+      id: [3]
+      arr_col: [[21, null]]
+    array_col_ref: arr_col
+    new_column_name: only_value
+    keep_cols: []
+  expected:
+    only_value: [21]
+
+- description: No keep_cols, array is all null
+  inputs:
+    df:
+      id: [4]
+      arr_col: [[null, null]]
+    array_col_ref: arr_col
+    new_column_name: only_value
+    keep_cols: []
+  expected:
+    only_value: [null]

@@ -1,0 +1,37 @@
+# records_failed_ids_are_int function test cases
+
+- description: All values are integers
+  inputs:
+    records_failed_ids: [10, 20, 30]
+  expected:
+    is_all_int: true
+
+- description: Single values is int
+  inputs:
+    records_failed_ids: [0]
+  expected:
+    is_all_int: true
+
+- description: Empty list input
+  inputs:
+    records_failed_ids: []
+  expected:
+    is_all_int: true
+
+- description: List of null values
+  inputs:
+    records_failed_ids: [null, null, null]
+  expected:
+    is_all_int: false
+
+- description: List of datetime values
+  inputs:
+    records_failed_ids: ["2023-01-01T00:00:00", "2024-06-01T14:30:00"]
+  expected:
+    is_all_int: false
+
+- description: List of string values
+  inputs:
+    records_failed_ids: ["one", "two", "three"]
+  expected:
+    is_all_int: false

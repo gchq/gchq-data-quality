@@ -1,0 +1,77 @@
+name: Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+            - os: ubuntu-latest
+              python-versions: ["3.11", "3.12", "3.13", "3.14"]
+              resolution-strategy: "highest"
+            - os: ubuntu-latest
+              python-versions: ["3.11", "3.12", "3.13", "3.14"]
+              resolution-strategy: "lowest"
+            - os: macos-latest
+              python-versions: ["3.12"]
+              resolution-strategy: "highest"
+            - os: macos-latest
+              python-versions: ["3.12"]
+              resolution-strategy: "lowest"
+            - os: windows-latest
+              python-versions: ["3.12"]
+              resolution-strategy: "highest"
+            - os: windows-latest
+              python-versions: ["3.12"]
+              resolution-strategy: "lowest"
+    runs-on: ${{ matrix.os }}
+
+
+    steps:
+
+    - uses: actions/checkout@v6
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        version: "latest"
+        python-version: ${{ matrix.python-version }}
+        resolution-strategy: ${{ matrix.resolution-strategy }}
+        enable-cache: true
+        cache-suffix: ${{ matrix.resolution-strategy }}
+
+    # Step to run the copyright check script
+    - name: Run Copyright Check
+      if: matrix.os == 'ubuntu-latest'  # Only execute on Linux
+      run: /bin/bash scripts/check-copyright.sh
+
+    # Stage 1: Run unit tests without installing extras (just pandas approach, all matrix.os)
+    - name: Install core dependencies only
+      run: uv sync --no-dev --group test
+    - name: Test pandas dataframes no extras installed
+      run: uv run pytest --ignore=tests/spark/ --ignore=tests/elasticsearch/
+
+    # Stage 2: Install pyspark run spark tests. Linux and MacOS only.
+    - name: Install Spark dependencies
+      if: matrix.os != 'windows-latest'  # Skip for Windows
+      run: uv sync --no-dev --group test --extra pyspark --locked
+    - name: Run Spark tests
+      if: matrix.os != 'windows-latest'  # Skip for Windows
+      run: uv run pytest tests/spark/ --ignore=tests/elasticsearch/
+
+    # Stage 3: Install elasticsearch run tests. Linux and MacOS only.
+    - name: Install Elasticsearch dependencies
+      run: uv sync --no-dev --group test --extra elasticsearch --locked
+      if: matrix.os != 'windows-latest'  # Skip for Windows
+    - name: Run Elasticsearch tests
+      if: matrix.os != 'windows-latest'  # Skip for Windows
+      run: uv run pytest tests/elasticsearch/ --ignore=tests/spark/
+

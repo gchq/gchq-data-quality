@@ -1,0 +1,110 @@
+- description: ISO 8601 datetime string tz-naive
+  inputs:
+    value: "2024-05-01T12:30:00"
+  expected:
+    utc_datetime: 2024-05-01T12:30:00+00:00
+
+- description: ISO 8601 datetime instance tz-naive
+  inputs:
+    value: 2024-05-01T12:30:00
+  expected:
+    utc_datetime: 2024-05-01T12:30:00+00:00
+
+- description: date only string with no time
+  inputs:
+    value: "2024-05-01"
+  expected:
+    utc_datetime: 2024-05-01T00:00:00+00:00
+
+- description: date only instance with no time
+  inputs:
+    value: 2024-05-01
+  expected:
+    utc_datetime: 2024-05-01T00:00:00+00:00
+
+- description: UTC pandas.Timestamp tz-aware as string
+  inputs:
+    value: "2024-05-01 08:30:00+00:00"
+  expected:
+    utc_datetime: 2024-05-01T08:30:00+00:00
+
+- description: UTC pandas.Timestamp tz-aware as instance
+  inputs:
+    value: 2024-05-01 08:30:00+00:00
+  expected:
+    utc_datetime: 2024-05-01T08:30:00+00:00
+
+- description: tz-naive pandas.Timestamp as string
+  inputs:
+    value: "2024-05-01 08:30:00"
+  expected:
+    utc_datetime: 2024-05-01T08:30:00+00:00
+
+- description: tz-naive pandas.Timestamp as instance
+  inputs:
+    value: 2024-05-01 08:30:00
+  expected:
+    utc_datetime: 2024-05-01T08:30:00+00:00
+
+- description: tz-aware string (different timezone)
+  inputs:
+    value: "2024-05-01 09:30:00+01:00"
+  expected:
+    utc_datetime: 2024-05-01T08:30:00+00:00
+
+- description: tz-aware instance (different timezone)
+  inputs:
+    value: 2024-05-01 09:30:00+01:00
+  expected:
+    utc_datetime: 2024-05-01T08:30:00+00:00
+
+- description: Null input
+  inputs:
+    value: null
+  expected:
+    utc_datetime: null
+
+- description: Not a date input
+  inputs:
+    value: not-a-date
+  expected:
+    utc_datetime: null
+
+- description: Out-of-bounds (as string)
+  inputs:
+    value: "3025-01-01 00:00:00"
+  expected:
+    utc_datetime: 3025-01-01 00:00:00+00:00
+
+- description: Out-of-bounds (date only as string)
+  inputs:
+    value: "3025-01-01"
+  expected:
+    utc_datetime: 3025-01-01 00:00:00+00:00
+
+- description: Out-of-bounds as date instance
+  inputs:
+    value: 3025-01-01
+  expected:
+    utc_datetime: 3025-01-01 00:00:00+00:00
+
+- description: Out-of-bounds datetime (as instance)
+  inputs:
+    value: 3025-01-01 00:00:00
+  expected:
+    utc_datetime: 3025-01-01 00:00:00+00:00
+
+- description: American format string
+  inputs:
+    value: '05-01-2024'
+    dayfirst: false
+  expected:
+    utc_datetime: 2024-05-01T00:00:00+00:00
+
+- description: UK format string
+  inputs:
+    value: '01-05-2024'
+    dayfirst: true
+  expected:
+    utc_datetime: 2024-05-01T00:00:00+00:00
+

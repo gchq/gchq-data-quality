@@ -1,0 +1,14 @@
+dataset_name: "test_data_quality.csv"
+measurement_sample: "all of it"
+lifecycle_stage: "01_ingest"
+rules:
+  - function: uniqueness
+    field: "id"
+    rule_id: "rule_uniqueness_id"
+    rule_description: "Ensure IDs are unique"
+    
+  - function: completeness
+    field: "name"
+    rule_id: "rule_completeness_name"
+    rule_description: "Ensure no empty names"
+    na_values: ["None", ""]  # Treat 'None' and empty strings as null

@@ -1,0 +1,57 @@
+# shift_records_failed_ids function test cases
+
+- description: Shift a list of all int values by 2
+  inputs:
+    records_failed_ids: [1, 2, 3]
+    shift: 2
+  expected:
+    shifted_row_numbers: [3, 4, 5]
+
+- description: No shift on all int values
+  inputs:
+    records_failed_ids: [4, 5]
+    shift: 0
+  expected:
+    shifted_row_numbers: [4, 5]
+
+- description: Shift single integer value
+  inputs:
+    records_failed_ids: [10]
+    shift: 3
+  expected:
+    shifted_row_numbers: [13]
+
+- description: Shift with empty list
+  inputs:
+    records_failed_ids: []
+    shift: 2
+  expected:
+    shifted_row_numbers: []
+
+- description: Shift on list of nulls
+  inputs:
+    records_failed_ids: [null, null]
+    shift: 2
+  expected:
+    shifted_row_numbers: [null, null]
+
+- description: Shift on list of string values
+  inputs:
+    records_failed_ids: ["one", "two"]
+    shift: 5
+  expected:
+    shifted_row_numbers: ["one", "two"]
+
+- description: Shift on list of datetime values
+  inputs:
+    records_failed_ids: [2021-02-01, 2022-04-03]
+    shift: 7
+  expected:
+    shifted_row_numbers: [2021-02-01, 2022-04-03]
+
+- description: Mixture of int and null values (no shift)
+  inputs:
+    records_failed_ids: [7, null, 9]
+    shift: 5
+  expected:
+    shifted_row_numbers: [7, null, 9]

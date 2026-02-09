@@ -1,0 +1,110 @@
+# test_nested_df contains 4 sample customer records, each with nested fields:
+#
+# root
+#  |-- id: integer (nullable = true)
+#  |-- customers: struct (nullable = true)
+#  |    |-- expiry_date: date (nullable = true)
+#  |    |-- name: string (nullable = true)
+#  |    |-- age: integer (nullable = true)
+#  |    |-- pets: array (nullable = true)
+#  |    |    |-- element: struct (containsNull = true)
+#  |    |    |    |-- name: string (nullable = true)
+#  |    |    |    |-- appointments: array (nullable = true)
+#  |    |    |    |    |-- element: struct (containsNull = true)
+#  |    |    |    |    |    |-- date: string (nullable = true)
+#  |    |    |    |    |    |-- comment: string (nullable = true)
+# Records summary:
+#
+# 1. Customer "John" (id=1, age=30)
+#    - Two pets:
+#      * "Fido": 2 appointments ("2022-01-01", "Fido First appointment"; "2022-01-02", "Fido Second appointment")
+#      * "Whiskers": 2 appointments ("2022-02-03", "Whiskers First appointment"; "2022-02-04", "Whiskers Second appointment")
+#
+# 2. Customer "Jane" (id=2, age=25)
+#    - One pet:
+#      * "Rex": no appointments (empty list)
+#
+# 3. Customer "Mr No Pets" (id=3, age=102)
+#    - One pet:
+#      * Name: None, no appointments (empty list)
+#
+# 4. Customer "Mrs Missing Pets" (id=4, age=15)
+#    - One pet:
+#      * "missing": one appointment ("2025-01-01", "none")
+#
+# The structure covers:
+# - Customers with multiple pets and appointments
+# - Customers with pets but no appointments
+# - Pets with missing names
+# - Pets with placeholder/missing appointment data
+#
+# This ensures flatten_spark tests handle: regular data, empty arrays, nulls, and missing or placeholder values.
+# flatten_spark test cases
+
+- description: Flatten single non-array column (customers.name), all non-null
+  inputs:
+    flatten_cols:
+      - customers.name
+  expected:
+    row_count: 4
+    columns: [customers_name]
+    customers_name: [John, Jane, Mr No Pets, Mrs Missing Pets]
+
+- description: Flatten array column, explode all pets[*].name, mixture of null and valid
+  inputs:
+    flatten_cols:
+      - customers.name
+      - customers.pets[*].name
+  expected:
+    row_count: 5
+    columns: [customers_name, customers_pets_all_name]
+    customers_name: [John, John, Jane, Mr No Pets, Mrs Missing Pets]
+    customers_pets_all_name: [Fido, Whiskers, Rex, null, missing]
+
+- description: Fully explode all nested arrays (customers.pets[*].appointments[*].date), mixture of null and valid
+  inputs:
+    flatten_cols:
+      - customers.name
+      - customers.pets[*].name
+      - customers.pets[*].appointments[*].date
+  expected:
+    row_count: 7
+    columns: [customers_name, customers_pets_all_name, customers_pets_all_appointments_all_date]
+    customers_name: [John, John, John, John, Mrs Missing Pets, Jane, Mr No Pets]
+    customers_pets_all_name: [Fido, Fido, Whiskers, Whiskers, missing, Rex, null]
+    customers_pets_all_appointments_all_date: ['2022-01-01', '2022-01-02', '2022-02-03', '2022-02-04', '2025-01-01', null, null]
+
+- description: Use [] notation to select only the first element of arrays, check handling of nulls
+  inputs:
+    flatten_cols:
+      - customers.name
+      - customers.pets[].name
+      - customers.pets[].appointments[].date
+  expected:
+    row_count: 4
+    columns: [customers_name, customers_pets_first_name, customers_pets_first_appointments_first_date]
+    customers_name: [John, Jane, Mr No Pets, Mrs Missing Pets]
+    customers_pets_first_name: [Fido, Rex, null, missing]
+    customers_pets_first_appointments_first_date: ['2022-01-01', null, null, '2025-01-01']
+
+- description: Flatten a field with all null arrays ([*] on appointments for customers with no appointments)
+  inputs:
+    flatten_cols:
+      - customers.name
+      - customers.pets[*].appointments[*].comment
+  expected:
+    row_count: 7
+    columns: [customers_name, customers_pets_all_appointments_all_comment]
+    customers_name: [John, John, John, John, Jane, Mr No Pets, Mrs Missing Pets]
+    customers_pets_all_appointments_all_comment: [Fido First appointment, Fido Second appointment, Whiskers First appointment, Whiskers Second appointment, null, null, 'none']
+
+- description: Flatten first pet and check if their name is null (all null for customers with no real pets)
+  inputs:
+    flatten_cols:
+      - customers.name
+      - customers.pets[].name
+  expected:
+    row_count: 4
+    columns: [customers_name, customers_pets_first_name]
+    customers_name: [John, Jane, Mr No Pets, Mrs Missing Pets]
+    customers_pets_first_name: [Fido, Rex, null, missing]

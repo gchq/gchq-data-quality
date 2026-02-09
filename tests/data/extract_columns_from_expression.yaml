@@ -1,0 +1,55 @@
+- description: Single backticked column, matches DataFrame columns
+  inputs:
+    expression: "`id` > 1"
+    df_columns: ["id"]
+  expected:
+    columns: ["id"]
+
+- description: Multiple backticked columns, all present in DataFrame
+  inputs:
+    expression: "`id` > 1 and `score` < 100"
+    df_columns: ["id", "score", "extra"]
+  expected:
+    columns: ["id", "score"]
+
+- description: Duplicate column names in expression, only unique returned
+  inputs:
+    expression: "`price` >= 10 or `price` <= 100"
+    df_columns: ["price"]
+  expected:
+    columns: ["price"]
+
+- description: All valid columns, no df_columns passed
+  inputs:
+    expression: "`x` > 0 and `y` < 5"
+    df_columns: null
+  expected:
+    columns: ["x", "y"]
+
+- description: Single column, missing from DataFrame columns (should raise error)
+  inputs:
+    expression: "`missing_col` = 1"
+    df_columns: ["id", "score"]
+  expected:
+    raises: ValueError
+
+- description: No backticked columns in expression (should raise error)
+  inputs:
+    expression: "id > 1 and score < 100"
+    df_columns: ["id", "score"]
+  expected:
+    raises: ValueError
+
+- description: Multiple columns, one not present in DataFrame (should raise error)
+  inputs:
+    expression: "`id` > 1 and `nonexistent` < 100"
+    df_columns: ["id", "score"]
+  expected:
+    raises: ValueError
+
+- description: Many valid columns, ignore order from expression
+  inputs:
+    expression: "`c`>0 or `a`<5 or `b`==2"
+    df_columns: ["a", "b", "c"]
+  expected:
+    columns: ["a", "b", "c"]

@@ -1,0 +1,47 @@
+- description: All valid array paths use [*] notation at same level
+  inputs:
+    array_paths: ["customers[*].orders[*]", "customers[*].date"]
+  expected:
+    is_valid: true
+
+- description: All valid array paths use [] notation at same level
+  inputs:
+    array_paths: ["customers[].orders[]", "customers[].date"]
+  expected:
+    is_valid: true
+
+- description: Valid nested array paths with [] notation at deeper level
+  inputs:
+    array_paths: ["one.two.customers[].orders[]", "one.two.customers[].date"]
+  expected:
+    is_valid: true
+
+- description: Valid mixed array notations at different levels
+  inputs:
+    array_paths: ["one.two.customers[*].orders[]", "one.two.customers[*].date"]
+  expected:
+    is_valid: true
+
+- description: Invalid - mixed [*] and [] notations at same array level
+  inputs:
+    array_paths: ["customers[].orders", "customers[*].date"]
+  expected:
+    is_valid: false
+
+- description: Invalid - mixed notations at same level in nested paths
+  inputs:
+    array_paths: ["customers[*].orders[*].date", "customers[*].orders[].id"]
+  expected:
+    is_valid: false
+
+- description: All valid - only one array path, no mixture
+  inputs:
+    array_paths: ["customers[*].orders[*].date"]
+  expected:
+    is_valid: true
+
+- description: Edge case - empty array_paths list should be valid
+  inputs:
+    array_paths: []
+  expected:
+    is_valid: true

@@ -1,0 +1,133 @@
+- description: All passing values
+  inputs:
+    df:
+      id: [1, 2, 3, 4]
+    field: id
+    min_value: 0
+    max_value: 5
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 4
+
+- description: All failing values (below min)
+  inputs:
+    df:
+      score: [-10, -5, -2]
+    field: score
+    min_value: 0
+    max_value: 100
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 3
+
+- description: All failing values (above max)
+  inputs:
+    df:
+      score: [101,102,103]
+    field: score
+    min_value: 0
+    max_value: 100
+  expected:
+    pass_rate: 0.0
+    records_evaluated: 3
+
+- description: One value above max
+  inputs:
+    df:
+      temperature: [22, 25, 41, 17]
+    field: temperature
+    min_value: 15
+    max_value: 40
+  expected:
+    pass_rate: 0.75
+    records_evaluated: 4
+
+- description: Some values missing (when applying na_values)
+  inputs:
+    df:
+      height: [172, null, 160, -1]
+    field: height
+    min_value: 150
+    max_value: 180
+    na_values: [-1]
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 2
+
+- description: String number column, value turns to NaN
+  inputs:
+    df:
+      score: ['10', '60', 'abc', '100']
+    field: score
+    min_value: 0
+    max_value: 100
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 3
+
+- description: With negative infinity as min (min_value omitted)
+  inputs:
+    df:
+      diff: [-999, -100, 5]
+    field: diff
+    max_value: 10
+    na_values: -999
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 2
+
+- description: With positive infinity as max (max_value omitted)
+  inputs:
+    df:
+      diff: [-500, -100, 5000, 2000]
+    field: diff
+    min_value: -100
+  expected:
+    pass_rate: 0.75
+    records_evaluated: 4
+
+- description: numerical value in na_values
+  inputs:
+    df:
+      val: [7, -999, 7, 7]
+    field: val
+    min_value: 0
+    max_value: 10
+    na_values: -999
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 3
+
+- description: No records to check
+  inputs:
+    df:
+      x: ['missing', null]
+    field: x
+    min_value: 1
+    max_value: 2
+    na_values: 'missing'
+  expected:
+    pass_rate: null
+    records_evaluated: 0
+
+- description: Value equals to min and max are valid
+  inputs:
+    df:
+      y: [0, 5, 10]
+    field: y
+    min_value: 0
+    max_value: 10
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 3
+
+- description: min and max explicitly set to null
+  inputs:
+    df:
+      y: [0, 5, 10]
+    field: y
+    min_value: null
+    max_value: null
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 3

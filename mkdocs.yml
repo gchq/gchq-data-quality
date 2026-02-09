@@ -1,0 +1,53 @@
+site_name: GCHQ Data Quality
+
+theme:
+  name: material
+  features:
+    - content.code.copy                # Copy button on code blocks for usability
+  font:
+    text: Roboto                       # Accessible, readable default
+    code: Roboto Mono
+    size: 16                           # Minimum recommended for accessibility
+  palette:
+    - scheme: default
+      primary: '#1a237e'            # Very dark blue (Indigo 900)
+      accent: '#3949ab'             # Medium dark blue (Blue 600)
+      background: '#ffffff'         # Pure white
+      text: '#1a237e'   
+      toggle:
+        icon: material/weather-night   # Moon icon with readable label
+        name: Switch to dark mode
+    - scheme: slate
+      primary: '#1a237e'            # Keep strong contrast in dark mode nav
+      accent: '#90caf9'             # Light blue accent for dark mode links
+      background: '#121212'         # Very dark background for dark mode
+      text: '#ffffff'               # White text for dark mode
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+nav:
+  - Home: index.md
+  - What is Data Quality?: what-is-data-quality.md
+  - 00 - Installation: installation.md
+  - 01 - Basic Tutorial: python-basic.md
+  - 02 - Running from Configuration Files: python-advanced.md
+  - 03 - PySpark & Nested Data: python-pyspark.md
+  - API Reference: api.md
+
+markdown_extensions:
+  - codehilite:
+      guess_lang: false
+      linenums: false
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: false
+            filters:
+              - "!^_"

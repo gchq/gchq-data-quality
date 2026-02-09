@@ -1,0 +1,157 @@
+# the mask here is each row in the data frame (which is each 'column' on how you see it in the YAML file)
+# It is True if the value should be 'skipped' (ignored) based on the null values in the columns
+
+- description: All values non-null with skip_if_null='any'
+  inputs:
+    df:
+      a: [1, 2]
+      b: [3, 4]
+    relevant_columns: ['a', 'b']
+    skip_if_null: any
+  expected:
+    mask: [False, False]
+
+- description: All values non-null with skip_if_null='all'
+  inputs:
+    df:
+      a: [1, 2]
+      b: [3, 4]
+    relevant_columns: ['a', 'b']
+    skip_if_null: all
+  expected:
+    mask: [False, False]
+
+- description: All values non-null with skip_if_null='never'
+  inputs:
+    df:
+      a: [1, 2]
+      b: [3, 4]
+    relevant_columns: ['a', 'b']
+    skip_if_null: never
+  expected:
+    mask: [False, False]
+
+- description: Single null in one column with skip_if_null='any'
+  inputs:
+    df:
+      a: [1, null]
+      b: [3, 4]
+    relevant_columns: ['a', 'b']
+    skip_if_null: any
+  expected:
+    mask: [False, True]
+
+- description: Single null in one column with skip_if_null='all'
+  inputs:
+    df:
+      a: [1, null]
+      b: [3, 4]
+    relevant_columns: ['a', 'b']
+    skip_if_null: all
+  expected:
+    mask: [False, False]
+
+- description: Single null in one column with skip_if_null='never'
+  inputs:
+    df:
+      a: [1, null]
+      b: [3, 4]
+    relevant_columns: ['a', 'b']
+    skip_if_null: never
+  expected:
+    mask: [False, False]
+
+- description: All nulls in all columns with skip_if_null='any'
+  inputs:
+    df:
+      a: [null, null]
+      b: [null, null]
+    relevant_columns: ['a', 'b']
+    skip_if_null: any
+  expected:
+    mask: [True, True]
+
+- description: All nulls in all columns with skip_if_null='all'
+  inputs:
+    df:
+      a: [null, null]
+      b: [null, null]
+    relevant_columns: ['a', 'b']
+    skip_if_null: all
+  expected:
+    mask: [True, True]
+
+- description: All nulls in all columns with skip_if_null='never'
+  inputs:
+    df:
+      a: [null, null]
+      b: [null, null]
+    relevant_columns: ['a', 'b']
+    skip_if_null: never
+  expected:
+    mask: [False, False]
+
+
+
+- description: Mixture of partial nulls with skip_if_null='any'
+  inputs:
+    df:
+      a: [null, 1, null]
+      b: [2, null, null]
+    relevant_columns: ['a', 'b']
+    skip_if_null: any
+  expected:
+    mask: [True, True, True]
+
+- description: Mixture of partial nulls with skip_if_null='all'
+  inputs:
+    df:
+      a: [null, 1, null]
+      b: [2, null, null]
+    relevant_columns: ['a', 'b']
+    skip_if_null: all
+  expected:
+    mask: [False, False, True]
+
+- description: Mixture of partial nulls with skip_if_null='never'
+  inputs:
+    df:
+      a: [null, 1, null]
+      b: [2, null, null]
+    relevant_columns: ['a', 'b']
+    skip_if_null: never
+  expected:
+    mask: [False, False, False]
+
+- description: Mixture of partial nulls with skip_if_null='any' - additional column
+  inputs:
+    df:
+      a: [1, null, 3,    null]
+      b: [1, 2,    null, null]
+      c: [null , 2,    3,    4]
+    relevant_columns: ['a', 'b']
+    skip_if_null: any
+  expected:
+    mask: [False, True, True, True]
+
+- description: Mixture of partial nulls with skip_if_null='all' - additional column
+  inputs:
+    df:
+      a: [1, null, 3,    null]
+      b: [1, 2,    null, null]
+      c: [null , 2,    3,    4]
+    relevant_columns: ['a', 'b']
+    skip_if_null: all
+  expected:
+    mask: [False, False, False, True]
+
+- description: Mixture of partial nulls with skip_if_null='never' - additional column
+  inputs:
+    df:
+      a: [1, null, 3,    null]
+      b: [1, 2,    null, null]
+      c: [null , 2,    3,    4]
+    relevant_columns: ['a', 'b']
+    skip_if_null: never
+  expected:
+    mask: [False, False, False, False]

@@ -1,0 +1,92 @@
+- description: Simple column (no nesting)
+  inputs:
+    field: id
+    keep_cols: []
+  expected:
+    columns: [id]
+    row_count: 4
+
+
+- description: Customers name (non-nested)
+  inputs:
+    field: customers.name
+    keep_cols: []
+  expected:
+    columns: [customers_name]
+    row_count: 4
+
+
+- description: All pet names, includes null for missing
+  inputs:
+    field: customers.pets[*].name
+    keep_cols: []
+  expected:
+    columns: [customers_pets_all_name]
+    row_count: 5
+
+
+- description: All pet names, keeping 'id' column
+  inputs:
+    field: customers.pets[*].name
+    keep_cols: [id]
+  expected:
+    columns: [id, customers_pets_all_name]
+    row_count: 5
+
+
+- description: All appointment comments for all pets  
+  inputs:
+    field: customers.pets[*].appointments[*].comment
+    keep_cols: []
+  expected:
+    columns: [customers_pets_all_appointments_all_comment]
+    row_count: 7
+
+
+
+- description: All appointment comments, keeping 'id'
+  inputs:
+    field: customers.pets[*].appointments[*].comment
+    keep_cols: [id]
+  expected:
+    columns: [id, customers_pets_all_appointments_all_comment]
+    row_count: 7
+
+
+- description: First pet, all their appointment comments
+  inputs:
+    field: customers.pets[].appointments[*].comment
+    keep_cols: []
+  expected:
+    columns: [customers_pets_first_appointments_all_comment]
+    row_count: 5
+
+
+
+- description: First appointment of first pet
+  inputs:
+    field: customers.pets[].appointments[].comment
+    keep_cols: []
+  expected:
+    columns: [customers_pets_first_appointments_first_comment]
+    row_count: 4
+
+
+- description: First appointment of first pet, 'none' as NA (should be value)
+  inputs:
+    field: customers.pets[].appointments[].comment
+    keep_cols: []
+  expected:
+    columns: [customers_pets_first_appointments_first_comment]
+    row_count: 4
+
+
+
+- description: First pet's name per row
+  inputs:
+    field: customers.pets[].name
+    keep_cols: []
+  expected:
+    column: customers_pets_first_name
+    columns: [customers_pets_first_name]
+    row_count: 4 #if someone has 2 pets, we only pick the first one

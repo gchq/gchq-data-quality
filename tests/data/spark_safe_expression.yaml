@@ -1,0 +1,31 @@
+# Test cases for spark_safe_expression
+
+- description: Single backticked field reference replaced by Spark-safe column name
+  inputs:
+    expression: "`customers.age` > 18"
+  expected:
+    result: "`customers_age` > 18"
+
+- description: Multiple nested backticked fields replaced; array-style field names
+  inputs:
+    expression: "`customers.children[*].age` > 18 and `orders[].id` == 5"
+  expected:
+    result: "`customers_children_all_age` > 18 and `orders_first_id` == 5"
+
+- description: Expression with multiple field references, some not present in flattened columns
+  inputs:
+    expression: "`x` == 1 or `y[].a` < 5"
+  expected:
+    result: "`x` == 1 or `y_first_a` < 5"
+
+- description: Same string outside of backtick
+  inputs:
+    expression: "`customers.mean` == 'customers.mean'"
+  expected:
+    result: "`customers_mean` == 'customers.mean'"
+
+- description: Complex expression with multiple and repeated fields
+  inputs:
+    expression: "`a` + `b.c[*].d` > `threshold` or `b.c[*].d` == 10"
+  expected:
+    result: "`a` + `b_c_all_d` > `threshold` or `b_c_all_d` == 10"

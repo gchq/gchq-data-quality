@@ -1,0 +1,59 @@
+- description: Simple string expression with one column
+  inputs:
+    expression: "`age` > 18"
+  expected:
+    expression: "`age` > 18"
+
+- description: Simple string with nested column requiring Spark-safe conversion
+  inputs:
+    expression: "`person[*].name` == 'Alice'"
+  expected:
+    expression: "`person_all_name` == 'Alice'"
+
+- description: Expression with multiple columns including array wildcards
+  inputs:
+    expression: "`people[*].first_name` == `people[*].last_name`"
+  expected:
+    expression: "`people_all_first_name` == `people_all_last_name`"
+
+- description: Expression with mixed simple and nested columns
+  inputs:
+    expression: "`score` > 5 and `students[*].age` < 18"
+  expected:
+    expression: "`score` > 5 and `students_all_age` < 18"
+
+- description: Dictionary rule with nested 'if' and simple 'then'
+  inputs:
+    expression:
+      if: "`orders[*].amount` > 100"
+      then: "`status` == 'valid'"
+  expected:
+    expression:
+      if: "`orders_all_amount` > 100"
+      then: "`status` == 'valid'"
+
+- description: Dictionary rule with both nested fields in if/then
+  inputs:
+    expression:
+      if: "`basket[*].product_id` == 123"
+      then: "`basket[*].quantity` > 1"
+  expected:
+    expression:
+      if: "`basket_all_product_id` == 123"
+      then: "`basket_all_quantity` > 1"
+
+- description: Expression with mix of arrays, first and all semantics
+  inputs:
+    expression: "`items[].price` < 20 and `items[*].category` == 'A'"
+  expected:
+    expression: "`items_first_price` < 20 and `items_all_category` == 'A'"
+
+- description: Dictionary rule where both clauses have nested arrays
+  inputs:
+    expression:
+      if: "`orders[].id` == 1"
+      then: "`orders[*].amount` > 0"
+  expected:
+    expression:
+      if: "`orders_first_id` == 1"
+      then: "`orders_all_amount` > 0"

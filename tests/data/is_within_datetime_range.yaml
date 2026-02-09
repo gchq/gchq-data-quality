@@ -1,0 +1,69 @@
+- description: All dates within range, expected all True
+  inputs:
+    df:
+      dates: ["2021-01-01T00:00:00+00:00", "2021-06-15T00:00:00+00:00", "2021-12-31T00:00:00+00:00"]
+    field: dates
+    start_date: "2021-01-01T00:00:00+00:00"
+    end_date: "2021-12-31T00:00:00+00:00"
+  expected:
+    mask: [True, True, True]
+
+- description: One date below start,one valid, one above end
+  inputs:
+    df:
+      dates: ["2020-12-31T00:00:00+00:00", "2021-06-01T00:00:00+00:00", "2022-01-01T00:00:00+00:00"]
+    field: dates
+    start_date: "2021-01-01T00:00:00+00:00"
+    end_date: "2021-12-31T00:00:00+00:00"
+  expected:
+    mask: [False, True, False]
+
+- description: Mix of valid date and null/NaT
+  inputs:
+    df:
+      dates: ["2021-05-01T00:00:00+00:00", null]
+    field: dates
+    start_date: "2021-01-01T00:00:00+00:00"
+    end_date: "2021-12-31T00:00:00+00:00"
+  expected:
+    mask: [True, False]
+
+- description: All dates are null/NaT
+  inputs:
+    df:
+      dates: [null, null]
+    field: dates
+    start_date: "2021-01-01T00:00:00+00:00"
+    end_date: "2021-12-31T00:00:00+00:00"
+  expected:
+    mask: [False, False]
+
+- description: Empty start (None) and end (None), mask True for all
+  inputs:
+    df:
+      dates: ["2021-01-01T00:00:00+00:00", null]
+    field: dates
+    start_date: null
+    end_date: null
+  expected:
+    mask: [True, True]
+
+- description: Only end boundary specified, allow any date up to end
+  inputs:
+    df:
+      dates: ["2020-12-31T00:00:00+00:00", "2021-06-01T00:00:00+00:00", "2022-01-01T00:00:00+00:00"]
+    field: dates
+    start_date: null
+    end_date: "2021-06-01T00:00:00+00:00"
+  expected:
+    mask: [True, True, False]
+
+- description: Only start boundary specified, allow any date from start onwards
+  inputs:
+    df:
+      dates: ["2020-12-31T00:00:00+00:00", "2021-06-01T00:00:00+00:00", "2022-01-01T00:00:00+00:00"]
+    field: dates
+    start_date: "2021-06-01T00:00:00+00:00"
+    end_date: null
+  expected:
+    mask: [False, True, True]

@@ -1,0 +1,12 @@
+# For testing loading YAML files from a directory
+dataset_name: data_quality_rules_01
+measurement_sample: 1st file
+lifecycle_stage: "01_ingest"
+rules:
+  - function: uniqueness
+    field: "id"
+    rule_id: rule01
+    
+  - function: completeness
+    field: "name"
+    rule_id: rule02

@@ -1,0 +1,13 @@
+dataset_name: Tutorial Data
+measurement_time: 2025-01-01
+rules:
+- field: id
+  function: uniqueness
+- field: name
+  function: completeness
+- field: category
+  function: accuracy
+  valid_values: [A,B,C,D]
+- field: email
+  function: validity_regex
+  regex_pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'

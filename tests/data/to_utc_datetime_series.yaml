@@ -1,0 +1,51 @@
+- description: All valid date strings with no nulls
+  inputs:
+    df:
+      dates: ["2022-01-02", "2021-12-31", "1999-05-30"]
+  expected:
+    utc_datetimes: ["2022-01-02T00:00:00+00:00", "2021-12-31T00:00:00+00:00", "1999-05-30T00:00:00+00:00"]
+
+- description: All valid datetime objects with no nulls
+  inputs:
+    df:
+      dates: [2022-01-02, 2021-12-31, 1999-05-30]
+  expected:
+    utc_datetimes: ["2022-01-02T00:00:00+00:00", "2021-12-31T00:00:00+00:00", "1999-05-30T00:00:00+00:00"]
+
+- description: Series of all nulls
+  inputs:
+    df:
+      dates: [null, null, null]
+  expected:
+    utc_datetimes: [null, null, null]
+
+- description: Series of all invalid strings (no conversion possible)
+  inputs:
+    df:
+      dates: ["not-a-date", "foobar", "nope"]
+  expected:
+    utc_datetimes: [null, null, null]
+
+- description: Ambiguous dates, dayfirst True parses DD/MM/YYYY
+  inputs:
+    df:
+      dates: ["10/11/2020", "01/02/2001"]
+    dayfirst: True
+  expected:
+    utc_datetimes: ["2020-11-10T00:00:00+00:00", "2001-02-01T00:00:00+00:00"]
+
+- description: Dates beyond pandas Timestamp bounds (fallback logic triggered)
+  inputs:
+    df:
+      dates: ["1980-01-01", "4000-01-01"]
+    dayfirst: False
+  expected:
+    utc_datetimes: ["1980-01-01T00:00:00+00:00", "4000-01-01T00:00:00+00:00"]
+
+- description: Mix of valid and invalid date strings, invalids become null
+  inputs:
+    df:
+      dates: ["2020-01-01", "not-a-date", "2021-02-02"]
+    dayfirst: False
+  expected:
+    utc_datetimes: ["2020-01-01T00:00:00+00:00", null, "2021-02-02T00:00:00+00:00"]
