@@ -48,7 +48,7 @@ elasticsearch = ["elasticsearch>=8.17"]
 dev = [
     "ruff>=0.9, <1",
     "pre-commit>=3.0",
-    "nbconvert>=7.0,<8",
+    "nbconvert>=7.17.0,<8",
     "ipykernel>=7.1.0",
     { include-group = "docs" },
     { include-group = "test" },
