@@ -556,7 +556,7 @@ dev = [
     { name = "mkdocs" },
     { name = "mkdocs-material" },
     { name = "mkdocstrings", extras = ["python"] },
-    { name = "nbconvert", specifier = ">=7.0,<8" },
+    { name = "nbconvert", specifier = ">=7.17.0,<8" },
     { name = "pre-commit", specifier = ">=3.0" },
     { name = "pytest", specifier = ">=7.0" },
     { name = "ruff", specifier = ">=0.9,<1" },
