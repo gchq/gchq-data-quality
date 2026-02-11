@@ -115,7 +115,7 @@ report = config.execute(df)
 print(report.to_dataframe(measurement_time_format="%Y-%m-%d %H:%M"))
 ```
 
-You can adjust config metadata programmatically. It can be usfeul override `measurement_time`, as you may want to pretend the data was measured at the date of ingest, rather than when you actually measured it, as it can help make sense of your analysis later to understand the quality of the data based on what it landed.
+You can adjust config metadata programmatically. It can be useful to override `measurement_time`, as you may want to pretend the data was measured at the date of ingest, rather than when you actually measured it. It can help make sense of your analysis later to understand the quality of the data based on what it landed.
 
 ```python
 from datetime import timezone
