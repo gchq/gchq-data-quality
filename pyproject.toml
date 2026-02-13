@@ -22,7 +22,7 @@ classifiers = [
 
 dependencies = [
     "numpy>=2.4.1",
-    "pandas>=2.2.3,<3",
+    "pandas==3.0.0",
     "pydantic>=2.9",
     "pyyaml>=6.0.3",
 ]
@@ -40,7 +40,7 @@ Documentation = "https://gchq.github.io/gchq-data-quality/"
 Respository = "https://github.com/gchq/gchq-data-quality"
 
 [project.optional-dependencies]
-pyspark = ["pyspark>=3.5", "pyarrow>=23.0.0"]
+pyspark = ["pyspark>=3.5.8", "pyarrow>=23.0.0"]
 
 elasticsearch = ["elasticsearch>=8.17"]
 

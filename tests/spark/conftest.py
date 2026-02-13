@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
+import pyspark.sql.functions as F  # noqa: N812
 import pytest
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql.types import (
@@ -10,6 +11,7 @@ from pyspark.sql.types import (
     BooleanType,
     DateType,
     DoubleType,
+    FloatType,
     IntegerType,
     StringType,
     StructField,
@@ -101,6 +103,53 @@ def inferred_schema_from_non_null(pdf: pd.DataFrame) -> StructType:
     return StructType(fields)
 
 
+def _replace_nan_with_null_in_spark(df: DataFrame) -> DataFrame:
+    """
+    Replace all NaN values with NULL in a Spark DataFrame.
+
+    Spark treats NaN and NULL as distinct values. This helper normalises
+    floating-point NaNs (FloatType / DoubleType) to SQL NULL so that
+    downstream logic relying on isNull() behaves consistently.
+
+    This does NOT fix the issue of Pandas 3.0.0 new string dtype NaN values going to NULL,
+    this is dealt with separately with the _replace_pandas_string_dtype_with_object function
+
+    Needed as we create Spark dataframes automatically from pandas dataframes
+    (via dictionaries) in our test setup, and we compare Spark values (could be NaN / NULL) with those
+    parsed from dictionaries (always None - equivalent to NULL)
+
+    Non-floating columns are left unchanged.
+    """
+
+    return df.select(
+        *[
+            F.when(F.isnan(F.col(f.name)), F.lit(None))
+            .otherwise(F.col(f.name))
+            .alias(f.name)
+            if isinstance(f.dataType, (FloatType | DoubleType))
+            else F.col(f.name)
+            for f in df.schema.fields
+        ]
+    )
+
+
+def _replace_pandas_string_dtype_with_object(pdf: pd.DataFrame) -> pd.DataFrame:
+    """In Pandas 3.0, columns of string dtype with empty values go to NaN, which Spark
+    interrpets as the literal string 'nan', which means our unit tests counting NULL values
+    do not count correctly. We can revert away from string dtype to object to solve this.
+
+    We check for string dtype and replace with object dtype
+
+    It is expected this won't impact actual use of the code operationally as creating a spark dataframe
+    from a Pandas dataframe is rather unusual, and so the strange NaN > "nan" artifact is unlikely to occur"""
+
+    for col in pdf.columns:
+        if pdf[col].dtype == "str":
+            pdf[col] = pdf[col].astype(object)
+
+    return pdf
+
+
 def helper_create_spark_dataframe(
     spark: SparkSession,
     pdf: pd.DataFrame,
@@ -124,7 +173,8 @@ def helper_create_spark_dataframe(
 
     spark.conf.set("spark.sql.session.timeZone", "UTC")
     # Replace all NaN/NA values in the DataFrame with None (compatible with Spark)
-    pdf = pdf.where(pd.notnull(pdf), None)
+    pdf = _replace_pandas_string_dtype_with_object(pdf)
+    pdf = pdf.where(pd.notnull(pdf), other=None)  # type: ignore , other can be None
     pdf = pdf.replace(
         float("nan"), None
     )  # it seems NaN values are not captured within isnull() this moves everything to NULL
@@ -139,11 +189,13 @@ def helper_create_spark_dataframe(
     for col in pdf.columns:
         if pdf[col].isnull().all():
             pdf[col] = pdf[col].astype("object")
-    if schema:
-        return spark.createDataFrame(pdf, schema=schema)
-    else:
+
+    if not schema:
         schema = inferred_schema_from_non_null(pdf)
-        return spark.createDataFrame(pdf, schema=schema)
+
+    spark_df = spark.createDataFrame(pdf, schema=schema)
+    spark_df = _replace_nan_with_null_in_spark(spark_df)
+    return spark_df
 
 
 def process_test_data_inputs_for_spark(input_dict: dict, spark: SparkSession) -> dict:

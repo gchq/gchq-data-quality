@@ -1,4 +1,5 @@
 # (c) Crown Copyright GCHQ \n
+import pandas as pd
 import pytest
 
 from gchq_data_quality.rules.consistency import ConsistencyRule
@@ -20,8 +21,13 @@ def test_consistency(consistency_case: dict) -> None:
     THEN
     We will check that result.pass_rate == 1.0 (expected['pass_rate'])
     """
+    print("DEBUG consistency case dict: ", consistency_case)
+    print("pandas version", pd.__version__)
     inputs, df = process_test_data_inputs_for_pandas(consistency_case)
+    print("dataframe, ", df)
     result = ConsistencyRule(**inputs["inputs"]).evaluate(df)
+    print("DEBUG result", result.model_dump())
+    print("DEBUG expected results", inputs["expected"])
     assert_dq_result_matches_expected(result, inputs["expected"])
 
 
