@@ -131,11 +131,8 @@ def validate_round_trip(
     assert_configs_equal(config, config_from_yaml)
     assert_config_can_save_to_yaml(config_from_yaml, tmp_path)
 
-    print("CONFIG FROM YAML", config_from_yaml.model_dump())
-    print("df ", df)
     # Check DQ metrics are the same
     report3 = config_from_yaml.execute(df)
-    print("REPORT3", report3.model_dump())
     for dq_result3, exp in zip(report3.results, expected, strict=False):
         assert_dq_result_matches_expected(dq_result3, exp)
     validate_report_to_dataframe(report3)
