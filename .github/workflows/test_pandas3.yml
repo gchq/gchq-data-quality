@@ -36,7 +36,7 @@ jobs:
 
       # Step 3a: Override pandas 3
       - name: Install Pandas >=3.0.1, <4 for testing
-        run: uv add pandas>=3.0.1,<4
+        run: uv add "pandas>=3.0.1,<4"
 
       # Step 4: Run tests and capture coverage > generates .coverage
       - name: Run tests with pandas 3

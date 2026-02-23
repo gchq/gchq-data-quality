@@ -548,7 +548,7 @@ test = [
 requires-dist = [
     { name = "elasticsearch", marker = "extra == 'elasticsearch'", specifier = ">=8.17" },
     { name = "numpy", specifier = ">=2.4.1" },
-    { name = "pandas", specifier = "==3.0.0" },
+    { name = "pandas", specifier = ">=3,<4" },
     { name = "pyarrow", marker = "extra == 'pyspark'", specifier = ">=23.0.0" },
     { name = "pydantic", specifier = ">=2.9" },
     { name = "pyspark", marker = "extra == 'pyspark'", specifier = ">=3.5.8" },
