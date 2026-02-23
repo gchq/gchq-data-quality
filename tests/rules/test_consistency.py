@@ -20,6 +20,7 @@ def test_consistency(consistency_case: dict) -> None:
     THEN
     We will check that result.pass_rate == 1.0 (expected['pass_rate'])
     """
+
     inputs, df = process_test_data_inputs_for_pandas(consistency_case)
     result = ConsistencyRule(**inputs["inputs"]).evaluate(df)
     assert_dq_result_matches_expected(result, inputs["expected"])

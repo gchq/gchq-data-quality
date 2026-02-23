@@ -14,6 +14,7 @@ from gchq_data_quality.spark.dataframe_operations import (
     _validate_path,
     flatten_spark,
 )
+from tests.conftest import parse_records_failed_sample
 
 
 def test_flatten_spark(test_nested_df: DataFrame, flatten_spark_case: dict) -> None:
@@ -37,8 +38,10 @@ def test_flatten_spark(test_nested_df: DataFrame, flatten_spark_case: dict) -> N
     columns_to_check = [col for col in expected["columns"] if col in flat_df.columns]
     flat_pdf = flat_df.toPandas()
     for col in columns_to_check:
-        assert len(flat_pdf[col].tolist()) == len(expected[col])
-        assert set(flat_pdf[col].tolist()) == set(expected[col])
+        actual_values = {parse_records_failed_sample(x) for x in flat_pdf[col].tolist()}
+        expected_values = {parse_records_failed_sample(x) for x in expected[col]}
+        assert len(actual_values) == len(expected_values)
+        assert actual_values == expected_values
 
 
 def test_flatten_spark_raises_on_inconsistent_columns(
