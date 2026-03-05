@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "gchq-data-quality"
-version = "1.1.0"
+version = "1.1.1"
 description = "Tools for data quality measurement in Pandas and Spark"
 requires-python = ">=3.11"
 keywords = ["data quality"]
@@ -22,7 +22,7 @@ classifiers = [
 
 dependencies = [
     "numpy>=2.4.1",
-    "pandas>=3,<4",
+    "pandas>=2.2.3,<4",
     "pydantic>=2.9",
     "pyyaml>=6.0.3",
 ]
@@ -42,10 +42,11 @@ Respository = "https://github.com/gchq/gchq-data-quality"
 [project.optional-dependencies]
 pyspark = ["pyspark>=3.5.8", "pyarrow>=23.0.0"]
 
-elasticsearch = ["elasticsearch>=8.17"]
+elasticsearch = ["elasticsearch>=8.17,<10"]
 
 [dependency-groups]
 dev = [
+    "elasticsearch>=9,<10", # we dev in elasticsearch v9 to match the local docker container in scripts/start-elasticsearch.sh
     "ruff>=0.9, <1",
     "pre-commit>=3.0",
     "nbconvert>=7.17.0,<8",

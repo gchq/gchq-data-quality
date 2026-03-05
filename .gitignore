@@ -42,3 +42,6 @@ site/
 .continue/config.yaml
 tutorials/resources/you_first_data_quality_report.csv
 scripts/test_null_behaviour.py
+
+dev_notebooks/
+.continue/
