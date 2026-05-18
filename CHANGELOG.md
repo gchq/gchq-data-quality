@@ -26,6 +26,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 -
 
+## [1.1.0] - 2026-02-23
+
+### Changed
+- Extended pandas version support to include pandas 3.0. This required updates to the test suite but does not change runtime behaviour.
+
 
 ## [1.0.0]
 
@@ -63,7 +68,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [//]: # (### Deprecated)
 [//]: # (This is where existing but deprecated elements should be noted.)
 
+[1.1.0]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.1.0
+[1.0.0]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.0.0
+
 [beartype]: https://pypi.org/project/beartype/
 [pre-commit]: https://pre-commit.com/
 
-[1.0.0]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.0.0
+

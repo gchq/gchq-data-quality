@@ -70,6 +70,8 @@ def process_test_data_inputs_for_pandas(input_dict: dict) -> tuple[dict, pd.Data
 
     if df_data is None:
         df = pd.DataFrame()
+    elif isinstance(df_data, pd.DataFrame):
+        df = df_data
     else:
         df = pd.DataFrame.from_records(df_data)
 
@@ -83,7 +85,7 @@ def get_kwargs_for_dq_config(input_dict: dict) -> dict:
     return {k: v for k, v in input_dict.items() if k in DataQualityConfig.model_fields}
 
 
-def try_parse_records_failed_sample(
+def parse_records_failed_sample(
     val: str | datetime | None,
 ) -> datetime | None | str:
     """Spark returns datetime failed recordes as str, but our unit tests validate against a datetime"""
@@ -92,6 +94,10 @@ def try_parse_records_failed_sample(
             return datetime.fromisoformat(val)
         except ValueError:
             return val
+    if pd.isna(val):
+        # We make sure any pd.NA / pd.NaT / None resolves to None for comparison
+        # As pandas varies this, but our expected data from YAML is always None.
+        return None
     return val
 
 
@@ -125,11 +131,11 @@ def assert_dq_result_matches_expected(
             # get sets of values in each record (order agnostic) - we need to allow for the fact that when in Spark
             # we get values after JSON serialisation, so things like datetimes will be strings
             exp_set = {
-                frozenset((k, try_parse_records_failed_sample(v)) for k, v in d.items())
+                frozenset((k, parse_records_failed_sample(v)) for k, v in d.items())
                 for d in exp_val
             }
             res_set = {
-                frozenset((k, try_parse_records_failed_sample(v)) for k, v in d.items())
+                frozenset((k, parse_records_failed_sample(v)) for k, v in d.items())
                 for d in result_value
             }
 
@@ -174,7 +180,8 @@ def load_yaml_test_data(yaml_path: Path) -> list:
         if "df" in case["inputs"]:
             df_data = case["inputs"]["df"]
             if isinstance(df_data, dict):  # column name → values
-                case["inputs"]["df"] = pd.DataFrame(df_data)
+                df_input = pd.DataFrame(df_data)
+                case["inputs"]["df"] = df_input
             else:
                 raise ValueError(
                     f"'df' in case #{i} of {yaml_path.name} must be a dict of columns → values."

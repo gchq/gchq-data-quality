@@ -26,7 +26,9 @@ def test_replace_na_values_spark(
         replace_na_values_case["inputs"], spark
     )
     df = test_inputs.pop("df")
+
     df_result = replace_na_values_spark(spark_df=df, **test_inputs)
+
     for col in replace_na_values_case["expected"]:
         assert (
             df_result.filter(F.col(col).isNull()).count()
