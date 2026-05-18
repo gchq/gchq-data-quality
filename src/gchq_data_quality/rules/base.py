@@ -98,8 +98,8 @@ class BaseRule(DataQualityBaseModel, ABC):
         default="any",
         description="Controls which rows are skipped that contain null values. If 'all' then it will only skip if all columns used are NULL."
         "most rules this will just apply to the 'field' column, but some like TimelinessRelativeRule can use more than one column."
-        "If values aren't skipped, then NULL values are passed into the calculations so be cautious as to what you allow through"
-        " as 3 > pd.NA = <NA> ",
+        "If values aren't skipped, then NULL values are passed into the calculations so be cautious as to what you allow through."
+        " Any logical expression compared with NA returns NA.",
     )
     data_quality_dimension: DataQualityDimension = Field(
         ..., description="The Dama dimension for each rule"
