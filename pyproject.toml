@@ -21,6 +21,7 @@ classifiers = [
 ]
 
 dependencies = [
+    
     "numpy>=2.4.1",
     "pandas>=2.2.3,<4",
     "pydantic>=2.9",
@@ -56,7 +57,7 @@ dev = [
 ]
 
 test = ["pytest>=7.0", "coverage>=7.9.2,<8"]
-docs = ["mkdocs", "mkdocs-material", "mkdocstrings[python]"]
+docs = ["mkdocs", "mkdocs-material>=9.7.6,<10", "mkdocstrings[python]"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
