@@ -4496,7 +4496,7 @@ implemented via subclass overrides.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="skip_if_null = Field(default='any', description="Controls which rows are skipped that contain null values. If 'all' then it will only skip if all columns used are NULL.most rules this will just apply to the 'field' column, but some like TimelinessRelativeRule can use more than one column.If values aren't skipped, then NULL values are passed into the calculations so be cautious as to what you allow through as 3 > pd.NA = <NA> ")
+            <td><code><a class="autorefs autorefs-internal" title="skip_if_null = Field(default='any', description="Controls which rows are skipped that contain null values. If 'all' then it will only skip if all columns used are NULL.most rules this will just apply to the 'field' column, but some like TimelinessRelativeRule can use more than one column.If values aren't skipped, then NULL values are passed into the calculations so be cautious as to what you allow through. Any logical expression compared with NA returns NA.")
 
   
       class-attribute
@@ -4726,7 +4726,7 @@ actual configuration or evaluation.</p>
 
 
 <h4 id="gchq_data_quality.rules.base.BaseRule.skip_if_null" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">skip_if_null</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Controls which rows are skipped that contain null values. If &#39;all&#39; then it will only skip if all columns used are NULL.most rules this will just apply to the &#39;field&#39; column, but some like TimelinessRelativeRule can use more than one column.If values aren&#39;t skipped, then NULL values are passed into the calculations so be cautious as to what you allow through as 3 &gt; pd.NA = &lt;NA&gt; &quot;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">skip_if_null</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Controls which rows are skipped that contain null values. If &#39;all&#39; then it will only skip if all columns used are NULL.most rules this will just apply to the &#39;field&#39; column, but some like TimelinessRelativeRule can use more than one column.If values aren&#39;t skipped, then NULL values are passed into the calculations so be cautious as to what you allow through. Any logical expression compared with NA returns NA.&quot;</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
