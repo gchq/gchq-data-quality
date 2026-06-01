@@ -19,8 +19,6 @@ from warnings import warn
 
 import pandas as pd
 
-from gchq_data_quality.spark.utils.rules_utils import get_spark_safe_expression
-
 # Do not force users to have access to pyspark unless required
 
 try:
@@ -483,6 +481,7 @@ class BaseRule(DataQualityBaseModel, ABC):
         This is overridden for each subrule type if more than self.field is used"""
         from gchq_data_quality.spark.utils.rules_utils import (
             get_spark_safe_column_name,
+            get_spark_safe_expression,
         )
 
         rule_copy = self.model_copy()
