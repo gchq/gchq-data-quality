@@ -166,7 +166,6 @@ class BaseRule(DataQualityBaseModel, ABC):
         ensure_columns_exist_pandas(df, columns_used)
         df = self._copy_and_subset_dataframe(df, columns_used)
         # df now only contains the subset of columns required (by default, just df[field] and any in self.filter) and has been copied
-        df = self._filter_dataframe(df)
 
         df = self._handle_dataframe_coercion(df)
         df = self._handle_na_values_pandas(df, columns_used, self.na_values)
