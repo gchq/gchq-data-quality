@@ -61,7 +61,7 @@
     df:
       id: [1,2,0, null]
     field: id
-    na_values: [0.0]
+    na_values: [0]
   expected:
     pass_rate: 1.0
     records_evaluated: 2

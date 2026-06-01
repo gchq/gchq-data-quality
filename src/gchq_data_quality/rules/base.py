@@ -83,6 +83,9 @@ class BaseRule(DataQualityBaseModel, ABC):
     Note:
         This base class should not be instantiated directly. Use a rule subclass for
         actual configuration or evaluation.
+        The order of operations is dataframe type coercian > replace na_values > filter dataframe.
+        There are edge cases where this order creates different results, e.g. if -1 is NULL,
+            then -1 values will become NULL before any filtering happens
 
     Returns:
         DataQualityResult: Contains metrics of evaluation such as pass rate,
@@ -191,11 +194,10 @@ class BaseRule(DataQualityBaseModel, ABC):
         ensure_columns_exist_pandas(df, columns_used)
         df = self._copy_and_subset_dataframe(df, columns_used)
         # df now only contains the subset of columns required (by default, just df[field] and any in self.filter) and has been copied
-        df = self._filter_dataframe(df)
 
         df = self._handle_dataframe_coercion(df)
         df = self._handle_na_values_pandas(df, columns_used, self.na_values)
-
+        df = self._filter_dataframe(df)
         # the defining logic in every rule is what records are passed and which are evaluated
         records_evaluated = self._get_records_evaluated_pandas(df)
         records_passing = self._get_records_passing_pandas(df)
