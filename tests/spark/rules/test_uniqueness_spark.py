@@ -40,9 +40,7 @@ def test_uniqueness_nested_spark_na_values_on_field_and_filter_cols(
 ) -> None:
     data = [
         {"customers": {"name": "Alice", "age": 20}},
-        {
-            "customers": {"name": "MISSING_NAME", "age": 30}
-        },  # NA replacement in field col
+        {"customers": {"name": "MISSING_NAME", "age": 30}},
         {"customers": {"name": "Bob", "age": -1}},  # -1 = MISSING_AGE > becomes NULL
         {"customers": {"name": "Cara", "age": 40}},
     ]
