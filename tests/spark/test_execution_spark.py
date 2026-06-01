@@ -19,6 +19,28 @@ def test_execute_data_quality_config_spark(
     assert len(dq_results.results) == len(config_for_test_df.rules)
 
 
+def test_filter_in_rule_spark(test_nested_df: DataFrame) -> None:
+    rule = ValidityNumericalRangeRule(
+        field="customers.age", filter="`customers.age` < 100", min_value=0, max_value=70
+    )
+    # we are now prefiltering, the age 105 should not be returned. all should pass (3 out of 3)
+    dq_result = rule.evaluate(test_nested_df)
+    assert dq_result.records_evaluated == 3
+    assert dq_result.pass_rate == 1.0
+
+    # try filter on columns not being assessed
+    rule2 = ValidityNumericalRangeRule(
+        field="customers.age",
+        filter="`customers.name` != 'Mr No Pets'",
+        min_value=0,
+        max_value=70,
+    )
+    # Mr No Pets is 102 years old so result should be the same
+    dq_result2 = rule2.evaluate(test_nested_df)
+    assert dq_result2.records_evaluated == 3
+    assert dq_result2.pass_rate == 1.0
+
+
 def test_execute_data_quality_config_spark_nested(
     test_nested_df: DataFrame, config_for_nested_data: DataQualityConfig
 ) -> None:

@@ -19,7 +19,7 @@ from warnings import warn
 
 import pandas as pd
 
-from gchq_data_quality.errors import DQFunctionError
+from gchq_data_quality.spark.utils.rules_utils import get_spark_safe_expression
 
 # Do not force users to have access to pyspark unless required
 
@@ -235,10 +235,6 @@ class BaseRule(DataQualityBaseModel, ABC):
         columns_used = [self.field]
         if self.filter:
             filter_columns = extract_columns_from_expression(self.filter)
-            if not filter_columns:
-                raise DQFunctionError(
-                    f"You have a filter expression that is not returning any columns. {self.filter=}. Are you using backticks around your column names? `colA`==3?"
-                )
             columns_used.extend(filter_columns)
         return list(set(columns_used))
 
@@ -311,13 +307,15 @@ class BaseRule(DataQualityBaseModel, ABC):
     def _coerce_dataframe_type(self, df: pd.DataFrame) -> pd.DataFrame:
         """Some rules require values to be coerced to a different data type.
         Timeliness > UTC datetime,
-        ValiditiyNumericalRange > numeric
+        ValidityNumericalRange > numeric
 
         This function handles coercing to the relevant data type
         for the rule. Override if needed, the default behaviour is no coercion
 
+        The columns unique to self.filter expression are not coerced by default.
+
         Returns:
-            pd.DataFrame: If no coercion, the original df. If coerced, a modifed dataframe
+            pd.DataFrame: If no coercion, the original df. If coerced, a modified dataframe
         """
         return df
 
@@ -487,6 +485,14 @@ class BaseRule(DataQualityBaseModel, ABC):
 
         rule_copy = self.model_copy()
         rule_copy.field = get_spark_safe_column_name(self.field)
+        if self.filter:
+            spark_safe_filter = get_spark_safe_expression(self.filter)
+            if isinstance(spark_safe_filter, str):
+                rule_copy.filter = spark_safe_filter
+            else:
+                raise ValueError(
+                    f"Should not happen, but your filter expression is not returning as a string: f{spark_safe_filter=}"
+                )
         return rule_copy
 
     def _evaluate_in_pandas_output_dataframe(
