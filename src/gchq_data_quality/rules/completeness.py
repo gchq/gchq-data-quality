@@ -18,6 +18,7 @@ class CompletenessRule(BaseRule):
     Attributes:
         field (str): The column name to assess.
         na_values (str | list[Any] | None): Additional indicators to treat as missing.
+        filter (str | None): Optional pandas eval boolean expression used to filter rows before evaluation. Use backticks around column names.
         rule_id (str | None): Optional identifier for the rule.
         rule_description (str | None): Optional description of the rule.
 
@@ -33,6 +34,12 @@ class CompletenessRule(BaseRule):
         >>> print(result.pass_rate)
 
         >>> rule = CompletenessRule(field="column_name", na_values="missing")
+        >>> result = rule.evaluate(df)
+
+        >>> rule = CompletenessRule(
+        ...     field="column_name",
+        ...     filter="`country` == 'UK'"
+        ... )
         >>> result = rule.evaluate(df)
         ```
 
