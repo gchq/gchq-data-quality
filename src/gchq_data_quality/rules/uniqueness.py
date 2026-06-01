@@ -128,14 +128,15 @@ class UniquenessRule(BaseRule):
         flattened_df = flatten_spark(spark_df, columns_used)
 
         spark_safe_rule = self._get_spark_safe_rule()
-        filtered_df = spark_safe_rule._filter_spark_df(flattened_df)
 
+        columns_for_na = spark_safe_rule._get_columns_used_pandas()
         if self.na_values is not None:
-            filtered_df = replace_na_values_spark(
-                filtered_df,
-                columns=[spark_safe_rule.field],
+            flattened_df = replace_na_values_spark(
+                flattened_df,
+                columns=columns_for_na,
                 na_values=spark_safe_rule.na_values,  # type: ignore
             )
+        filtered_df = spark_safe_rule._filter_spark_df(flattened_df)
 
         records_evaluated_df = filtered_df.filter(
             F.col(spark_safe_rule.field).isNotNull()
