@@ -163,12 +163,10 @@ class ConsistencyRule(BaseRule):
         """We override the default behaviour as we additionally need to make
         the expression spark_safe - in case columns refer to nested data."""
         from gchq_data_quality.spark.utils.rules_utils import (
-            get_spark_safe_column_name,
             get_spark_safe_expression,
         )
 
-        rule_copy = self.model_copy()
-        rule_copy.field = get_spark_safe_column_name(self.field)
+        rule_copy = super()._get_spark_safe_rule()
         rule_copy.expression = get_spark_safe_expression(self.expression)
 
         return rule_copy
