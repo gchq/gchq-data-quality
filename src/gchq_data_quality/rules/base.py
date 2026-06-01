@@ -19,6 +19,8 @@ from warnings import warn
 
 import pandas as pd
 
+from gchq_data_quality.errors import DQFunctionError
+
 # Do not force users to have access to pyspark unless required
 
 try:
