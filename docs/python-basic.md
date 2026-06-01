@@ -299,7 +299,17 @@ print(f"Numerical range validity pass rate: {validity_numerical_range_result.pas
 FINAL_REPORT.results.append(validity_numerical_range_result)
 ```
 
+### Using the filter
 
+Every rule will take a `filter` expression, using the same language as the pandas eval syntax you use in the consistency rule.
+Note that filtering happens *after* na_values are replaced with NULL.
+
+```python
+filtered_accuracy = AccuracyRule(
+    field="category", valid_values=["A", "B", "C", "D"], filter="`score` > 0"
+)
+```
+The example above will filter the dataframe where score > 0, then apply the rule. This will reduce the `records_evaluated` from 5 to 4.
 
 ## 3. Combine & Export Results
 
