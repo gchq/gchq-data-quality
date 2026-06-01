@@ -32,6 +32,7 @@ class UniquenessRule(BaseRule):
     Attributes:
         field (str): Column to evaluate for uniqueness.
         na_values (Any | list[Any] | None): Values to treat as missing.
+        filter (str | None): Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.
         data_quality_dimension (DamaFramework): Data quality dimension (Uniqueness).
         rule_id (str | None): Optional rule identifier.
         rule_description (str | None): Optional description for this rule.
@@ -59,6 +60,12 @@ class UniquenessRule(BaseRule):
         >>> result = rule.evaluate(df)
         >>> print(result.pass_rate)
         0.75
+
+        >>> rule = UniquenessRule(
+        ...     field='id',
+        ...     filter="`region` == 'UK'"
+        ... )
+        >>> result = rule.evaluate(df)
         ```
 
     Note:

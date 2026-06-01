@@ -24,6 +24,7 @@ class ConsistencyRule(BaseRule):
         expression (str | dict[str, str]): A boolean expression, or a conditional {'if', 'then'} dictionary (with backticks for column names).
         skip_if_null (Literal['all', 'any', 'never']): Controls row skipping for null values in relevant columns.
         na_values (str | list[Any] | None): Additional values considered as missing.
+        filter (str | None): Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.
         data_quality_dimension (DamaFramework): Associated data quality dimension - you may want to override it in this rule.
         rule_id (str | None): Optional identifier for the rule.
         rule_description (str | None): Optional description of the rule.
@@ -76,6 +77,14 @@ class ConsistencyRule(BaseRule):
         >>> rule = ConsistencyRule(
         ...     field="predicted",
         ...     expression="abs(`actual` - `predicted`) < 10"
+        ... )
+        >>> result = rule.evaluate(df)
+
+        # Evaluate only a filtered subset of rows
+        >>> rule = ConsistencyRule(
+        ...     field="score",
+        ...     expression="`score` >= 50",
+        ...     filter="`region` == 'UK'"
         ... )
         >>> result = rule.evaluate(df)
         ```
