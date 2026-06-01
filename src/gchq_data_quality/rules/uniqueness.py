@@ -185,7 +185,7 @@ class UniquenessRule(BaseRule):
 
         return dq_result
 
-    def _filter_spark_df(self, spark_df: SparkDataFrame) -> SparkDataFrame:
+    def _filter_spark_df(self, spark_df: "SparkDataFrame") -> "SparkDataFrame":
         """Apply self.filter (pandas eval syntax) to a Spark DataFrame via mapInPandas.
 
         Assumes spark_df already has the relevant columns in spark-safe/flattened form
