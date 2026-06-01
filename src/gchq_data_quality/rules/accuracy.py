@@ -168,4 +168,4 @@ class ValuesMatchList(AccuracyBaseRule):
         See DataQualityResult documentation for full details.
     """
 
-    function: Literal["values_match_list"] = "values_match_list"  # type: ignore[override]
+    function: Literal["values_match_list"] = "values_match_list"

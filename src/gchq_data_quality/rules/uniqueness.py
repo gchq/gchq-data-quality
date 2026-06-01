@@ -304,4 +304,4 @@ class ValuesAreUnique(UniquenessBaseRule):
         See DataQualityResult documentation for further attribute details.
     """
 
-    function: Literal["values_are_unique"] = "values_are_unique"  # type: ignore[override]
+    function: Literal["values_are_unique"] = "values_are_unique"
