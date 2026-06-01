@@ -19,6 +19,8 @@ from warnings import warn
 
 import pandas as pd
 
+from gchq_data_quality.errors import DQFunctionError
+
 # Do not force users to have access to pyspark unless required
 
 try:
@@ -42,6 +44,8 @@ from gchq_data_quality.results.models import DataQualityResult
 from gchq_data_quality.rules.utils.rules_utils import (
     calculate_pass_rate,
     ensure_columns_exist_pandas,
+    evaluate_bool_expression,
+    extract_columns_from_expression,
     get_records_failed_ids,
     replace_na_values_pandas,
 )
@@ -58,6 +62,7 @@ class BaseRule(DataQualityBaseModel, ABC):
 
     Attributes:
         field (str): Column to check for rule evaluation.
+        filter (str | None): Boolean filter in pandas eval syntax to apply prior to rule evaluation. Defaults to None.
         rule_id (str | None): Optional identifier for this rule.
         rule_description (str | None): Optional summary or explanation of the rule.
         na_values (str | int | float | list[Any] | None): Values to treat as NULL.
@@ -79,6 +84,10 @@ class BaseRule(DataQualityBaseModel, ABC):
     """
 
     field: str = Field(..., description="Column to check")
+    filter: str | None = Field(
+        default=None,
+        description="The boolean filter to apply, using pandas eval syntax, before evaluating each rule.",
+    )
     rule_id: str | None = Field(default=None, description="Identifier for this rule")
     rule_description: str | None = Field(
         default=None, description="Description of the rule"
@@ -155,8 +164,9 @@ class BaseRule(DataQualityBaseModel, ABC):
         columns_used = self._get_columns_used_pandas()
         ensure_columns_exist_pandas(df, columns_used)
         df = self._copy_and_subset_dataframe(df, columns_used)
+        # df now only contains the subset of columns required (by default, just df[field] and any in self.filter) and has been copied
+        df = self._filter_dataframe(df)
 
-        # df now only contains the subset of columns required (by default, just df[field]) and has been copied
         df = self._handle_dataframe_coercion(df)
         df = self._handle_na_values_pandas(df, columns_used, self.na_values)
 
@@ -219,9 +229,18 @@ class BaseRule(DataQualityBaseModel, ABC):
         # although pydantic will not allow any other option so this ValueError should never raise
 
     def _get_columns_used_pandas(self) -> list[str]:
-        """The columns used in evaluting the rule, defaults to just the field, but other rules
+        """The columns used in evaluting the rule, defaults to just the field and filter expression, but other rules
         such as consistency may use more than one column and will override this."""
-        return [self.field]
+
+        columns_used = [self.field]
+        if self.filter:
+            filter_columns = extract_columns_from_expression(self.filter)
+            if not filter_columns:
+                raise DQFunctionError(
+                    f"You have a filter expression that is not returning any columns. {self.filter=}. Are you using backticks around your column names? `colA`==3?"
+                )
+            columns_used.extend(filter_columns)
+        return list(set(columns_used))
 
     def _copy_and_subset_dataframe(
         self, df: pd.DataFrame, columns_used: list[str]
@@ -233,6 +252,22 @@ class BaseRule(DataQualityBaseModel, ABC):
 
         sorted_cols = sorted(columns_used, key=lambda x: list(df.columns).index(x))
         return df[sorted_cols].copy()
+
+    def _filter_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Filters the dataframe after it has been copied subset via _copy_and_subset_dataframe.
+        uses self.filter as a boolean evaluation to return a filtered subset.
+
+        Args:
+            df (pd.DataFrame): The dataframe to filter (already copied from the original)
+
+        Returns:
+            pd.DataFrame: The filtered dataframe
+        """
+        if not self.filter:
+            return df
+        filter_mask = evaluate_bool_expression(df, self.filter)
+
+        return df.loc[filter_mask]
 
     def _handle_dataframe_coercion(self, df: pd.DataFrame) -> pd.DataFrame:
         """Coerce the dataframe to a new datatype (if required).

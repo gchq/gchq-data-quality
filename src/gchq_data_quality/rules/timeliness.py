@@ -248,7 +248,7 @@ class TimelinessRelativeRule(TimelinessBaseRule):
 
     def _get_columns_used_pandas(self) -> list:
         """A list of columns used in the rule - we include the reference_column if it is set"""
-        columns_used = [self.field]
+        columns_used = super()._get_columns_used_pandas()
         if self.reference_column:
             columns_used.append(self.reference_column)
         return columns_used
