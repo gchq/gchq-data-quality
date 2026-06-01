@@ -113,6 +113,8 @@ class ConsistencyRule(BaseRule):
         """Get the list of columns used in any part of the expression and the field.
         The field *should* be present in at least one of the expressions, but there
         may be unexpected edge cases where it isn't, so we'll explicitly add it to be sure."""
+
+        columns_used = super()._get_columns_used_pandas()
         if isinstance(self.expression, str):
             cols_in_expression = extract_columns_from_expression(self.expression)
         else:  # dictionary with if, then keys.
@@ -127,7 +129,7 @@ class ConsistencyRule(BaseRule):
                 set(columns_in_if_statement + columns_in_then_statement)
             )
 
-        return list(set(cols_in_expression + [self.field]))
+        return list(set(cols_in_expression + columns_used))
 
     def _get_records_evaluated_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
         """we evaluate records that we do not skip (based on NULL logic across all relevant columns).
