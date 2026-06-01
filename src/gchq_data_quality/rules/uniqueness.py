@@ -119,21 +119,33 @@ class UniquenessRule(BaseRule):
         """
         import pyspark.sql.functions as F  # noqa: N812
 
+        from gchq_data_quality.spark.dataframe_operations import flatten_spark
         from gchq_data_quality.spark.utils.rules_utils import (
             replace_na_values_spark,
         )
 
-        if self.na_values is not None:
-            spark_df = replace_na_values_spark(
-                spark_df,
-                columns=[self.field],
-                na_values=self.na_values,
-            )
+        columns_used = self._get_columns_used_pandas()
+        flattened_df = flatten_spark(spark_df, columns_used)
 
-        records_evaluated_df = spark_df.filter(F.col(self.field).isNotNull())
+        spark_safe_rule = self._get_spark_safe_rule()
+
+        columns_for_na = spark_safe_rule._get_columns_used_pandas()
+        if self.na_values is not None:
+            flattened_df = replace_na_values_spark(
+                flattened_df,
+                columns=columns_for_na,
+                na_values=spark_safe_rule.na_values,  # type: ignore
+            )
+        filtered_df = spark_safe_rule._filter_spark_df(flattened_df)
+
+        records_evaluated_df = filtered_df.filter(
+            F.col(spark_safe_rule.field).isNotNull()
+        )
         records_evaluated = records_evaluated_df.count()
 
-        records_passing = records_evaluated_df.select(self.field).distinct().count()
+        records_passing = (
+            records_evaluated_df.select(spark_safe_rule.field).distinct().count()
+        )
         pass_rate = calculate_pass_rate(
             records_passing=records_passing, records_evaluated=records_evaluated
         )
@@ -165,3 +177,26 @@ class UniquenessRule(BaseRule):
             dq_result._set_records_failed_sample(records_as_dict)
 
         return dq_result
+
+    def _filter_spark_df(self, spark_df: SparkDataFrame) -> SparkDataFrame:
+        """Apply self.filter (pandas eval syntax) to a Spark DataFrame via mapInPandas.
+
+        Assumes spark_df already has the relevant columns in spark-safe/flattened form
+        if needed (i.e. call this on the spark-safe rule + flattened df path).
+        """
+        from collections.abc import Iterator
+
+        from gchq_data_quality.rules.utils.rules_utils import evaluate_bool_expression
+
+        if not self.filter:
+            return spark_df
+
+        output_schema = spark_df.schema
+
+        def pandas_mapper(pdf_iter: Iterator[pd.DataFrame]) -> Iterator[pd.DataFrame]:
+            for pdf in pdf_iter:
+                filter_mask = evaluate_bool_expression(pdf, self.filter)  # type: ignore
+                # nullable boolean mask -> treat NA as False
+                yield pdf.loc[filter_mask.fillna(False)]
+
+        return spark_df.mapInPandas(pandas_mapper, schema=output_schema)

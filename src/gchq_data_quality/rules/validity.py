@@ -84,7 +84,12 @@ class ValidityRegexRule(BaseRule):
 
     def _coerce_dataframe_type(self, df: pd.DataFrame) -> pd.DataFrame:
         """coerce to a string for regex, we need to preserve NULL"""
-        return df.where(df.isnull(), df.astype(str))
+        columns_to_coerce = [self.field]  # Not self.filter
+
+        df[columns_to_coerce] = df[columns_to_coerce].apply(
+            lambda col: col.where(col.isna(), col.astype(str))
+        )
+        return df
 
     def _get_records_passing_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
         """Records pass if they match the regex"""
@@ -170,7 +175,12 @@ class ValidityNumericalRangeRule(BaseRule):
 
     def _coerce_dataframe_type(self, df: pd.DataFrame) -> pd.DataFrame:
         """Coerce to numerical type"""
-        return df.apply(pd.to_numeric, errors="coerce")
+
+        columns_to_coerce = [self.field]  # not self.filter
+        df[columns_to_coerce] = df[columns_to_coerce].apply(
+            pd.to_numeric, errors="coerce"
+        )
+        return df
 
     def _get_records_passing_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
         """records pass if they are between the min and max value"""

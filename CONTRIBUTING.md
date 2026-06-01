@@ -74,7 +74,13 @@ We follow a **GitHub Flow** development approach for `gchq-data-quality`. Here's
   - Use `feature/<feature-name>` for new features or refactoring.
   - Use `fix/<bug-name>` for bug fixes.
 - Ensure changes are limited to related files and meet the following criteria:
-  - Sufficient test coverage (use `pytest` and `coverage` to verify).
+  - Sufficient test coverage (use `pytest` and `coverage` to verify). For example:
+
+      ```shell
+      uv run coverage run -m pytest tests/
+      uv run coverage html
+      open htmlcov/index.html
+      ```
   - Conformity to style guides (`ruff` and `pre-commit hooks`).
   - Add related entries to `CHANGELOG.md`.
 

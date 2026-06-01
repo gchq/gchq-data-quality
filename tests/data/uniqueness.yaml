@@ -17,6 +17,17 @@
     records_evaluated: 4
     records_failed_sample: [{"id": 1}, {"id": 2}]
 
+- description: All duplicates after filter applied
+  inputs:
+    df:
+      id: [1, 1, 2, 2, 3, 4]
+    field: id
+    filter: "`id` < 3"
+  expected:
+    records_evaluated: 4
+    pass_rate: 0.5
+    records_failed_sample: [{"id": 1}, {"id": 2}]
+
 - description: All duplicates with null
   inputs:
     df:
@@ -50,7 +61,7 @@
     df:
       id: [1,2,0, null]
     field: id
-    na_values: [0.0]
+    na_values: [0]
   expected:
     pass_rate: 1.0
     records_evaluated: 2

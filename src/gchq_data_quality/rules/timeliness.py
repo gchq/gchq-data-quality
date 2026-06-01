@@ -27,9 +27,6 @@ class TimelinessBaseRule(BaseRule):
         default=DamaFramework.Timeliness
     )
 
-    def _coerce_dataframe_type(self, df: pd.DataFrame) -> pd.DataFrame:
-        return df.apply(self._to_utc_datetime_series)
-
     def _to_utc_datetime_series(self, series: pd.Series) -> pd.Series:
         """Converts a pandas Series to UTC-aware Timestamps; handles out-of-bounds dates gracefully."""
         try:
@@ -131,6 +128,13 @@ class TimelinessStaticRule(TimelinessBaseRule):
             df, self.field, self.start_date, self.end_date
         )
         return records_passing_mask
+
+    def _coerce_dataframe_type(self, df: pd.DataFrame) -> pd.DataFrame:
+        columns_to_coerce = [self.field]  # do not coerce the self.filter expression
+        df[columns_to_coerce] = df[columns_to_coerce].apply(
+            self._to_utc_datetime_series
+        )
+        return df
 
 
 class TimelinessRelativeRule(TimelinessBaseRule):
@@ -248,7 +252,7 @@ class TimelinessRelativeRule(TimelinessBaseRule):
 
     def _get_columns_used_pandas(self) -> list:
         """A list of columns used in the rule - we include the reference_column if it is set"""
-        columns_used = [self.field]
+        columns_used = super()._get_columns_used_pandas()
         if self.reference_column:
             columns_used.append(self.reference_column)
         return columns_used
@@ -296,12 +300,19 @@ class TimelinessRelativeRule(TimelinessBaseRule):
             get_spark_safe_column_name,
         )
 
-        rule_copy = self.model_copy()
-        rule_copy.field = get_spark_safe_column_name(self.field)
-
+        rule_copy = super()._get_spark_safe_rule()
         if self.reference_column:
             rule_copy.reference_column = get_spark_safe_column_name(
                 self.reference_column
             )
 
         return rule_copy
+
+    def _coerce_dataframe_type(self, df: pd.DataFrame) -> pd.DataFrame:
+        columns_to_coerce = [self.field]  # do not coerce the self.filter expression
+        if self.reference_column:
+            columns_to_coerce.append(self.reference_column)
+        df[columns_to_coerce] = df[columns_to_coerce].apply(
+            self._to_utc_datetime_series
+        )
+        return df
