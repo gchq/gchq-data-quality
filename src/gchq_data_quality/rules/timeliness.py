@@ -53,6 +53,7 @@ class TimelinessStaticRule(TimelinessBaseRule):
         end_date (str | datetime | pd.Timestamp | None): Inclusive upper boundary for valid values.
         dayfirst (bool): If True, parses ALL dates and rule inputs as day/month/year, otherwise month/day/year.
         na_values (str | list[Any] | None): Values treated as missing.
+        filter (str | None): Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.
         data_quality_dimension (DamaFramework): Associated data quality dimension.
             (You may want to override, e.g. perhaps 'Consistency' makes sense for some of these rules)
         rule_id (str | None): Optional rule identifier.
@@ -95,6 +96,14 @@ class TimelinessStaticRule(TimelinessBaseRule):
         ...     field="timestamp",
         ...     start_date=datetime(2023, 6, 1, 0, 0, tzinfo=timezone.utc),
         ...     end_date=datetime(2023, 6, 30, 23, 59, tzinfo=timezone.utc),
+        ... )
+        >>> result = rule.evaluate(df)
+
+        >>> rule = TimelinessStaticRule(
+        ...     field="event_date",
+        ...     start_date="2024-01-01",
+        ...     end_date="2024-01-31",
+        ...     filter="`region` == 'UK'"
         ... )
         >>> result = rule.evaluate(df)
         ```
@@ -155,6 +164,7 @@ class TimelinessRelativeRule(TimelinessBaseRule):
         reference_column (str | None): Per-row column providing reference dates/times.
         dayfirst (bool): If True, parses ALL dates as day/month/year.
         na_values (str | list[Any] | None): Values treated as missing.
+        filter (str | None): Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.
         data_quality_dimension (DamaFramework): Associated data quality dimension.
         rule_id (str | None): Optional rule identifier.
         rule_description (str | None): Optional rule description.
@@ -199,6 +209,15 @@ class TimelinessRelativeRule(TimelinessBaseRule):
         ...     field="sensor_timestamp",
         ...     start_timedelta=timedelta(hours=-12),
         ...     end_timedelta=timedelta(hours=12)
+        ... )
+        >>> result = rule.evaluate(df)
+
+        >>> rule = TimelinessRelativeRule(
+        ...     field="booking_date",
+        ...     start_timedelta="-1d",
+        ...     end_timedelta="5d",
+        ...     reference_column="event_date",
+        ...     filter="`region` == 'UK'"
         ... )
         >>> result = rule.evaluate(df)
         ```

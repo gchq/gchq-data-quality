@@ -20,6 +20,7 @@ class ValidityRegexRule(BaseRule):
         field (str): Column to check for regex validity.
         regex_pattern (str): Regular expression pattern for validation.
         na_values (str | list[Any] | None): Additional values to treat as missing.
+        filter (str | None): Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.
         data_quality_dimension (DamaFramework): Data quality dimension (Validity) by default.
         rule_id (str | None): Optional rule identifier.
         rule_description (str | None): Optional rule description.
@@ -40,6 +41,13 @@ class ValidityRegexRule(BaseRule):
         >>> rule = ValidityRegexRule(
         ...     field="country_code",
         ...     regex_pattern=r'^[A-Z]{2}$'
+        ... )
+        >>> result = rule.evaluate(df)
+
+        >>> rule = ValidityRegexRule(
+        ...     field="email",
+        ...     regex_pattern=r'^[^@]+@[^@]+\.[^@]+$',
+        ...     filter="`region` == 'UK'"
         ... )
         >>> result = rule.evaluate(df)
         ```
@@ -111,6 +119,7 @@ class ValidityNumericalRangeRule(BaseRule):
         min_value (float): Minimum allowed value (inclusive; defaults to -infinity).
         max_value (float): Maximum allowed value (inclusive; defaults to +infinity).
         na_values (str | list[Any] | None): Additional values to treat as missing.
+        filter (str | None): Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.
         data_quality_dimension (DamaFramework): Data quality dimension (Validity).
         rule_id (str | None): Optional rule identifier.
         rule_description (str | None): Optional rule description.
@@ -142,6 +151,14 @@ class ValidityNumericalRangeRule(BaseRule):
         ...     field="score",
         ...     max_value=100,
         ...     na_values=['missing', 'N/A']
+        ... )
+        >>> result = rule.evaluate(df)
+
+        >>> rule = ValidityNumericalRangeRule(
+        ...     field="age",
+        ...     min_value=18,
+        ...     max_value=65,
+        ...     filter="`region` == 'UK'"
         ... )
         >>> result = rule.evaluate(df)
         ```

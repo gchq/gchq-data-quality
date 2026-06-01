@@ -20,6 +20,7 @@ class AccuracyRule(BaseRule):
         valid_values (list[Any]): The set of acceptable values for the field.
         inverse (bool): If True, values in `valid_values` are considered invalid (exclusion list).
         na_values (str | list[Any] | None): Additional indicators to treat as missing values.
+        filter (str | None): Optional pandas eval boolean expression used to filter rows before evaluation. Use backticks around column names.
         rule_id (str | None): Optional identifier for the rule.
         rule_description (str | None): Optional description of the rule.
 
@@ -46,6 +47,13 @@ class AccuracyRule(BaseRule):
         ...     field="status",
         ...     valid_values=["expired", "deleted"],
         ...     inverse=True # value must NOT be expired or deleted
+        ... )
+        >>> result = rule.evaluate(df)
+
+        >>> rule = AccuracyRule(
+        ...     field="category",
+        ...     valid_values=["A", "B", "C"],
+        ...     filter="`region` == 'UK'"
         ... )
         >>> result = rule.evaluate(df)
         ```
