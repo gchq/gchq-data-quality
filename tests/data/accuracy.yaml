@@ -137,5 +137,3 @@
   expected:
     pass_rate: 0.25
     records_evaluated: 4
-
-# cline tool verification comment: read, write (replace_in_file), and diff tools confirmed working.
