@@ -574,17 +574,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#using-the-filter" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Using the filter
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -965,17 +954,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#using-the-filter" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Using the filter
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -1262,14 +1240,6 @@ If left blank / None it replaces with -infinity (min_value) or +infinity (max_va
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Numerical range validity pass rate: </span><span class="si">{</span><span class="n">validity_numerical_range_result</span><span class="o">.</span><span class="n">pass_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">FINAL_REPORT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">validity_numerical_range_result</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="using-the-filter">Using the filter</h3>
-<p>Every rule will take a <code>filter</code> expression, using the same language as the pandas eval syntax you use in the consistency rule.
-Note that filtering happens <em>after</em> na_values are replaced with NULL.</p>
-<p><div class="highlight"><pre><span></span><code><span class="n">filtered_accuracy</span> <span class="o">=</span> <span class="n">AccuracyRule</span><span class="p">(</span>
-    <span class="n">field</span><span class="o">=</span><span class="s2">&quot;category&quot;</span><span class="p">,</span> <span class="n">valid_values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">],</span> <span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;`score` &gt; 0&quot;</span>
-<span class="p">)</span>
-</code></pre></div>
-The example above will filter the dataframe where score &gt; 0, then apply the rule. This will reduce the <code>records_evaluated</code> from 5 to 4.</p>
 <h2 id="3-combine-export-results">3. Combine &amp; Export Results</h2>
 <p>You can turn your results into a DataFrame (or other formats) for reporting:</p>
 <div class="highlight"><pre><span></span><code><span class="n">df_report</span> <span class="o">=</span> <span class="n">FINAL_REPORT</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
