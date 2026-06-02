@@ -56,15 +56,15 @@ dfs.show()
 The API is identical to pandas
 
 ```python
-from gchq_data_quality import UniquenessRule, TimelinessStaticRule
+from gchq_data_quality import ValuesAreUnique, ValuesMatchStaticTimeBounds
 
-uniqueness_rule = UniquenessRule(field="id")
+uniqueness_rule = ValuesAreUnique(field="id")
 dq_result = uniqueness_rule.evaluate(dfs)
 print(dq_result.model_dump())
 ```
 
 ### Note:
-- Under the hood, we split the data into lots of small dataframes and pass to a Spark worker (with the exception of UniquenessRule which we measure using native Spark). This was done to minimise our codebase - we can reuse the majority of our pandas code.
+- Under the hood, we split the data into lots of small dataframes and pass to a Spark worker (with the exception of ValuesAreUnique which we measure using native Spark). This was done to minimise our codebase - we can reuse the majority of our pandas code.
 - `records_failed_ids` is not returned for Spark DataFrames (Spark DataFrames are inherently unordered).
 - You will not get python objects in `records_failed_samples` but rather a JSON serialisation of them, e.g. datetime strings rather than datetime objects
 
@@ -95,7 +95,7 @@ dq_report.to_dataframe()
 
 ## 3. Under the Hood
 
-- **Pandas & Spark parity:** Most rules are run by partitioning Spark data to small pandas DataFrames, processed in parallel using `mapInPandas`. Therefore take care with any expression in your ConsistencyRule that might use values like `ColumnA.mean()` - as this mean value will be based on a parition, not the whole dataset!
+- **Pandas & Spark parity:** Most rules are run by partitioning Spark data to small pandas DataFrames, processed in parallel using `mapInPandas`. Therefore take care with any expression in your `ValuesMatchExpression` rule that might use values like `ColumnA.mean()` - as this mean value will be based on a partition, not the whole dataset!
 - **Uniqueness:** Runs in pure Spark (not split by partition, as we need knowledge of all values).
 - **Measurement time:** Each partition is measured independently; `measurement_time` from the latest partition is used when we aggregate the results back.
 
@@ -249,17 +249,17 @@ In your YAML configuration, use nested notation for `field`:
 
 ```yaml
 - field: customers.pets[].name
-  function: completeness
+  function: values_are_complete
 - field: customers.age
-  function: validity_numerical_range
+  function: values_match_numerical_range
   min_value: 18
   max_value: 120
 - field: customers.pets[*].appointments[*].date
-  function: timeliness_static
+  function: values_match_static_time_bounds
   start_date: 2022-01-01
   end_date: 2023-01-01
 - field: customers.name
-  function: consistency
+  function: values_match_expression
   expression:
     if: '`customers.age` < 18'
     then: '~`customers.name`.str.startswith("Mr")'
@@ -282,10 +282,9 @@ dq_pets_nested_report.to_dataframe()
 - It's OK to sample, you don't need to measure all your data to get a repeatable data quality pass rate; experiment to find the best sample size.
 - **No records failed IDS (row numbers):** Invalid row numbers are not reported (Spark DataFrames are unordered).
 - **Column name mapping:** After flattening, columns are renamed (`.` -> `_`, etc). If generating configs from a report, you may have to "reverse" the renaming when moving from report output to config file.
-- **DataFrame-wide statistics:** Consistency rules using group statistics can be unreliable on partitioned data (e.g. `col1 <= other_col.mean()`). For reliable results, repartition to a single worker or precompute the statistic.
+- **DataFrame-wide statistics:** `ValuesMatchExpression` rules using group statistics can be unreliable on partitioned data (e.g. `col1 <= other_col.mean()`). For reliable results, repartition to a single worker or precompute the statistic.
 - **Timezones:** Always coerce to UTC. Spark can assign local timezones in datetimes without a timezone (depending on local configuration) and cause subtle errors in DQ Timeliness rules.
 
 ## 6. Production Ready!
 
 Thank you for getting this far
-

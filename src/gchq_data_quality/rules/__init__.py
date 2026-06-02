@@ -24,7 +24,17 @@ You can see the mechanisms in each rule primarily by looking at the masks that a
 masks are the same for every rule type and are specified in BaseRule. i.e. once we work out what rules are passing vs evaluate
 all follow-on logic is the same.
 
-Available rule classes:
+Preferred (new) rule class names:
+    - ValuesAreUnique
+    - ValuesMatchList
+    - ValuesAreComplete
+    - ValuesMatchRegex
+    - ValuesMatchNumericalRange
+    - ValuesMatchExpression
+    - ValuesMatchStaticTimeBounds
+    - ValuesMatchRelativeTimeBounds
+
+Legacy rule class names (still fully supported):
     - UniquenessRule
     - AccuracyRule
     - CompletenessRule
@@ -36,7 +46,7 @@ Available rule classes:
 
 Whilst the user can call these rules and evaluate them against a dataframe
 
-UniquenessRule.evalute(df)
+ValuesAreUnique.evaluate(df)
 
 The intention of the package is that multiple rules are wrapped up into a DataQualityConfig class
 and executed together against a dataframe.
@@ -44,20 +54,42 @@ and executed together against a dataframe.
 DataQualityConfig(rules=my_rules_list).execute(df)
 """
 
+# New preferred names
+from gchq_data_quality.rules.uniqueness import ValuesAreUnique  # noqa
+from gchq_data_quality.rules.accuracy import ValuesMatchList  # noqa
+from gchq_data_quality.rules.completeness import ValuesAreComplete  # noqa
+from gchq_data_quality.rules.validity import ValuesMatchRegex, ValuesMatchNumericalRange  # noqa
+from gchq_data_quality.rules.consistency import ValuesMatchExpression  # noqa
+from gchq_data_quality.rules.timeliness import (  # noqa
+    ValuesMatchStaticTimeBounds,
+    ValuesMatchRelativeTimeBounds,
+)
+
+# Legacy names (preserved for backward compatibility)
 from gchq_data_quality.rules.uniqueness import UniquenessRule  # noqa
 from gchq_data_quality.rules.accuracy import AccuracyRule  # noqa
 from gchq_data_quality.rules.completeness import CompletenessRule  # noqa
 from gchq_data_quality.rules.consistency import ConsistencyRule  # noqa
-from gchq_data_quality.rules.timeliness import (
+from gchq_data_quality.rules.timeliness import (  # noqa
     TimelinessRelativeRule,
     TimelinessStaticRule,
-)  # noqa
-from gchq_data_quality.rules.validity import (
+)
+from gchq_data_quality.rules.validity import (  # noqa
     ValidityNumericalRangeRule,
     ValidityRegexRule,
-)  # noqa
+)
 
 __all__ = [
+    # New preferred names
+    "ValuesAreUnique",
+    "ValuesMatchList",
+    "ValuesAreComplete",
+    "ValuesMatchRegex",
+    "ValuesMatchNumericalRange",
+    "ValuesMatchExpression",
+    "ValuesMatchStaticTimeBounds",
+    "ValuesMatchRelativeTimeBounds",
+    # Legacy names
     "UniquenessRule",
     "AccuracyRule",
     "CompletenessRule",
