@@ -12,9 +12,9 @@ from gchq_data_quality.rules.utils.rules_utils import (
 )
 
 
-class ConsistencyRule(BaseRule):
+class ConsistencyBaseRule(BaseRule):
     """
-    Rule for evaluating data consistency based on boolean expressions (with an optional condition).
+    Base rule for evaluating data consistency based on boolean expressions (with an optional condition).
 
     Expressions may use any valid Pandas eval syntax that returns a boolean result. Backticks are required around all column names.
     Nulls and additional na_values are handled according to the skip policy.
@@ -29,73 +29,12 @@ class ConsistencyRule(BaseRule):
         rule_id (str | None): Optional identifier for the rule.
         rule_description (str | None): Optional description of the rule.
 
-    Methods:
-        evaluate(data_source: pd.DataFrame | SparkDataFrame) -> DataQualityResult
-            Evaluates the rule on the provided Pandas or Spark DataFrame and returns
-            the metrics and diagnostics of the rule evaluation.
-
-    Example:
-        ```python
-        >>> rule = ConsistencyRule(
-        ...     field="score",
-        ...     expression="`score` >= 50"
-        ... )
-        >>> result = rule.evaluate(df)
-
-        >>> rule = ConsistencyRule(
-        ...     field="completion_date",
-        ...     expression={"if": "`status` == 'completed'", "then": "`completion_date`.notnull()"},
-                data_quality_dimension='Completeness' # you can override the DAMA Dimension
-        ... )
-        >>> result = rule.evaluate(df)
-
-        # all series .str. methods are available
-        >>> rule = ConsistencyRule(
-        ...     field="postcode",
-        ...     expression={
-        ...         "if": "`country` == 'UK'",
-        ...         "then": "`postcode`.str.match(r'^[A-Z]{2}[0-9]{2}$')"
-        ...     }
-        ... )
-        >>> result = rule.evaluate(df)
-
-        # Date parts and arithmetic using .dt accessor
-        >>> rule = ConsistencyRule(
-        ...     field="report_year",
-        ...     expression="`report_date`.dt.year == `report_year`"
-        ... )
-        >>> result = rule.evaluate(df)
-
-        # Boolean logic (AND, OR, NOT) with grouping and comparisons
-        >>> rule = ConsistencyRule(
-        ...     field="flag",
-        ...     expression="(`score` > 90) & ((`status` == 'active') | ~`is_archived`)"
-        ... )
-        >>> result = rule.evaluate(df)
-
-        # Using mathematical operations
-        >>> rule = ConsistencyRule(
-        ...     field="predicted",
-        ...     expression="abs(`actual` - `predicted`) < 10"
-        ... )
-        >>> result = rule.evaluate(df)
-
-        # Evaluate only a filtered subset of rows
-        >>> rule = ConsistencyRule(
-        ...     field="score",
-        ...     expression="`score` >= 50",
-        ...     filter="`region` == 'UK'"
-        ... )
-        >>> result = rule.evaluate(df)
-        ```
-
     Returns:
         DataQualityResult: An object containing the consistency score (`pass_rate`),
         number of records evaluated, a sample of inconsistent records, and details of failed row indices.
         See DataQualityResult documentation for full attribute descriptions.
     """
 
-    function: Literal["consistency"] = "consistency"
     expression: str | dict[str, str] = Field(
         ...,
         description="A pandas eval compatible expression. Either a string for simple comparison or dict with 'if' and 'then' keys, where 'if' will contain a logical clause.",
@@ -179,3 +118,176 @@ class ConsistencyRule(BaseRule):
         rule_copy.expression = get_spark_safe_expression(self.expression)
 
         return rule_copy
+
+
+class ConsistencyRule(ConsistencyBaseRule):
+    """
+    Rule for evaluating data consistency based on boolean expressions (with an optional condition).
+
+    Expressions may use any valid Pandas eval syntax that returns a boolean result. Backticks are required around all column names.
+    Nulls and additional na_values are handled according to the skip policy.
+
+    Attributes:
+        field (str): The column to check for consistency.
+        expression (str | dict[str, str]): A boolean expression, or a conditional {'if', 'then'} dictionary (with backticks for column names).
+        skip_if_null (Literal['all', 'any', 'never']): Controls row skipping for null values in relevant columns.
+        na_values (str | list[Any] | None): Additional values considered as missing.
+        filter (str | None): Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.
+        data_quality_dimension (DamaFramework): Associated data quality dimension - you may want to override it in this rule.
+        rule_id (str | None): Optional identifier for the rule.
+        rule_description (str | None): Optional description of the rule.
+
+    Methods:
+        evaluate(data_source: pd.DataFrame | SparkDataFrame) -> DataQualityResult
+            Evaluates the rule on the provided Pandas or Spark DataFrame and returns
+            the metrics and diagnostics of the rule evaluation.
+
+    Example:
+        ```python
+        >>> rule = ConsistencyRule(
+        ...     field="score",
+        ...     expression="`score` >= 50"
+        ... )
+        >>> result = rule.evaluate(df)
+
+        >>> rule = ConsistencyRule(
+        ...     field="completion_date",
+        ...     expression={"if": "`status` == 'completed'", "then": "`completion_date`.notnull()"},
+                data_quality_dimension='Completeness' # you can override the DAMA Dimension
+        ... )
+        >>> result = rule.evaluate(df)
+
+        # all series .str. methods are available
+        >>> rule = ConsistencyRule(
+        ...     field="postcode",
+        ...     expression={
+        ...         "if": "`country` == 'UK'",
+        ...         "then": "`postcode`.str.match(r'^[A-Z]{2}[0-9]{2}$')"
+        ...     }
+        ... )
+        >>> result = rule.evaluate(df)
+
+        # Date parts and arithmetic using .dt accessor
+        >>> rule = ConsistencyRule(
+        ...     field="report_year",
+        ...     expression="`report_date`.dt.year == `report_year`"
+        ... )
+        >>> result = rule.evaluate(df)
+
+        # Boolean logic (AND, OR, NOT) with grouping and comparisons
+        >>> rule = ConsistencyRule(
+        ...     field="flag",
+        ...     expression="(`score` > 90) & ((`status` == 'active') | ~`is_archived`)"
+        ... )
+        >>> result = rule.evaluate(df)
+
+        # Using mathematical operations
+        >>> rule = ConsistencyRule(
+        ...     field="predicted",
+        ...     expression="abs(`actual` - `predicted`) < 10"
+        ... )
+        >>> result = rule.evaluate(df)
+
+        # Evaluate only a filtered subset of rows
+        >>> rule = ConsistencyRule(
+        ...     field="score",
+        ...     expression="`score` >= 50",
+        ...     filter="`region` == 'UK'"
+        ... )
+        >>> result = rule.evaluate(df)
+        ```
+
+    Returns:
+        DataQualityResult: An object containing the consistency score (`pass_rate`),
+        number of records evaluated, a sample of inconsistent records, and details of failed row indices.
+        See DataQualityResult documentation for full attribute descriptions.
+    """
+
+    function: Literal["consistency"] = "consistency"
+
+
+class ValuesMatchExpression(ConsistencyBaseRule):
+    """
+    Rule for evaluating data consistency based on boolean expressions (with an optional condition).
+
+    Preferred alias for ``ConsistencyRule``. Expressions may use any valid Pandas eval syntax
+    that returns a boolean result. Backticks are required around all column names.
+    Nulls and additional na_values are handled according to the skip policy.
+
+    Attributes:
+        field (str): The column to check for consistency.
+        expression (str | dict[str, str]): A boolean expression, or a conditional {'if', 'then'} dictionary (with backticks for column names).
+        skip_if_null (Literal['all', 'any', 'never']): Controls row skipping for null values in relevant columns.
+        na_values (str | list[Any] | None): Additional values considered as missing.
+        filter (str | None): Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.
+        data_quality_dimension (DamaFramework): Associated data quality dimension - you may want to override it in this rule.
+        rule_id (str | None): Optional identifier for the rule.
+        rule_description (str | None): Optional description of the rule.
+
+    Methods:
+        evaluate(data_source: pd.DataFrame | SparkDataFrame) -> DataQualityResult
+            Evaluates the rule on the provided Pandas or Spark DataFrame and returns
+            the metrics and diagnostics of the rule evaluation.
+
+    Example:
+        ```python
+        >>> rule = ValuesMatchExpression(
+        ...     field="score",
+        ...     expression="`score` >= 50"
+        ... )
+        >>> result = rule.evaluate(df)
+
+        >>> rule = ValuesMatchExpression(
+        ...     field="completion_date",
+        ...     expression={"if": "`status` == 'completed'", "then": "`completion_date`.notnull()"},
+                data_quality_dimension='Completeness' # you can override the DAMA Dimension
+        ... )
+        >>> result = rule.evaluate(df)
+
+        # all series .str. methods are available
+        >>> rule = ValuesMatchExpression(
+        ...     field="postcode",
+        ...     expression={
+        ...         "if": "`country` == 'UK'",
+        ...         "then": "`postcode`.str.match(r'^[A-Z]{2}[0-9]{2}$')"
+        ...     }
+        ... )
+        >>> result = rule.evaluate(df)
+
+        # Date parts and arithmetic using .dt accessor
+        >>> rule = ValuesMatchExpression(
+        ...     field="report_year",
+        ...     expression="`report_date`.dt.year == `report_year`"
+        ... )
+        >>> result = rule.evaluate(df)
+
+        # Boolean logic (AND, OR, NOT) with grouping and comparisons
+        >>> rule = ValuesMatchExpression(
+        ...     field="flag",
+        ...     expression="(`score` > 90) & ((`status` == 'active') | ~`is_archived`)"
+        ... )
+        >>> result = rule.evaluate(df)
+
+        # Using mathematical operations
+        >>> rule = ValuesMatchExpression(
+        ...     field="predicted",
+        ...     expression="abs(`actual` - `predicted`) < 10"
+        ... )
+        >>> result = rule.evaluate(df)
+
+        # Evaluate only a filtered subset of rows
+        >>> rule = ValuesMatchExpression(
+        ...     field="score",
+        ...     expression="`score` >= 50",
+        ...     filter="`region` == 'UK'"
+        ... )
+        >>> result = rule.evaluate(df)
+        ```
+
+    Returns:
+        DataQualityResult: An object containing the consistency score (`pass_rate`),
+        number of records evaluated, a sample of inconsistent records, and details of failed row indices.
+        See DataQualityResult documentation for full attribute descriptions.
+    """
+
+    function: Literal["values_match_expression"] = "values_match_expression"  # type: ignore[override]
