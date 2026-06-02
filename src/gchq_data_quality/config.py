@@ -14,10 +14,10 @@ This module provides:
 
 Usage Example:
     ```python
-    from gchq_data_quality.rules import ValidityRegexRule
+    from gchq_data_quality.rules import ValuesMatchRegex
     from gchq_data_quality.config import DataQualityConfig
 
-    rule = ValidityRegexRule(field="email", regex_pattern=r"[^@]+@[^@]+\.[^@]+")
+    rule = ValuesMatchRegex(field="email", regex_pattern=r"[^@]+@[^@]+\.[^@]+")
     config = DataQualityConfig(dataset_name="customer_data", rules=[rule])
     report = config.execute(dataframe)
 
@@ -52,29 +52,46 @@ from gchq_data_quality.models import (
     UTCDateTime,
 )
 from gchq_data_quality.results.models import DataQualityReport, DataQualityResult
-from gchq_data_quality.rules.accuracy import AccuracyRule
-from gchq_data_quality.rules.completeness import CompletenessRule
-from gchq_data_quality.rules.consistency import ConsistencyRule
+
+# Legacy rule imports
+# New preferred rule imports
+from gchq_data_quality.rules.accuracy import AccuracyRule, ValuesMatchList
+from gchq_data_quality.rules.completeness import CompletenessRule, ValuesAreComplete
+from gchq_data_quality.rules.consistency import ConsistencyRule, ValuesMatchExpression
 from gchq_data_quality.rules.timeliness import (
     TimelinessRelativeRule,
     TimelinessStaticRule,
+    ValuesMatchRelativeTimeBounds,
+    ValuesMatchStaticTimeBounds,
 )
-from gchq_data_quality.rules.uniqueness import UniquenessRule
+from gchq_data_quality.rules.uniqueness import UniquenessRule, ValuesAreUnique
 from gchq_data_quality.rules.validity import (
     ValidityNumericalRangeRule,
+    ValidityRegexBaseRule,
     ValidityRegexRule,
+    ValuesMatchNumericalRange,
+    ValuesMatchRegex,
 )
 
-# Union type for all possible rules
+# Union type for all possible rules — includes both legacy and new preferred names.
+# Pydantic uses the 'function' literal field as a discriminator to select the right class.
 RuleType = Annotated[
     UniquenessRule
+    | ValuesAreUnique
     | CompletenessRule
+    | ValuesAreComplete
     | ValidityRegexRule
+    | ValuesMatchRegex
     | ValidityNumericalRangeRule
+    | ValuesMatchNumericalRange
     | ConsistencyRule
+    | ValuesMatchExpression
     | AccuracyRule
+    | ValuesMatchList
     | TimelinessRelativeRule
-    | TimelinessStaticRule,
+    | ValuesMatchRelativeTimeBounds
+    | TimelinessStaticRule
+    | ValuesMatchStaticTimeBounds,
     Field(discriminator="function"),
 ]
 
@@ -113,7 +130,7 @@ class DataQualityConfig(BaseModel):
         config2 = DataQualityConfig(
             dataset_name="my_data",
             rules=[
-                ValidityRegexRule(field="email", regex_pattern='.+@example.com'),
+                ValuesMatchRegex(field="email", regex_pattern='.+@example.com'),
             ],
         )
         ```
@@ -481,8 +498,9 @@ def _replace_regex_values(
     config: DataQualityConfig, regex_dict: dict
 ) -> DataQualityConfig:
     """
-    Substitute the 'regex_pattern' attribute for rules using the 'validity_regex' function,
+    Substitute the 'regex_pattern' attribute for rules using a regex validity function,
     replacing named patterns with strings from a provided mapping.
+    Handles both ValidityRegexRule and ValuesMatchRegex (and any future subclass of ValidityRegexBaseRule).
 
     Args:
         config (DataQualityConfig): The data quality configuration object.
@@ -498,7 +516,7 @@ def _replace_regex_values(
     updated_config = config.model_copy()
 
     for rule in updated_config.rules:
-        if isinstance(rule, ValidityRegexRule):
+        if isinstance(rule, ValidityRegexBaseRule):
             pattern_value = rule.regex_pattern
             if pattern_value and pattern_value in regex_dict:
                 rule.regex_pattern = regex_dict[pattern_value]

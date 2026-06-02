@@ -62,10 +62,10 @@ measurement_sample: 10% of records
 lifecycle_stage: null
 rules:
   - field: id
-    function: uniqueness
+    function: values_are_unique
   - field: name
     na_values: ''
-    function: validity_regex
+    function: values_match_regex
     regex_pattern: '[A-z0-9_]'
 ```
 
@@ -138,7 +138,7 @@ config_from_report = DataQualityConfig.from_report(report)
 config_from_report.to_yaml("yaml_from_report.yaml", overwrite=True)
 ```
 
-## 6. Mangaing Regular Expressions
+## 6. Managing Regular Expressions
 
 Use a separate YAML file for regex patterns, to keep config rules readable and maintainable.
 
@@ -151,7 +151,7 @@ PHONE_REGEX: '[0-9]+'
 Reference pattern names instead of raw regex in your rules:
 ```yaml
 - field: email
-  function: validity_regex
+  function: values_match_regex
   regex_pattern: EMAIL_REGEX
 ```
 
@@ -171,4 +171,3 @@ Control sample output size globally:
 ```python
 from gchq_data_quality.globals import SampleConfig
 SampleConfig.RECORDS_FAILED_SAMPLE_SIZE = 25
-```
