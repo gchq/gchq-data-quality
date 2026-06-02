@@ -52,8 +52,8 @@ from gchq_data_quality.models import (
 )
 from gchq_data_quality.results.models import DataQualityReport, DataQualityResult
 
-# Legacy rule imports
-# New preferred rule imports
+# Legacy rule imports (e.g. AccuracyRule)
+# New preferred rule imports from >=v1.2 (e.g. ValuesMatchList)
 from gchq_data_quality.rules.accuracy import AccuracyRule, ValuesMatchList
 from gchq_data_quality.rules.completeness import CompletenessRule, ValuesAreComplete
 from gchq_data_quality.rules.consistency import ConsistencyRule, ValuesMatchExpression

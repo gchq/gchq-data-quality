@@ -2,12 +2,12 @@ dataset_name: Tutorial Data
 measurement_time: 2025-01-01
 rules:
 - field: id
-  function: uniqueness
+  function: values_are_unique
 - field: name
-  function: completeness
+  function: values_are_complete
 - field: category
-  function: accuracy
+  function: values_match_list
   valid_values: [A,B,C,D]
 - field: email
-  function: validity_regex
+  function: values_match_regex
   regex_pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
