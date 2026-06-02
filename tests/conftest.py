@@ -245,6 +245,14 @@ def test_config_file() -> Path:
 
 
 @pytest.fixture
+def test_bad_regex_in_config_file() -> Path:
+    test_yaml_path = (
+        Path(__file__).parent / "artifacts" / "test_bad_regex_in_config.yaml"
+    )
+    return test_yaml_path
+
+
+@pytest.fixture
 def test_regex_patterns_file() -> Path:
     test_yaml_path = Path(__file__).parent / "artifacts" / "test_patterns.yaml"
     return test_yaml_path

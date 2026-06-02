@@ -12,6 +12,14 @@ from gchq_data_quality.config import (
 from gchq_data_quality.rules.validity import ValidityRegexRule
 
 
+def test_load_bad_regex(test_bad_regex_in_config_file: Path) -> None:
+    """Tests for suitable helpful hint in a YAML has a mal-formatted regex_pattern in
+    values_match_regex rule"""
+
+    with pytest.raises(ValueError, match="You have a bad YAML file"):
+        DataQualityConfig.from_yaml(test_bad_regex_in_config_file)
+
+
 def test_load_and_replace_patterns(
     test_config_file: Path, test_regex_patterns_file: Path
 ) -> None:

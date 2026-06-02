@@ -82,12 +82,27 @@ valid_values:
 
 #### Regex in YAML
 
-Always surround `regex_pattern` with **single quotes**:
+Regular expressions often contain characters (`\`, `'`, `:`, `{}`, etc.) that YAML may misinterpret. The safest approach is to treat the regex as a **string literal**. Our recommended approach:
+
+**1. Single‑quoted string (recommended for most simple regex)**
+
+Single quotes treat almost everything literally, including backslashes.
 
 ```yaml
 regex_pattern: '[A-Za-z]+'
 regex_pattern: '\d{4}-\d{2}-\d{2}'
-regex_pattern: 'don''t'    # To include a single quote
+regex_pattern: 'don''t'   # escape single quote by doubling it
+```
+
+**2. Literal block (`|`)**
+
+Preserves the string exactly as written. Useful for long or complex regex patterns. Or where you have many single quotes in the regex.
+Note: you do not need to surround this with any quote character.
+
+```yaml
+regex_pattern: |
+  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
 ```
 
 ## 3. Loading and Validating Config Files

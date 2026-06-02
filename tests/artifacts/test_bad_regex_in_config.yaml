@@ -1,0 +1,4 @@
+rules:
+  - field: "name"
+    function: "values_match_regex"
+    regex_pattern: '^[a-zA-Z\s]+'$'
