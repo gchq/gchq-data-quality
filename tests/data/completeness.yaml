@@ -76,3 +76,14 @@
     data_quality_dimension: Consistency
   expected:
     data_quality_dimension: Consistency
+
+- description: Verify behaviour of filter parameter - removes all NULLs
+  inputs:
+    df:
+      filter: [null, 2, 3, 4]
+      id: [1, 2, 3, 4]
+    field: id
+    filter: "`filter` > 3"
+  expected:
+    records_evaluated: 1
+    pass_rate: 1
