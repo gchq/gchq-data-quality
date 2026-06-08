@@ -468,6 +468,101 @@ def test_empty_report_outputs_empty_dataframe() -> None:
     assert df.empty
 
 
+# ---- __len__ tests ----
+
+
+def test_len_empty_report() -> None:
+    """An empty report has length zero."""
+    report = DataQualityReport(results=[])
+    assert len(report) == 0
+
+
+def test_len_report_with_results(basic_data_quality_report: DataQualityReport) -> None:
+    """len() matches the number of results stored in the report."""
+    assert len(basic_data_quality_report) == len(basic_data_quality_report.results)
+
+
+def test_len_matches_results_count(
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """Explicitly build a report with a known number of results and verify len()."""
+    report = DataQualityReport(results=[basic_data_quality_result])
+    assert len(report) == 1
+    second = basic_data_quality_result.model_copy()
+    report2 = DataQualityReport(results=[basic_data_quality_result, second])
+    assert len(report2) == 2
+
+
+# ---- __add__ tests ----
+
+
+def test_add_two_reports(basic_data_quality_result: DataQualityResult) -> None:
+    """Adding two DataQualityReports returns a new report whose length is the sum of both."""
+    report_a = DataQualityReport(results=[basic_data_quality_result])
+    second = basic_data_quality_result.model_copy()
+    report_b = DataQualityReport(results=[second])
+    combined = report_a + report_b
+    assert isinstance(combined, DataQualityReport)
+    assert len(combined) == len(report_a) + len(report_b)
+    assert combined.results == report_a.results + report_b.results
+
+
+def test_add_report_does_not_mutate_originals(
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """__add__ must not modify either operand."""
+    report_a = DataQualityReport(results=[basic_data_quality_result])
+    second = basic_data_quality_result.model_copy()
+    report_b = DataQualityReport(results=[second])
+    original_len_a = len(report_a)
+    original_len_b = len(report_b)
+    _ = report_a + report_b
+    assert len(report_a) == original_len_a
+    assert len(report_b) == original_len_b
+
+
+def test_add_single_result_to_report(
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """Adding a single DataQualityResult to a report appends it as one record."""
+    report = DataQualityReport(results=[basic_data_quality_result])
+    extra = basic_data_quality_result.model_copy()
+    combined = report + extra
+    assert isinstance(combined, DataQualityReport)
+    assert len(combined) == len(report) + 1
+    assert combined.results[-1] == extra
+
+
+def test_add_result_to_empty_report(
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """Adding a result to an empty report gives a single-record report."""
+    empty = DataQualityReport(results=[])
+    combined = empty + basic_data_quality_result
+    assert isinstance(combined, DataQualityReport)
+    assert len(combined) == 1
+    assert combined.results[0] == basic_data_quality_result
+
+
+def test_add_empty_report_to_report(
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """Adding an empty report to a non-empty report preserves all records."""
+    report = DataQualityReport(results=[basic_data_quality_result])
+    empty = DataQualityReport(results=[])
+    combined = report + empty
+    assert isinstance(combined, DataQualityReport)
+    assert len(combined) == len(report)
+
+
+def test_add_unsupported_type_returns_not_implemented(
+    basic_data_quality_report: DataQualityReport,
+) -> None:
+    """Adding an unsupported type should return NotImplemented (Python will raise TypeError)."""
+    result = basic_data_quality_report.__add__("not a report")  # type: ignore[arg-type]
+    assert result is NotImplemented
+
+
 def test_to_json_writes_and_roundtrips(
     tmp_path: Path, basic_data_quality_report: DataQualityReport
 ) -> None:
