@@ -10,7 +10,7 @@ Rule classes (imported from gchq_data_quality.rules) define specific data qualit
 
 This module provides:
     - DataQualityConfig for describing data quality measurement settings and rules.
-    - Support for execution against pandas DataFrames and Spark DataFrames (Elasticsearch indices not yet implemented).
+    - Support for execution against pandas DataFrames and Spark DataFrames.
 
 Usage Example:
     ```python
@@ -37,7 +37,6 @@ import pandas as pd
 import yaml
 
 if TYPE_CHECKING:
-    from elasticsearch import Elasticsearch
     from pyspark.sql import DataFrame as SparkDataFrame
 
 from pydantic import (
@@ -184,29 +183,14 @@ class DataQualityConfig(BaseModel):
     def execute(self, data_source: pd.DataFrame) -> DataQualityReport: ...
     @overload
     def execute(self, data_source: SparkDataFrame) -> DataQualityReport: ...
-    @overload
-    def execute(
-        self,
-        data_source: Elasticsearch,
-        index_name: str = ...,
-        query: dict | None = ...,
-    ) -> DataQualityReport: ...
 
-    def execute(
-        self,
-        data_source,
-        index_name: str = "",
-        query: dict | None = None,
-    ):
+    def execute(self, data_source):
         """
         Execute all data quality rules defined in the configuration against the specified data source.
-        Note: Elasticsearch execution not yet implemented.
+
         Args:
-            data_source (pandas.DataFrame | pyspark.sql.DataFrame | Elasticsearch):
-                The data to be checked. Should be a pandas DataFrame, a Spark DataFrame, or an Elasticsearch client.
-            index_name (str, optional): Name of the index if using Elasticsearch.
-            query (dict, optional): Query DSL dict to select records from the index (Elasticsearch only).
-            Defaults to {'query': {'match_all': {}}} if not supplied.
+            data_source (pandas.DataFrame | pyspark.sql.DataFrame):
+                The data to be checked. Should be a pandas DataFrame or a Spark DataFrame.
 
         Returns:
             DataQualityReport: A report containing the result of each data quality rule.
@@ -218,17 +202,12 @@ class DataQualityConfig(BaseModel):
 
             # For Spark DataFrames
             dq_report = config.execute(spark_df)
-
-            # For Elasticsearch * not yet implemented *
-            dq_report = config.execute(elasticsearch_client, index_name="index")
             ```
         """
         results: list[DataQualityResult] = []
 
         for rule in self.rules:
-            dq_result = rule.evaluate(
-                data_source=data_source, index_name=index_name, query=query
-            )
+            dq_result = rule.evaluate(data_source=data_source)
             dq_result = _copy_config_values_to_dq_result(self, dq_result)
             results.append(dq_result)
 

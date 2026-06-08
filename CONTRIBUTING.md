@@ -25,9 +25,9 @@ We use `uv` for dependency management. Here's how to set up your environment:
    ```shell
    uv sync --all-extras
    ```
-   `gchq-data-quality`runs on Pandas and Spark dataframes. We don't want to force users to install pyspark if it's not needed, so pyspark is an 'extra' within our `pyproject.toml` file. Elasticsearch is also an extra, but this feature is not yet implemented.
+   `gchq-data-quality`runs on Pandas and Spark dataframes. We don't want to force users to install pyspark if it's not needed, so pyspark is an 'extra' within our `pyproject.toml` file.
 
-   `--all-extras` will install both pyspark and elasticsearch packages, which is recommended for dev work.
+   `--all-extras` will install pyspark, which is recommended for dev work.
 
 3. You can:
    - Run commands in a virtual environment with `uv run <command>`:
@@ -103,7 +103,6 @@ Tests for `gchq-data-quality` are located in the `tests/` directory and can be r
 
 - `tests/`: Main directory for unit tests.
 - `tests/spark/`: Spark-specific tests (requires `pyspark`).
-- `tests/elasticsearch/`: Elasticsearch-specific tests (requires `elasticsearch`).
 
 ### Running Tests:
 ```shell
@@ -116,14 +115,6 @@ For specific extras:
 ```shell
   uv sync --extra pyspark
   uv run pytest tests/spark/
-  ```
-
-- **Elasticsearch Tests**:
-(Not yet implemented)
-
-```shell
-  uv sync --extra elasticsearch
-  uv run pytest tests/elasticsearch/
   ```
 
 We use pytest for testing, and `pre-commit` ensures proper linting and formatting.
@@ -179,9 +170,9 @@ The above command starts a local development server, typically at `http://127.0.
 
 Code submissions are verified via GitHub Actions, which run tests across **Linux**, **macOS**, and **Windows** platforms. The testing matrix covers the following:
 
-- **Linux**: Full tests for Pandas, Spark & Elasticsearch
-- **macOS**: Full tests for Pandas, Spark & Elasticsearch
-- **Windows**: Limited to Pandas tests (unusual to have Spark or Elasticsearch setup on a Windows machine).
+- **Linux**: Full tests for Pandas & Spark
+- **macOS**: Full tests for Pandas & Spark
+- **Windows**: Limited to Pandas tests (unusual to have Spark setup on a Windows machine).
 
 
 [github-issues]: https://github.com/gchq/gchq-data-quality/issues

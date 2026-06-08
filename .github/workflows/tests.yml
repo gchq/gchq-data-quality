@@ -57,7 +57,7 @@ jobs:
     - name: Install core dependencies only
       run: uv sync --no-dev --group test
     - name: Test pandas dataframes no extras installed
-      run: uv run pytest --ignore=tests/spark/ --ignore=tests/elasticsearch/
+      run: uv run pytest --ignore=tests/spark/
 
     # Stage 2: Install pyspark run spark tests. Linux and MacOS only.
     - name: Install Spark dependencies
@@ -65,13 +65,5 @@ jobs:
       run: uv sync --no-dev --group test --extra pyspark --locked
     - name: Run Spark tests
       if: matrix.os != 'windows-latest'  # Skip for Windows
-      run: uv run pytest tests/spark/ --ignore=tests/elasticsearch/
-
-    # Stage 3: Install elasticsearch run tests. Linux and MacOS only.
-    - name: Install Elasticsearch dependencies
-      run: uv sync --no-dev --group test --extra elasticsearch --locked
-      if: matrix.os != 'windows-latest'  # Skip for Windows
-    - name: Run Elasticsearch tests
-      if: matrix.os != 'windows-latest'  # Skip for Windows
-      run: uv run pytest tests/elasticsearch/ --ignore=tests/spark/
+      run: uv run pytest tests/spark/
 
