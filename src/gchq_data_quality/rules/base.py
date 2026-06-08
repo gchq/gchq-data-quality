@@ -19,14 +19,7 @@ from warnings import warn
 
 import pandas as pd
 
-# Do not force users to have access to pyspark or elasticsearch unless required
-
-try:
-    from elasticsearch import Elasticsearch
-
-    _has_elasticsearch = True
-except ImportError:
-    _has_elasticsearch = False
+# Do not force users to have access to pyspark unless required
 
 try:
     from pyspark.sql import DataFrame as SparkDataFrame
@@ -75,7 +68,7 @@ class BaseRule(DataQualityBaseModel, ABC):
         data_quality_dimension (DamaFramework): Linked DAMA data quality dimension.
 
     Methods:
-        evaluate(data_source: pd.DataFrame | SparkDataFrame | Elasticsearch) -> DataQualityResult
+        evaluate(data_source: pd.DataFrame | SparkDataFrame) -> DataQualityResult
             Applies the rule to source data and returns evaluation metrics and diagnostics.
 
     Note:
@@ -119,34 +112,18 @@ class BaseRule(DataQualityBaseModel, ABC):
     def evaluate(self, data_source: pd.DataFrame) -> DataQualityResult: ...
     @overload
     def evaluate(self, data_source: SparkDataFrame) -> DataQualityResult: ...
-    @overload
-    def evaluate(
-        self,
-        data_source: Elasticsearch,
-        index_name: str = ...,
-        query: dict | None = ...,
-    ) -> DataQualityResult: ...
 
-    def evaluate(
-        self,
-        data_source: pd.DataFrame | SparkDataFrame | Elasticsearch,
-        index_name: str = "",
-        query: dict | None = None,
-    ):
+    def evaluate(self, data_source: pd.DataFrame | SparkDataFrame):
         """
         Evaluates this rule against the provided data source.
 
         Supports both Pandas and Spark DataFrames as input. Applies all
         rule configuration, handles nulls and data coercion, and computes
-        relevant data quality metrics. If an Elasticsearch index and client
-        are supplied, an error is raised unless that backend is implemented.
-        Currently not implemented.
+        relevant data quality metrics.
 
         Args:
-            data_source (pd.DataFrame | SparkDataFrame | Elasticsearch): The data to evaluate—
-                can be a Pandas DataFrame, a Spark DataFrame, or an Elasticsearch client.
-            index_name (str, optional): Required if evaluating with Elasticsearch; the index to check.
-            query (dict, optional): Required if evaluating with Elaticsearch, defaults to a query that matches all documents
+            data_source (pd.DataFrame | SparkDataFrame): The data to evaluate—
+                can be a Pandas DataFrame or a Spark DataFrame.
 
         Returns:
             DataQualityResult: Contains the metrics and diagnostics of rule evaluation,
@@ -155,19 +132,16 @@ class BaseRule(DataQualityBaseModel, ABC):
 
         Raises:
             ValueError: If an unsupported data source is provided.
-            NotImplementedError: If Elasticsearch evaluation is requested but not supported.
         """
 
         if isinstance(data_source, pd.DataFrame):
             return self._evaluate_in_pandas(data_source)
         elif _has_pyspark and isinstance(data_source, SparkDataFrame):  # pyright: ignore[reportPossiblyUnboundVariable]
             return self._evaluate_in_spark(data_source)  # pyright: ignore[reportArgumentType]
-        elif _has_elasticsearch and isinstance(data_source, Elasticsearch):  # pyright: ignore[reportPossiblyUnboundVariable]
-            return self._evaluate_in_elastic(data_source, index_name, query)  # pyright: ignore[reportArgumentType]
         else:
             raise ValueError(
-                "You must pass in either a pandas or spark dataframe or an Elasticsearch client with an index name."
-                "If you are passing in a spark dataframe or elasticsearch client, ensure these package are installed. pip install elasticsearch; pip install pyspark - "
+                "You must pass in either a pandas or spark dataframe."
+                "If you are passing in a spark dataframe, ensure these package are installed. pip install gchq-data-quality[pyspark]"
                 "our code will run even if these packages are not present."
             )
 
@@ -535,16 +509,3 @@ class BaseRule(DataQualityBaseModel, ABC):
 
         # We can't return a DataQualityResult object in Spark, it has to be a pandas dataframe
         return dq_result._to_spark_schema_df()
-
-    # ---------- Elasticsearch ---------------
-
-    def _evaluate_in_elastic(
-        self, es: Elasticsearch, index_name: str, query: dict | None = None
-    ) -> DataQualityResult:
-        if query is None:
-            query = {"query": {"match_all": {}}}
-        """Not yet implemented"""
-
-        raise NotImplementedError(
-            "Elasticsearch querying not yet implemented - just dataframes"
-        )

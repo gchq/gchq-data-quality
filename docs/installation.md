@@ -1,6 +1,6 @@
 # Installation
 
-The `gchq-data-quality` package is designed to be modular, allowing you to install its core feature (Pandas dataframe code) as well as optional components for Spark (`pyspark`) and/or Elasticsearch (Elasticsearch is not yet implemented).
+The `gchq-data-quality` package is designed to be modular, allowing you to install its core feature (Pandas dataframe code) as well as optional components for Spark (`pyspark`).
 
 ## Prerequisites
 
@@ -32,24 +32,6 @@ pip install gchq-data-quality[pyspark]
 This additionally installs:
 
 - **pyspark** (this is quite a large package, hence having it as an optional extra)
-
-#### Elasticsearch Integration
-
-To use `gchq-data-quality` with **Elasticsearch**, install the package with the `elasticsearch` extra:
-```shell
-pip install gchq-data-quality[elasticsearch]
-```
-
-This additionally installs:
-
-- **elasticsearch**
-
-#### Multiple Extras
-
-You can combine multiple optional integrations in a single command. For example, to install both PySpark and Elasticsearch support:
-```shell
-pip install gchq-data-quality[pyspark,elasticsearch]
-```
 
 ## Development Installation
 
@@ -88,4 +70,4 @@ To uninstall the package and its dependencies, run:
 pip uninstall gchq-data-quality
 ```
 
-If you installed optional dependencies, repeat the command for each extra name (`pyspark`, `elasticsearch`, etc.).
+If you installed optional dependencies, repeat the command for each extra name (`pyspark`).
