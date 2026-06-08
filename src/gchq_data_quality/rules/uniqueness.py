@@ -174,7 +174,7 @@ class UniquenessBaseRule(BaseRule):
                 # nullable boolean mask -> treat NA as False
                 yield pdf.loc[filter_mask.fillna(False)]
 
-        return spark_df.mapInPandas(pandas_mapper, schema=output_schema)
+        return spark_df.mapInPandas(pandas_mapper, schema=output_schema)  # type: ignore
 
 
 class UniquenessRule(UniquenessBaseRule):
@@ -304,4 +304,4 @@ class ValuesAreUnique(UniquenessBaseRule):
         See DataQualityResult documentation for further attribute details.
     """
 
-    function: Literal["values_are_unique"] = "values_are_unique"  # type: ignore[override]
+    function: Literal["values_are_unique"] = "values_are_unique"

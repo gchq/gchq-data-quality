@@ -36,7 +36,7 @@ def test_uniqueness_nested_spark(test_nested_df: DataFrame) -> None:
 
 
 def test_uniqueness_nested_spark_na_values_on_field_and_filter_cols(
-    spark: DataFrame,
+    spark: SparkSession,
 ) -> None:
     data = [
         {"customers": {"name": "Alice", "age": 20}},

@@ -31,7 +31,7 @@ from __future__ import annotations
 import json
 import warnings
 from pathlib import Path
-from typing import TYPE_CHECKING, Annotated, overload
+from typing import TYPE_CHECKING, Annotated, Any, overload
 
 import pandas as pd
 import yaml
@@ -364,6 +364,30 @@ def _copy_config_values_to_dq_result(
     return dq_result_new
 
 
+def _load_yaml_with_helpful_debug(path: Path) -> Any:  # noqa: ANN401
+    try:
+        with open(path) as f:
+            return yaml.safe_load(f)
+
+    except yaml.YAMLError as e:
+        if hasattr(e, "problem_mark"):
+            mark = e.problem_mark  # type: ignore
+            line = mark.line + 1
+            column = mark.column + 1
+
+            raise ValueError(
+                f"You have a bad YAML file.\n"
+                f"Location: line {line}, column {column}\n"
+                f"Problem: {e.problem}\n"  # type: ignore
+                f"Path: {path}\n"
+                "If this relates to a regex pattern, check for:\n"
+                "- unescaped single quotes\n"
+                "- or place the regex after a '|' block indicator on the next line and indent it"
+            ) from e
+
+        raise
+
+
 def _load_data_quality_config_files(
     file_paths: str | Path | list[str] | list[Path],
     regex_yaml_path: str | Path | None = None,
@@ -405,17 +429,17 @@ def _load_data_quality_config_files(
     # Load regex patterns if path provided
     regex_patterns = {}
     if regex_yaml_path:
+        regex_yaml_path = Path(regex_yaml_path)
         regex_patterns = _load_regex_yaml(regex_yaml_path)
 
     # Load and validate configs
     configs = []
     for fp in list_of_file_paths:
-        with open(fp) as f:
-            cfg = yaml.safe_load(f)
-            validated_cfg = DataQualityConfig(**cfg)
+        cfg = _load_yaml_with_helpful_debug(Path(fp))
+        validated_cfg = DataQualityConfig(**cfg)
 
-            validated_cfg = _replace_regex_values(validated_cfg, regex_patterns)
-            configs.append(validated_cfg)
+        validated_cfg = _replace_regex_values(validated_cfg, regex_patterns)
+        configs.append(validated_cfg)
 
     # Merge configs
     if len(configs) == 1:
@@ -436,7 +460,7 @@ def _load_data_quality_config_files(
         return combined
 
 
-def _load_regex_yaml(file_path: str | Path) -> dict[str, str]:
+def _load_regex_yaml(file_path: Path) -> dict[str, str]:
     r"""
     Load regular expression patterns from a YAML file and validate that all values are strings.
 
@@ -456,8 +480,8 @@ def _load_regex_yaml(file_path: str | Path) -> dict[str, str]:
             FOOD_WEIGHT_REGEX: '^\d+(\.\d{1,2})?\s?(kg|g|lb|oz)$'
             ```
     """
-    with open(file_path) as f:
-        data = yaml.safe_load(f)
+
+    data = _load_yaml_with_helpful_debug(file_path)
 
     if not isinstance(data, dict):
         raise ValueError(

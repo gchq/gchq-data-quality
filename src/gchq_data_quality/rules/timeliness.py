@@ -247,8 +247,15 @@ class ValuesMatchStaticTimeBounds(TimelinessStaticBaseRule):
     """
 
     function: Literal["values_match_static_time_bounds"] = (
-        "values_match_static_time_bounds"  # type: ignore[override]
+        "values_match_static_time_bounds"
     )
+
+    def _coerce_dataframe_type(self, df: pd.DataFrame) -> pd.DataFrame:
+        columns_to_coerce = [self.field]  # do not coerce the self.filter expression
+        df[columns_to_coerce] = df[columns_to_coerce].apply(
+            self._to_utc_datetime_series
+        )
+        return df
 
 
 class TimelinessRelativeBaseRule(TimelinessBaseRule):
@@ -557,5 +564,5 @@ class ValuesMatchRelativeTimeBounds(TimelinessRelativeBaseRule):
     """
 
     function: Literal["values_match_relative_time_bounds"] = (
-        "values_match_relative_time_bounds"  # type: ignore[override]
+        "values_match_relative_time_bounds"
     )

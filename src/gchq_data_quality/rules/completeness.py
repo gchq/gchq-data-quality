@@ -129,4 +129,4 @@ class ValuesAreComplete(CompletenessBaseRule):
         for further attribute details.
     """
 
-    function: Literal["values_are_complete"] = "values_are_complete"  # type: ignore[override]
+    function: Literal["values_are_complete"] = "values_are_complete"

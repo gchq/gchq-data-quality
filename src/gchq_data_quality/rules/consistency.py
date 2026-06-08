@@ -290,4 +290,4 @@ class ValuesMatchExpression(ConsistencyBaseRule):
         See DataQualityResult documentation for full attribute descriptions.
     """
 
-    function: Literal["values_match_expression"] = "values_match_expression"  # type: ignore[override]
+    function: Literal["values_match_expression"] = "values_match_expression"

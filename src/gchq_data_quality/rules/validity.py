@@ -198,7 +198,7 @@ class ValuesMatchRegex(ValidityRegexBaseRule):
         and rule metadata. See DataQualityResult documentation for details.
     """
 
-    function: Literal["values_match_regex"] = "values_match_regex"  # type: ignore[override]
+    function: Literal["values_match_regex"] = "values_match_regex"
 
 
 class ValidityNumericalRangeBaseRule(BaseRule):
@@ -392,4 +392,4 @@ class ValuesMatchNumericalRange(ValidityNumericalRangeBaseRule):
         and rule metadata. See DataQualityResult documentation for details.
     """
 
-    function: Literal["values_match_numerical_range"] = "values_match_numerical_range"  # type: ignore[override]
+    function: Literal["values_match_numerical_range"] = "values_match_numerical_range"
