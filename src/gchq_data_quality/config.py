@@ -31,7 +31,7 @@ from __future__ import annotations
 import json
 import warnings
 from pathlib import Path
-from typing import TYPE_CHECKING, Annotated, Any, overload
+from typing import TYPE_CHECKING, Annotated, Any
 
 import pandas as pd
 import yaml
@@ -179,12 +179,7 @@ class DataQualityConfig(BaseModel):
         default_factory=list, description="List of data quality rules"
     )
 
-    @overload
-    def execute(self, data_source: pd.DataFrame) -> DataQualityReport: ...
-    @overload
-    def execute(self, data_source: SparkDataFrame) -> DataQualityReport: ...
-
-    def execute(self, data_source):
+    def execute(self, data_source: pd.DataFrame | SparkDataFrame) -> DataQualityReport:
         """
         Execute all data quality rules defined in the configuration against the specified data source.
 

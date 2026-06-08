@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections.abc import Iterator
-from typing import Any, Literal, Self, overload
+from typing import Any, Literal, Self
 from warnings import warn
 
 import pandas as pd
@@ -108,12 +108,7 @@ class BaseRule(DataQualityBaseModel, ABC):
         ..., description="The Dama dimension for each rule"
     )
 
-    @overload
-    def evaluate(self, data_source: pd.DataFrame) -> DataQualityResult: ...
-    @overload
-    def evaluate(self, data_source: SparkDataFrame) -> DataQualityResult: ...
-
-    def evaluate(self, data_source: pd.DataFrame | SparkDataFrame):
+    def evaluate(self, data_source: pd.DataFrame | SparkDataFrame) -> DataQualityResult:
         """
         Evaluates this rule against the provided data source.
 
