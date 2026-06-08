@@ -251,6 +251,32 @@ class DataQualityReport(DataQualityBaseModel):
 
     results: list[DataQualityResult] = Field(default_factory=list)
 
+    def __len__(self) -> int:
+        """Return the number of results (records) in this report."""
+        return len(self.results)
+
+    def __add__(
+        self, other: DataQualityReport | DataQualityResult
+    ) -> DataQualityReport:
+        """Return a new DataQualityReport whose results are the concatenation of this
+        report's results with *other*.
+
+        Args:
+            other: Either a :class:`DataQualityReport` (all of its results are appended)
+                or a single :class:`DataQualityResult` (appended as one record).
+
+        Returns:
+            DataQualityReport: A new report containing the combined results.
+
+        Raises:
+            TypeError: If *other* is neither a DataQualityReport nor a DataQualityResult.
+        """
+        if isinstance(other, DataQualityReport):
+            return DataQualityReport(results=self.results + other.results)
+        elif isinstance(other, DataQualityResult):
+            return DataQualityReport(results=self.results + [other])
+        return NotImplemented
+
     def to_dataframe(
         self,
         decimals: int = 4,
