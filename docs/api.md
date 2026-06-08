@@ -2,49 +2,49 @@
 
 ## Rules
 
-::: gchq_data_quality.rules.uniqueness.UniquenessRule
+::: gchq_data_quality.rules.uniqueness.ValuesAreUnique
     options:
         members: false
         show_root_heading: true
         heading_level: 3
 
-::: gchq_data_quality.rules.completeness.CompletenessRule
+::: gchq_data_quality.rules.completeness.ValuesAreComplete
     options:
         members: false
         show_root_heading: true
         heading_level: 3
 
-::: gchq_data_quality.rules.accuracy.AccuracyRule
+::: gchq_data_quality.rules.accuracy.ValuesMatchList
     options:
         members: false
         show_root_heading: true
         heading_level: 3
 
-::: gchq_data_quality.rules.consistency.ConsistencyRule
+::: gchq_data_quality.rules.consistency.ValuesMatchExpression
     options:
         members: false
         show_root_heading: true
         heading_level: 3
 
-::: gchq_data_quality.rules.timeliness.TimelinessRelativeRule
+::: gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds
     options:
         members: false
         show_root_heading: true
         heading_level: 3
 
-::: gchq_data_quality.rules.timeliness.TimelinessStaticRule
+::: gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds
     options:
         members: false
         show_root_heading: true
         heading_level: 3
 
-::: gchq_data_quality.rules.validity.ValidityNumericalRangeRule
+::: gchq_data_quality.rules.validity.ValuesMatchNumericalRange
     options:
         members: false
         show_root_heading: true
         heading_level: 3
 
-::: gchq_data_quality.rules.validity.ValidityRegexRule
+::: gchq_data_quality.rules.validity.ValuesMatchRegex
     options:
         members: false
         show_root_heading: true

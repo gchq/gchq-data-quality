@@ -1,41 +1,45 @@
-dataset_name: Overwrite Dataset Name
+dataset_name: Tutorial Data
 dataset_id: null
-measurement_sample: Our Test Data
+measurement_sample: null
 lifecycle_stage: null
-measurement_time: 2026-01-19 16:25:24.679688+00:00
+measurement_time: 2025-01-01 00:00:00+00:00
 rules:
 - field: id
+  filter: null
   rule_id: null
   rule_description: null
   na_values: null
   skip_if_null: any
   data_quality_dimension: Uniqueness
-  function: uniqueness
+  function: values_are_unique
 - field: name
+  filter: null
   rule_id: null
   rule_description: null
   na_values: null
   skip_if_null: never
   data_quality_dimension: Completeness
-  function: completeness
+  function: values_are_complete
 - field: category
+  filter: null
   rule_id: null
   rule_description: null
   na_values: null
   skip_if_null: any
   data_quality_dimension: Accuracy
-  function: accuracy
   valid_values:
   - A
   - B
   - C
   - D
   inverse: false
+  function: values_match_list
 - field: email
+  filter: null
   rule_id: null
   rule_description: null
   na_values: null
   skip_if_null: any
   data_quality_dimension: Validity
-  function: validity_regex
   regex_pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+  function: values_match_regex

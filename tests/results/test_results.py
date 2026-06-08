@@ -22,6 +22,15 @@ from gchq_data_quality.rules import (
     UniquenessRule,
     ValidityNumericalRangeRule,
     ValidityRegexRule,
+    # New preferred names
+    ValuesAreComplete,
+    ValuesAreUnique,
+    ValuesMatchExpression,
+    ValuesMatchList,
+    ValuesMatchNumericalRange,
+    ValuesMatchRegex,
+    ValuesMatchRelativeTimeBounds,
+    ValuesMatchStaticTimeBounds,
 )
 from tests.conftest import (
     assert_dq_result_matches_expected,
@@ -162,6 +171,9 @@ def get_inputs_for_round_trip(
     return config, df, expected
 
 
+# ---- Legacy name round-trip tests ----
+
+
 def test_validity_regex_roundtrip(validity_regex_case: dict, tmp_path: Path) -> None:
     """Check all the models interoperate properly YAML <> DataQualityConfig <> DataQualityReport"""
     config, df, expected_results = get_inputs_for_round_trip(
@@ -240,12 +252,100 @@ def test_timeliness_relative_roundtrip(
     validate_round_trip(config, df, expected_results, tmp_path)
 
 
+# ---- New preferred name round-trip tests ----
+
+
+def test_accuracy_new_name_roundtrip(accuracy_case: dict, tmp_path: Path) -> None:
+    """Check ValuesMatchList round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        accuracy_case, ValuesMatchList
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_match_regex_roundtrip(
+    validity_regex_case: dict, tmp_path: Path
+) -> None:
+    """Check ValuesMatchRegex round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        validity_regex_case, ValuesMatchRegex
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_match_numerical_range_roundtrip(
+    validity_numerical_range_case: dict, tmp_path: Path
+) -> None:
+    """Check ValuesMatchNumericalRange round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        validity_numerical_range_case, ValuesMatchNumericalRange
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_are_complete_roundtrip(completeness_case: dict, tmp_path: Path) -> None:
+    """Check ValuesAreComplete round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        completeness_case, ValuesAreComplete
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_match_expression_roundtrip(
+    consistency_case: dict, tmp_path: Path
+) -> None:
+    """Check ValuesMatchExpression round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        consistency_case, ValuesMatchExpression
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_are_unique_roundtrip(uniqueness_case: dict, tmp_path: Path) -> None:
+    """Check ValuesAreUnique round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        uniqueness_case, ValuesAreUnique
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_match_static_time_bounds_roundtrip(
+    timeliness_static_case: dict, tmp_path: Path
+) -> None:
+    """Check ValuesMatchStaticTimeBounds round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        timeliness_static_case, ValuesMatchStaticTimeBounds
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_match_relative_time_bounds_roundtrip(
+    timeliness_relative_case: dict, tmp_path: Path
+) -> None:
+    """Check ValuesMatchRelativeTimeBounds round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        timeliness_relative_case, ValuesMatchRelativeTimeBounds
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+# ---- Other result/report tests ----
+
+
 def test_data_quality_config_created_from_base_rule(tmp_path: Path) -> None:
     """Sometimes we need to pass a rule set List[RuleType] into a DataQualityConfig
     class to create it, rather than a basic dictionary"""
 
-    simple_rule = UniquenessRule(field="field_A")
-    simple_rule2 = CompletenessRule(field="fieldA")
+    simple_rule = ValuesAreUnique(field="field_A")
+    simple_rule2 = ValuesAreComplete(field="fieldA")
 
     rules = [simple_rule, simple_rule2]
 
@@ -257,7 +357,7 @@ def test_data_quality_config_created_from_base_rule(tmp_path: Path) -> None:
 
 def test_default_measurement_time_behaviour(test_df: pd.DataFrame) -> None:
     # In the config, if we don't set a time, it should be None
-    simple_rule = UniquenessRule(field="id")
+    simple_rule = ValuesAreUnique(field="id")
     config = DataQualityConfig(rules=[simple_rule])
     assert config.measurement_time is None
     assert isinstance(config.model_dump_json(), str)
@@ -392,7 +492,7 @@ def test_failed_records_outputs(test_df: pd.DataFrame) -> None:
     in particular when in spark, we need to output a JSON string for our records_failed samples
     to accommodate the spark schema"""
     # In the config, if we don't set a time, it should be None
-    uniqueness_rule = UniquenessRule(field="id")
+    uniqueness_rule = ValuesAreUnique(field="id")
     dq_result = uniqueness_rule.evaluate(test_df)
 
     assert isinstance(dq_result, DataQualityResult)
