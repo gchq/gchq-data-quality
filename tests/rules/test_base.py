@@ -15,7 +15,6 @@ def test_evaluate_raises_from_bad_input() -> None:
     )
 
     data = Mock()
-    # The evaluate() will dispatch to evaluate_in_elastic and should raise NotImplementedError
     with pytest.raises(ValueError) as excinfo:
         rule.evaluate(data)
     assert "You must pass in" in str(excinfo.value)
