@@ -40,6 +40,7 @@ from gchq_data_quality.models import (
 )
 from gchq_data_quality.results.models import DataQualityResult
 from gchq_data_quality.rules.utils.rules_utils import (
+    adjust_records_passing,
     calculate_pass_rate,
     ensure_columns_exist_pandas,
     evaluate_bool_expression,
@@ -169,11 +170,12 @@ class BaseRule(DataQualityBaseModel, ABC):
         records_evaluated = self._get_records_evaluated_pandas(df)
         records_passing = self._get_records_passing_pandas(df)
         pass_rate = calculate_pass_rate(records_passing, records_evaluated)
-
+        records_passing = adjust_records_passing(records_passing, records_evaluated)
         data_quality_result = DataQualityResult(
             field=self.field,
             data_quality_dimension=self.data_quality_dimension,
             records_evaluated=records_evaluated,
+            records_passing=records_passing,
             pass_rate=pass_rate,
             rule_id=self.rule_id,
             rule_description=self.rule_description,

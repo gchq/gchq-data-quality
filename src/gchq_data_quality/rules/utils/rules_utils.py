@@ -20,6 +20,23 @@ import pandas as pd
 from gchq_data_quality.errors import DQFunctionError
 
 
+def adjust_records_passing(records_passing: int, records_evaluated: int) -> int | None:
+    """Adjusted records_passing to be None if records_evaluated is 0. This is by definition.
+
+    Args:
+        records_passing (int): Records that pass from a separate function (always an int)
+        records_evaluated (int): Number of records the rule has run against.
+
+    Returns:
+        int | None: The new records_passing value
+    """
+
+    if records_evaluated == 0:
+        return None
+    else:
+        return records_passing
+
+
 def calculate_pass_rate(records_passing: int, records_evaluated: int) -> float | None:
     """
     Safely divide the number of passing records by the total checked records.

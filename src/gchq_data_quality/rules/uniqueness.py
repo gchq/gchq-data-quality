@@ -19,7 +19,10 @@ from gchq_data_quality.globals import SampleConfig
 from gchq_data_quality.models import DamaFramework, DataQualityDimension
 from gchq_data_quality.results.models import DataQualityResult
 from gchq_data_quality.rules.base import BaseRule
-from gchq_data_quality.rules.utils.rules_utils import calculate_pass_rate
+from gchq_data_quality.rules.utils.rules_utils import (
+    adjust_records_passing,
+    calculate_pass_rate,
+)
 
 
 class UniquenessBaseRule(BaseRule):
@@ -125,6 +128,8 @@ class UniquenessBaseRule(BaseRule):
             records_passing=records_passing, records_evaluated=records_evaluated
         )
 
+        records_passing = adjust_records_passing(records_passing, records_evaluated)
+
         dq_result = DataQualityResult(
             pass_rate=pass_rate,
             field=self.field,
@@ -133,6 +138,7 @@ class UniquenessBaseRule(BaseRule):
             rule_description=self.rule_description,
             rule_data=self.to_json(),
             records_evaluated=records_evaluated,
+            records_passing=records_passing,
         )
 
         if self._require_failed_records_sample(pass_rate):

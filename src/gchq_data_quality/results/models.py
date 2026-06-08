@@ -30,6 +30,7 @@ from pydantic import (
     field_serializer,
     field_validator,
 )
+from pydantic.experimental.missing_sentinel import MISSING
 
 from gchq_data_quality.globals import SampleConfig
 from gchq_data_quality.models import (
@@ -115,6 +116,11 @@ class DataQualityResult(DataQualityBaseModel):
     records_evaluated: int | None = Field(
         default=None,
         description="Total number of records evaluated / checked for this rule.",
+    )
+    records_passing: int | None | MISSING = Field(  # pyright: ignore[reportInvalidTypeForm]
+        default=MISSING,
+        ge=0,
+        description="The number of records that passed the rule. If records_evaluated is 0, then records_passing will be None.",
     )
     pass_rate: float | None = Field(
         ...,
@@ -204,7 +210,7 @@ class DataQualityResult(DataQualityBaseModel):
                 )
                 return None
 
-    @field_validator("pass_rate", mode="before")
+    @field_validator("pass_rate", "records_passing", mode="before")
     @classmethod
     def _set_to_none_if_nan(cls, v: float | None) -> float | None:
         """Needed as Spark coerces to NaN"""
