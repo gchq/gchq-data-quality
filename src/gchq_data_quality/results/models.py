@@ -64,6 +64,7 @@ class DataQualityResult(DataQualityBaseModel):
         field (str): Name of the column the rule applies to.
         data_quality_dimension (DamaFramework): Data quality dimension evaluated (Uniqueness, Completeness, etc.).
         records_evaluated (int | None): Total records evaluated by this rule.
+        records_passing (int | None | MISSING): Total records that passed the rule. If records_evaluated is 0, then this is None by definition.
         pass_rate (float | None): Ratio (0-1) of passing records to evaluated records.
         rule_id (Any | None): Local identifier for the applied rule.
         rule_description (Any): Text, dict, or JSON describing rule parameters and logic.
@@ -83,6 +84,7 @@ class DataQualityResult(DataQualityBaseModel):
     Note:
         Direct construction of DataQualityResult or DataQualityReport are rare; results are typically gathered in production using
         RuleType.evaluate(df) or DataQualityConfig.execute(data)
+        records_passing can be 'missing' from creation and then will not get serialised. This is for backwards compatibility with versions < 1.2
     """
 
     dataset_name: float | str | int | None = Field(
