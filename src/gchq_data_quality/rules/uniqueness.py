@@ -174,7 +174,7 @@ class UniquenessBaseRule(BaseRule):
                 # nullable boolean mask -> treat NA as False
                 yield pdf.loc[filter_mask.fillna(False)]
 
-        return spark_df.mapInPandas(pandas_mapper, schema=output_schema)
+        return spark_df.mapInPandas(pandas_mapper, schema=output_schema)  # type: ignore
 
 
 class UniquenessRule(UniquenessBaseRule):
