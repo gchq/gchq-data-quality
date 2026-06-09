@@ -84,7 +84,9 @@ def test_records_passed_partition_none_handling(test_df_spark: DataFrame) -> Non
     # Take two rows and force two partitions, ensuring one partition records_evaluted = 0
     # We want to ensure that when these partitioned results are aggregated
     # That the correct records_passed values is returned (None + 1) = 1
-    df_two_rows = test_df_spark.orderBy("row_number").limit(2)  # rows 1 and 2
+    df_two_rows = (
+        test_df_spark.orderBy("row_number").limit(2).repartition(2)
+    )  # rows 1 and 2
 
     # Filter so only one row is evaluated
     rule = ValidityNumericalRangeRule(
