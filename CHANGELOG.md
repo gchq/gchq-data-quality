@@ -26,6 +26,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 -
 
+## [1.2.0] - 2026-06-09
+
+### Added
+- `DataQualityReport.__add__` and `__len__` support: reports can now be combined with `+`/`+=`, and `len(report)` returns the number of results.
+- `records_passed` is now included in the standard rule evaluation output (`DataQualityResult`), enabling weighted pass rate calculations in dashboards (e.g. weighting by `records_evaluated` rather than a simple average of `pass_rate`).
+
+### Changed
+- Rule classes have been renamed to more descriptive `Values*` names (old names remain importable as aliases for backward compatibility):
+  - `UniquenessRule` → `ValuesAreUnique`
+  - `CompletenessRule` → `ValuesAreComplete`
+  - `AccuracyRule` → `ValuesMatchList`
+  - `ConsistencyRule` → `ValuesMatchExpression`
+  - `ValidityRegexRule` → `ValuesMatchRegex`
+  - `ValidityNumericalRangeRule` → `ValuesMatchNumericalRange`
+  - `TimelinessStaticRule` → `ValuesMatchStaticTimeBounds`
+  - `TimelinessRelativeRule` → `ValuesMatchRelativeTimeBounds`
+- Improved error feedback when YAML-defined regex patterns are malformed, with actionable messages to help users diagnose and fix the issue.
+
+### Removed
+- Removed the skeleton Elasticsearch implementation. Because query results are highly dependent on index mappings and cross-column comparisons are awkward, the recommended approach is to use `eland` to sample data from Elasticsearch into a DataFrame and apply rules there.
+
 ## [1.1.0] - 2026-02-23
 
 ### Changed
@@ -68,6 +89,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [//]: # (### Deprecated)
 [//]: # (This is where existing but deprecated elements should be noted.)
 
+[1.2.0]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.2.0
 [1.1.0]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.1.0
 [1.0.0]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.0.0
 
