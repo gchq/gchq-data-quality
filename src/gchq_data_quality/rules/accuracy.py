@@ -39,7 +39,7 @@ class AccuracyBaseRule(BaseRule):
 
     # The default _get_records_evaluated_pandas of non-null values is fine (BaseRule)
 
-    def _get_records_passing_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
+    def _get_records_passed_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
         """
         Determines the number of records that are one of valid_values,
         unless inverse = True, in which case the number that are NOT in valid_values

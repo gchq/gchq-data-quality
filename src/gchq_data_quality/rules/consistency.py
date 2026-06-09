@@ -92,7 +92,7 @@ class ConsistencyBaseRule(BaseRule):
             if_statement_true = evaluate_bool_expression(df, self.expression["if"])
             return if_statement_true & ~skip_mask
 
-    def _get_records_passing_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
+    def _get_records_passed_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
         """For a record to pass a consistency check:
         1. if it's a simple string like X > 3, we just evaluate that boolean expression
         2. if it's a dictionary, then it passes if the 'then' statement evalutes to true.

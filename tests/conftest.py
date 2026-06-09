@@ -45,7 +45,7 @@ def basic_data_quality_result() -> DataQualityResult:
         rule_description="Dummy rule",
         rule_data=json.dumps({"field": "test_field", "function": "completeness"}),
         records_evaluated=10,
-        records_passing=4,
+        records_passed=4,
         records_failed_ids=[1, 2, 3, 4, 5],
         records_failed_sample=[{"id": 1}],
         pass_rate=0.4,

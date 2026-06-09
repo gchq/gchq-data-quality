@@ -40,7 +40,7 @@ from gchq_data_quality.models import (
 )
 from gchq_data_quality.results.models import DataQualityResult
 from gchq_data_quality.rules.utils.rules_utils import (
-    adjust_records_passing,
+    adjust_records_passed,
     calculate_pass_rate,
     ensure_columns_exist_pandas,
     evaluate_bool_expression,
@@ -168,14 +168,14 @@ class BaseRule(DataQualityBaseModel, ABC):
         df = self._filter_dataframe(df)
         # the defining logic in every rule is what records are passed and which are evaluated
         records_evaluated = self._get_records_evaluated_pandas(df)
-        records_passing = self._get_records_passing_pandas(df)
-        pass_rate = calculate_pass_rate(records_passing, records_evaluated)
-        records_passing = adjust_records_passing(records_passing, records_evaluated)
+        records_passed = self._get_records_passed_pandas(df)
+        pass_rate = calculate_pass_rate(records_passed, records_evaluated)
+        records_passed = adjust_records_passed(records_passed, records_evaluated)
         data_quality_result = DataQualityResult(
             field=self.field,
             data_quality_dimension=self.data_quality_dimension,
             records_evaluated=records_evaluated,
-            records_passing=records_passing,
+            records_passed=records_passed,
             pass_rate=pass_rate,
             rule_id=self.rule_id,
             rule_description=self.rule_description,
@@ -195,7 +195,7 @@ class BaseRule(DataQualityBaseModel, ABC):
     # --------------- Pandas helper functions ---------------
 
     @abstractmethod
-    def _get_records_passing_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
+    def _get_records_passed_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
         """The bool mask of what records are passing (i.e. this function is the main way we define our data quality rules), this is also an AND with
         the records_evaluated_mask by definition, as we cannot pass a record
         if it has not been evaluated."""
@@ -354,7 +354,7 @@ class BaseRule(DataQualityBaseModel, ABC):
 
         return records_evaluated_mask.sum()
 
-    def _get_records_passing_pandas(self, df: pd.DataFrame) -> int:
+    def _get_records_passed_pandas(self, df: pd.DataFrame) -> int:
         """
         Abstract method to compute the number of records passing the data quality rule.
 
@@ -367,7 +367,7 @@ class BaseRule(DataQualityBaseModel, ABC):
             int: The count of records passing the rule's criteria.
         """
         evaluated_mask = self._get_records_evaluated_mask_pandas(df)
-        passing_mask = self._get_records_passing_mask_pandas(df)
+        passing_mask = self._get_records_passed_mask_pandas(df)
         passing_mask = self._replace_na_in_bool_mask(passing_mask)
         return (evaluated_mask & passing_mask).sum()
 
@@ -402,7 +402,7 @@ class BaseRule(DataQualityBaseModel, ABC):
             pd.Series: Boolean mask where True indicates a failing record.
         """
 
-        passing_mask = self._get_records_passing_mask_pandas(df)
+        passing_mask = self._get_records_passed_mask_pandas(df)
         passing_mask = self._replace_na_in_bool_mask(passing_mask)
         evaluated_mask = self._get_records_evaluated_mask_pandas(df)
         return evaluated_mask & ~passing_mask

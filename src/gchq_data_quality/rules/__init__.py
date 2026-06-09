@@ -13,11 +13,11 @@ This module provides data quality rules for the 6 DAMA Dimensions of Data Qualit
 They inherit from a core BaseRule class. All data quality evaluation is built on a consistent method:
 1. Determine the records that are evaluated (as a boolean mask) - records_evaluated_mask
     The total records evaluated here is then the sum of the mask.
-2. Determine the records that pass the rule (as a boolean mask) - records_passing_mask
-    The count of records_passing is the sum of records_passing_mask AND records_evaluated_mask
+2. Determine the records that pass the rule (as a boolean mask) - records_passed_mask
+    The count of records_passed is the sum of records_passed_mask AND records_evaluated_mask
     (for various reasons you can have records passing a rule that are not in the evaluation set, e.g. they are NULL)
 
-    The pass_rate is then records_passing / records_evaluated
+    The pass_rate is then records_passed / records_evaluated
 
 
 You can see the mechanisms in each rule primarily by looking at the masks that are created. The metrics derived from these

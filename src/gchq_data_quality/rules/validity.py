@@ -71,7 +71,7 @@ class ValidityRegexBaseRule(BaseRule):
         )
         return df
 
-    def _get_records_passing_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
+    def _get_records_passed_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
         """Records pass if they match the regex"""
         passing_mask = df[self.field].str.match(self.regex_pattern)
 
@@ -254,13 +254,13 @@ class ValidityNumericalRangeBaseRule(BaseRule):
         )
         return df
 
-    def _get_records_passing_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
+    def _get_records_passed_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
         """records pass if they are between the min and max value"""
 
-        records_passing_mask = (df[self.field] >= self.min_value) & (
+        records_passed_mask = (df[self.field] >= self.min_value) & (
             df[self.field] <= self.max_value
         )
-        return records_passing_mask
+        return records_passed_mask
 
 
 class ValidityNumericalRangeRule(ValidityNumericalRangeBaseRule):

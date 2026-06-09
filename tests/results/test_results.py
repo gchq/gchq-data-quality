@@ -506,6 +506,9 @@ def test_add_two_reports(basic_data_quality_result: DataQualityResult) -> None:
     assert len(combined) == len(report_a) + len(report_b)
     assert combined.results == report_a.results + report_b.results
 
+    combined_as_list = DataQualityReport() + [basic_data_quality_result, second]
+    assert combined_as_list == combined
+
 
 def test_add_report_does_not_mutate_originals(
     basic_data_quality_result: DataQualityResult,
@@ -557,10 +560,17 @@ def test_add_empty_report_to_report(
 
 def test_add_unsupported_type_returns_not_implemented(
     basic_data_quality_report: DataQualityReport,
+    basic_data_quality_result: DataQualityResult,
 ) -> None:
     """Adding an unsupported type should return NotImplemented (Python will raise TypeError)."""
     result = basic_data_quality_report.__add__("not a report")  # type: ignore[arg-type]
     assert result is NotImplemented
+
+    # Test for adding a list of results where one is invalid
+    with pytest.raises(
+        TypeError, match="every item in the list needs to be a DataQualityResult"
+    ):
+        result = basic_data_quality_report + [basic_data_quality_result, "not a result"]
 
 
 def test_to_json_writes_and_roundtrips(

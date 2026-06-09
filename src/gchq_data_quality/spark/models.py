@@ -38,7 +38,7 @@ class DataQualityResultSparkSchema:
             ),  # in report.to_dataframe() we turn integer indexes to strings
             StructField("records_failed_sample", StringType(), True),
             StructField("records_evaluated", IntegerType(), True),
-            StructField("records_passing", IntegerType(), True),
+            StructField("records_passed", IntegerType(), True),
             StructField("pass_rate", FloatType(), True),
         ]
     )
