@@ -19,7 +19,10 @@ from gchq_data_quality.globals import SampleConfig
 from gchq_data_quality.models import DamaFramework, DataQualityDimension
 from gchq_data_quality.results.models import DataQualityResult
 from gchq_data_quality.rules.base import BaseRule
-from gchq_data_quality.rules.utils.rules_utils import calculate_pass_rate
+from gchq_data_quality.rules.utils.rules_utils import (
+    adjust_records_passed,
+    calculate_pass_rate,
+)
 
 
 class UniquenessBaseRule(BaseRule):
@@ -59,7 +62,7 @@ class UniquenessBaseRule(BaseRule):
 
     # The default _get_records_evaluated_pandas of non-null values is fine (BaseRule)
 
-    def _get_records_passing_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
+    def _get_records_passed_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
         """
         Creates a boolean mask indicating whether each record in the specified column is unique.
 
@@ -118,12 +121,14 @@ class UniquenessBaseRule(BaseRule):
         )
         records_evaluated = records_evaluated_df.count()
 
-        records_passing = (
+        records_passed = (
             records_evaluated_df.select(spark_safe_rule.field).distinct().count()
         )
         pass_rate = calculate_pass_rate(
-            records_passing=records_passing, records_evaluated=records_evaluated
+            records_passed=records_passed, records_evaluated=records_evaluated
         )
+
+        records_passed = adjust_records_passed(records_passed, records_evaluated)
 
         dq_result = DataQualityResult(
             pass_rate=pass_rate,
@@ -133,6 +138,7 @@ class UniquenessBaseRule(BaseRule):
             rule_description=self.rule_description,
             rule_data=self.to_json(),
             records_evaluated=records_evaluated,
+            records_passed=records_passed,
         )
 
         if self._require_failed_records_sample(pass_rate):

@@ -27,6 +27,7 @@ def test_filter_in_rule_spark(test_nested_df: DataFrame) -> None:
     dq_result = rule.evaluate(test_nested_df)
     assert dq_result.records_evaluated == 3
     assert dq_result.pass_rate == 1.0
+    assert dq_result.records_passed == 3
 
     # try filter on columns not being assessed
     rule2 = ValidityNumericalRangeRule(
@@ -77,3 +78,28 @@ def test_change_global_records_failed_sample_size(test_df_spark: DataFrame) -> N
     result2 = rule_4_failures.evaluate(test_df_spark)
 
     assert result2.records_failed_sample and len(result2.records_failed_sample) == 4
+
+
+def test_records_passed_partition_none_handling(test_df_spark: DataFrame) -> None:
+    # Take two rows and force two partitions, ensuring one partition records_evaluted = 0
+    # We want to ensure that when these partitioned results are aggregated
+    # That the correct records_passed values is returned (None + 1) = 1
+    df_two_rows = (
+        test_df_spark.orderBy("row_number").limit(2).repartition(2)
+    )  # rows 1 and 2
+
+    # Filter so only one row is evaluated
+    rule = ValidityNumericalRangeRule(
+        field="age",
+        filter="`row_number` == 1",
+        min_value=0,
+        max_value=100,
+    )
+
+    result = rule.evaluate(df_two_rows)
+
+    # Only one row should have been evaluated
+    assert result.records_evaluated == 1
+
+    assert result.records_passed == 1
+    assert result.pass_rate == 1.0

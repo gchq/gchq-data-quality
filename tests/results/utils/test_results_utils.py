@@ -6,6 +6,7 @@ from gchq_data_quality.globals import SampleConfig
 from gchq_data_quality.results.models import DataQualityReport
 from gchq_data_quality.results.utils import (
     aggregate_records_failed_samples,
+    aggregate_records_passed,
     records_failed_ids_are_int,
     shift_records_failed_ids,
 )
@@ -45,6 +46,7 @@ def test_aggregate_partition_dq_results_defaults() -> None:
                 "records_failed_sample": [{"id": 1}, {"id": 2}],
                 "records_failed_ids": [0, 1],
                 "records_evaluated": 10,
+                "records_passed": 9,
                 "pass_rate": 0.9,
                 # Simulate indexing Spark partition
             },
@@ -62,6 +64,7 @@ def test_aggregate_partition_dq_results_defaults() -> None:
                 "records_failed_sample": [{"id": 3}, {"id": 4}],
                 "records_failed_ids": [2, 3],
                 "records_evaluated": 5,
+                "records_passed": 5,
                 "pass_rate": 1.0,
             },
         ]
@@ -97,3 +100,21 @@ def test_shift_records_failed_ids(shift_records_failed_ids_case: dict) -> None:
     expected = shift_records_failed_ids_case["expected"]["shifted_row_numbers"]
     result = shift_records_failed_ids(**inputs)
     assert result == expected
+
+
+def test_aggregate_records_passed() -> None:
+    # None + value -> value
+    s = pd.Series([None, 3])
+    assert aggregate_records_passed(s) == 3
+
+    # multiple values summed
+    s = pd.Series([2, 3, None])
+    assert aggregate_records_passed(s) == 5
+
+    # all None -> None
+    s = pd.Series([None, None])
+    assert aggregate_records_passed(s) is None
+
+    # single value
+    s = pd.Series([4])
+    assert aggregate_records_passed(s) == 4

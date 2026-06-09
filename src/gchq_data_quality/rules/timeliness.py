@@ -79,12 +79,12 @@ class TimelinessStaticBaseRule(TimelinessBaseRule):
             )
         return self
 
-    def _get_records_passing_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
+    def _get_records_passed_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
         """A records passes if it is within the datetime boundary"""
-        records_passing_mask = is_within_datetime_range(
+        records_passed_mask = is_within_datetime_range(
             df, self.field, self.start_date, self.end_date
         )
-        return records_passing_mask
+        return records_passed_mask
 
     def _coerce_dataframe_type(self, df: pd.DataFrame) -> pd.DataFrame:
         columns_to_coerce = [self.field]  # do not coerce the self.filter expression
@@ -359,7 +359,7 @@ class TimelinessRelativeBaseRule(TimelinessBaseRule):
         else:
             return reference_dates + time_delta
 
-    def _get_records_passing_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
+    def _get_records_passed_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
         """Records pass if the date in df[field] is within the upper and lower boundary
         defined by the start and end timedelta relative to the reference date."""
         reference_dates = self._get_reference_date_series(df)
@@ -368,10 +368,10 @@ class TimelinessRelativeBaseRule(TimelinessBaseRule):
             reference_dates, self.start_timedelta
         )
         valid_end_dates = self._get_date_boundary(reference_dates, self.end_timedelta)
-        records_passing_mask = is_within_datetime_range(
+        records_passed_mask = is_within_datetime_range(
             df, self.field, valid_start_dates, valid_end_dates
         )
-        return records_passing_mask
+        return records_passed_mask
 
     def _get_spark_safe_rule(self) -> Self:
         """We override the default behaviour as we additionally need to make

@@ -311,7 +311,33 @@ filtered_accuracy = ValuesMatchList(
 ```
 The example above will filter the dataframe where score > 0, then apply the rule. This will reduce the `records_evaluated` from 5 to 4.
 
-## 3. Combine & Export Results
+## 3. Adding Results & Combining Reports
+
+Throughout section 2, results are added with `FINAL_REPORT.results.append(dq_result)`. Two shorthand alternatives using `+=` are also available.
+
+**Add a single result:**
+```python
+FINAL_REPORT += consistency_result
+```
+
+**Add multiple results at once:**
+```python
+FINAL_REPORT += [validity_regex_result, validity_numerical_range_result]
+```
+
+Use `len()` to check how many results are currently in the report:
+```python
+len(FINAL_REPORT)  # returns the number of DataQualityResult objects
+```
+
+**Combining two reports:** adding two `DataQualityReport` objects concatenates their `.results` lists (the second report's results are appended onto the first):
+```python
+combined_report = report_a + report_b
+# or in-place:
+report_a += report_b
+```
+
+## 4. Combine & Export Results
 
 You can turn your results into a DataFrame (or other formats) for reporting:
 
@@ -331,7 +357,7 @@ df_report = FINAL_REPORT.to_dataframe(
 
 
 
-## 4. DataQualityConfig (optional/advanced)
+## 5. DataQualityConfig (optional/advanced)
 
 Instead of manually appending, you can define rule sets as a config object:
 
@@ -359,7 +385,7 @@ df_report.to_csv("data_quality_report.csv", index=False)
 
 
 
-## 5. Next Steps
+## 6. Next Steps
 
 - To learn about advanced configuration, using YAML rules files, and automation, continue with [Advanced Python Tutorial](python-advanced.md).
 

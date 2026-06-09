@@ -17,24 +17,6 @@ import pandas as pd
 from gchq_data_quality.globals import SampleConfig
 
 
-def add_records_passing(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Adds a 'records_passing' column to the DataFrame, calculated as
-    the product of 'records_evaluated' and 'pass_rate' per row.
-
-    Args:
-        df (pd.DataFrame): DataFrame containing columns 'records_evaluated' (int)
-            and 'pass_rate' (float, typically result of rule.evaluate()).
-
-    Returns:
-        pd.DataFrame: The input DataFrame with an added 'records_passing' column
-
-    """
-
-    df["records_passing"] = df["records_evaluated"] * df["pass_rate"]
-    return df
-
-
 def coerce_nan_to_none(records_failed_sample: list[dict]) -> list[dict]:
     """To avoid JSON serialisation errors, we need to remove pd.NaT and np.Nan
     in the records_failed_sample values
@@ -175,3 +157,15 @@ def shift_records_failed_ids(records_failed_ids: list, shift: int = 0) -> list:
         return [row_number + shift for row_number in records_failed_ids]
     else:
         return records_failed_ids
+
+
+def aggregate_records_passed(values: pd.Series) -> int | None:
+    """Aggregate records_passed across partitions.
+
+    - Ignores None values when summing
+    - Returns None if all partitions have None
+    """
+
+    if values.notna().any():
+        return int(values.sum(skipna=True))
+    return None
