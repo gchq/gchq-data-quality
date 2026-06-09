@@ -404,28 +404,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#elasticsearch-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Elasticsearch Integration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#multiple-extras" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Multiple Extras
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -695,28 +673,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#elasticsearch-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Elasticsearch Integration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#multiple-extras" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Multiple Extras
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -778,7 +734,7 @@
 
 
 <h1 id="installation">Installation</h1>
-<p>The <code>gchq-data-quality</code> package is designed to be modular, allowing you to install its core feature (Pandas dataframe code) as well as optional components for Spark (<code>pyspark</code>) and/or Elasticsearch (Elasticsearch is not yet implemented).</p>
+<p>The <code>gchq-data-quality</code> package is designed to be modular, allowing you to install its core feature (Pandas dataframe code) as well as optional components for Spark (<code>pyspark</code>).</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>Before installing <code>gchq-data-quality</code>, ensure the following:
 - <strong>Python</strong>: Version 3.11 or later is required.
@@ -799,18 +755,6 @@
 <ul>
 <li><strong>pyspark</strong> (this is quite a large package, hence having it as an optional extra)</li>
 </ul>
-<h4 id="elasticsearch-integration">Elasticsearch Integration</h4>
-<p>To use <code>gchq-data-quality</code> with <strong>Elasticsearch</strong>, install the package with the <code>elasticsearch</code> extra:
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>gchq-data-quality<span class="o">[</span>elasticsearch<span class="o">]</span>
-</code></pre></div></p>
-<p>This additionally installs:</p>
-<ul>
-<li><strong>elasticsearch</strong></li>
-</ul>
-<h4 id="multiple-extras">Multiple Extras</h4>
-<p>You can combine multiple optional integrations in a single command. For example, to install both PySpark and Elasticsearch support:
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>gchq-data-quality<span class="o">[</span>pyspark,elasticsearch<span class="o">]</span>
-</code></pre></div></p>
 <h2 id="development-installation">Development Installation</h2>
 <p>For local development, clone the repository and install the package in <strong>editable mode</strong>:</p>
 <ol>
@@ -840,7 +784,7 @@
 <p>To uninstall the package and its dependencies, run:
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>uninstall<span class="w"> </span>gchq-data-quality
 </code></pre></div></p>
-<p>If you installed optional dependencies, repeat the command for each extra name (<code>pyspark</code>, <code>elasticsearch</code>, etc.).</p>
+<p>If you installed optional dependencies, repeat the command for each extra name (<code>pyspark</code>).</p>
 
 
 

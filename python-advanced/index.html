@@ -546,10 +546,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-mangaing-regular-expressions" class="md-nav__link">
+  <a href="#6-managing-regular-expressions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Mangaing Regular Expressions
+        6. Managing Regular Expressions
       
     </span>
   </a>
@@ -827,10 +827,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-mangaing-regular-expressions" class="md-nav__link">
+  <a href="#6-managing-regular-expressions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Mangaing Regular Expressions
+        6. Managing Regular Expressions
       
     </span>
   </a>
@@ -922,10 +922,10 @@ You should know about pandas DataFrames and basic Python syntax.</p>
 <span class="nt">lifecycle_stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 <span class="nt">rules</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">id</span>
-<span class="w">    </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uniqueness</span>
+<span class="w">    </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">values_are_unique</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
 <span class="w">    </span><span class="nt">na_values</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
-<span class="w">    </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">validity_regex</span>
+<span class="w">    </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">values_match_regex</span>
 <span class="w">    </span><span class="nt">regex_pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[A-z0-9_]&#39;</span>
 </code></pre></div>
 <h4 id="lists-in-yaml">Lists in YAML</h4>
@@ -937,10 +937,18 @@ You should know about pandas DataFrames and basic Python syntax.</p>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">D</span><span class="w">               </span><span class="c1"># verbose, useful for long lists</span>
 </code></pre></div>
 <h4 id="regex-in-yaml">Regex in YAML</h4>
-<p>Always surround <code>regex_pattern</code> with <strong>single quotes</strong>:</p>
+<p>Regular expressions often contain characters (<code>\</code>, <code>'</code>, <code>:</code>, <code>{}</code>, etc.) that YAML may misinterpret. The safest approach is to treat the regex as a <strong>string literal</strong>. Our recommended approach:</p>
+<p><strong>1. Single‑quoted string (recommended for most simple regex)</strong></p>
+<p>Single quotes treat almost everything literally, including backslashes.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">regex_pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[A-Za-z]+&#39;</span>
 <span class="nt">regex_pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;\d{4}-\d{2}-\d{2}&#39;</span>
-<span class="nt">regex_pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;don</span><span class="se">&#39;&#39;</span><span class="s">t&#39;</span><span class="w">    </span><span class="c1"># To include a single quote</span>
+<span class="nt">regex_pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;don</span><span class="se">&#39;&#39;</span><span class="s">t&#39;</span><span class="w">   </span><span class="c1"># escape single quote by doubling it</span>
+</code></pre></div>
+<p><strong>2. Literal block (<code>|</code>)</strong></p>
+<p>Preserves the string exactly as written. Useful for long or complex regex patterns. Or where you have many single quotes in the regex.
+Note: you do not need to surround this with any quote character.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">regex_pattern</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no">/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/</span>
 </code></pre></div>
 <h2 id="3-loading-and-validating-config-files">3. Loading and Validating Config Files</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">gchq_data_quality</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataQualityConfig</span>
@@ -972,7 +980,7 @@ You should know about pandas DataFrames and basic Python syntax.</p>
 <div class="highlight"><pre><span></span><code><span class="n">config_from_report</span> <span class="o">=</span> <span class="n">DataQualityConfig</span><span class="o">.</span><span class="n">from_report</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 <span class="n">config_from_report</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">(</span><span class="s2">&quot;yaml_from_report.yaml&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="6-mangaing-regular-expressions">6. Mangaing Regular Expressions</h2>
+<h2 id="6-managing-regular-expressions">6. Managing Regular Expressions</h2>
 <p>Use a separate YAML file for regex patterns, to keep config rules readable and maintainable.</p>
 <p><code>regex_patterns.yaml</code>:
 <div class="highlight"><pre><span></span><code><span class="nt">EMAIL_REGEX</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$&#39;</span>
@@ -980,7 +988,7 @@ You should know about pandas DataFrames and basic Python syntax.</p>
 </code></pre></div></p>
 <p>Reference pattern names instead of raw regex in your rules:
 <div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">email</span>
-<span class="w">  </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">validity_regex</span>
+<span class="w">  </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">values_match_regex</span>
 <span class="w">  </span><span class="nt">regex_pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EMAIL_REGEX</span>
 </code></pre></div></p>
 <p>When loading your config:</p>
@@ -991,9 +999,9 @@ You should know about pandas DataFrames and basic Python syntax.</p>
 </code></pre></div>
 <h2 id="7-tweak-output-display-advanced">7. Tweak Output Display (Advanced)</h2>
 <p>Control sample output size globally:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">gchq_data_quality.globals</span><span class="w"> </span><span class="kn">import</span> <span class="n">SampleConfig</span>
-<span class="n">SampleConfig</span><span class="o">.</span><span class="n">RECORDS_FAILED_SAMPLE_SIZE</span> <span class="o">=</span> <span class="mi">25</span>
-</code></pre></div>
+<p>```python
+from gchq_data_quality.globals import SampleConfig
+SampleConfig.RECORDS_FAILED_SAMPLE_SIZE = 25</p>
 
 
 

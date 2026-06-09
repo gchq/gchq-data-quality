@@ -493,10 +493,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.uniqueness.UniquenessRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.uniqueness.ValuesAreUnique" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UniquenessRule
+        ValuesAreUnique
       
     </span>
   </a>
@@ -504,10 +504,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.completeness.CompletenessRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.completeness.ValuesAreComplete" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CompletenessRule
+        ValuesAreComplete
       
     </span>
   </a>
@@ -515,10 +515,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.accuracy.AccuracyRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.accuracy.ValuesMatchList" class="md-nav__link">
     <span class="md-ellipsis">
       
-        AccuracyRule
+        ValuesMatchList
       
     </span>
   </a>
@@ -526,10 +526,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.consistency.ConsistencyRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.consistency.ValuesMatchExpression" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ConsistencyRule
+        ValuesMatchExpression
       
     </span>
   </a>
@@ -537,10 +537,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.timeliness.TimelinessRelativeRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TimelinessRelativeRule
+        ValuesMatchRelativeTimeBounds
       
     </span>
   </a>
@@ -548,10 +548,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.timeliness.TimelinessStaticRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TimelinessStaticRule
+        ValuesMatchStaticTimeBounds
       
     </span>
   </a>
@@ -559,10 +559,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.validity.ValidityNumericalRangeRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.validity.ValuesMatchNumericalRange" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ValidityNumericalRangeRule
+        ValuesMatchNumericalRange
       
     </span>
   </a>
@@ -570,10 +570,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.validity.ValidityRegexRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.validity.ValuesMatchRegex" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ValidityRegexRule
+        ValuesMatchRegex
       
     </span>
   </a>
@@ -721,6 +721,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#gchq_data_quality.rules.base.BaseRule.filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        filter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#gchq_data_quality.rules.base.BaseRule.na_values" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -787,17 +798,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.base.BaseRule._evaluate_in_elastic" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        _evaluate_in_elastic
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#gchq_data_quality.rules.base.BaseRule._evaluate_in_pandas" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -824,6 +824,17 @@
     <span class="md-ellipsis">
       
         _evaluate_in_spark
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gchq_data_quality.rules.base.BaseRule._filter_dataframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _filter_dataframe
       
     </span>
   </a>
@@ -908,10 +919,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.base.BaseRule._get_records_passing_mask_pandas" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.base.BaseRule._get_records_passed_mask_pandas" class="md-nav__link">
     <span class="md-ellipsis">
       
-        _get_records_passing_mask_pandas
+        _get_records_passed_mask_pandas
       
     </span>
   </a>
@@ -919,10 +930,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.base.BaseRule._get_records_passing_pandas" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.base.BaseRule._get_records_passed_pandas" class="md-nav__link">
     <span class="md-ellipsis">
       
-        _get_records_passing_pandas
+        _get_records_passed_pandas
       
     </span>
   </a>
@@ -1074,10 +1085,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.uniqueness.UniquenessRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.uniqueness.ValuesAreUnique" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UniquenessRule
+        ValuesAreUnique
       
     </span>
   </a>
@@ -1085,10 +1096,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.completeness.CompletenessRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.completeness.ValuesAreComplete" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CompletenessRule
+        ValuesAreComplete
       
     </span>
   </a>
@@ -1096,10 +1107,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.accuracy.AccuracyRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.accuracy.ValuesMatchList" class="md-nav__link">
     <span class="md-ellipsis">
       
-        AccuracyRule
+        ValuesMatchList
       
     </span>
   </a>
@@ -1107,10 +1118,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.consistency.ConsistencyRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.consistency.ValuesMatchExpression" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ConsistencyRule
+        ValuesMatchExpression
       
     </span>
   </a>
@@ -1118,10 +1129,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.timeliness.TimelinessRelativeRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TimelinessRelativeRule
+        ValuesMatchRelativeTimeBounds
       
     </span>
   </a>
@@ -1129,10 +1140,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.timeliness.TimelinessStaticRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TimelinessStaticRule
+        ValuesMatchStaticTimeBounds
       
     </span>
   </a>
@@ -1140,10 +1151,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.validity.ValidityNumericalRangeRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.validity.ValuesMatchNumericalRange" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ValidityNumericalRangeRule
+        ValuesMatchNumericalRange
       
     </span>
   </a>
@@ -1151,10 +1162,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.validity.ValidityRegexRule" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.validity.ValuesMatchRegex" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ValidityRegexRule
+        ValuesMatchRegex
       
     </span>
   </a>
@@ -1302,6 +1313,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#gchq_data_quality.rules.base.BaseRule.filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        filter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#gchq_data_quality.rules.base.BaseRule.na_values" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1368,17 +1390,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.base.BaseRule._evaluate_in_elastic" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        _evaluate_in_elastic
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#gchq_data_quality.rules.base.BaseRule._evaluate_in_pandas" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1405,6 +1416,17 @@
     <span class="md-ellipsis">
       
         _evaluate_in_spark
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gchq_data_quality.rules.base.BaseRule._filter_dataframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _filter_dataframe
       
     </span>
   </a>
@@ -1489,10 +1511,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.base.BaseRule._get_records_passing_mask_pandas" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.base.BaseRule._get_records_passed_mask_pandas" class="md-nav__link">
     <span class="md-ellipsis">
       
-        _get_records_passing_mask_pandas
+        _get_records_passed_mask_pandas
       
     </span>
   </a>
@@ -1500,10 +1522,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gchq_data_quality.rules.base.BaseRule._get_records_passing_pandas" class="md-nav__link">
+  <a href="#gchq_data_quality.rules.base.BaseRule._get_records_passed_pandas" class="md-nav__link">
     <span class="md-ellipsis">
       
-        _get_records_passing_pandas
+        _get_records_passed_pandas
       
     </span>
   </a>
@@ -1633,8 +1655,8 @@
 
 
 
-<h3 id="gchq_data_quality.rules.uniqueness.UniquenessRule" class="doc doc-heading">
-            <code>gchq_data_quality.rules.uniqueness.UniquenessRule</code>
+<h3 id="gchq_data_quality.rules.uniqueness.ValuesAreUnique" class="doc doc-heading">
+            <code>gchq_data_quality.rules.uniqueness.ValuesAreUnique</code>
 
 
 </h3>
@@ -1642,14 +1664,14 @@
 
     <div class="doc doc-contents first">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="gchq_data_quality.rules.base.BaseRule" href="#gchq_data_quality.rules.base.BaseRule">BaseRule</a></code></p>
+              Bases: <code><span title="gchq_data_quality.rules.uniqueness.UniquenessBaseRule">UniquenessBaseRule</span></code></p>
 
 
 
         <p>Rule for assessing uniqueness in a column.</p>
-<p>Measures the proportion of unique, non-null values in a specified column. This is
-useful for checking distinct identifiers or reference keys. Additional null-like
-values can be specified via <code>na_values</code>.</p>
+<p>Preferred alias for <code>UniquenessRule</code>. Measures the proportion of unique, non-null
+values in a specified column. This is useful for checking distinct identifiers or
+reference keys. Additional null-like values can be specified via <code>na_values</code>.</p>
 
 
 <p><span class="doc-section-title">Attributes:</span></p>
@@ -1668,7 +1690,7 @@ values can be specified via <code>na_values</code>.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.uniqueness.UniquenessRule.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
+   (gchq_data_quality.rules.uniqueness.ValuesAreUnique.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
@@ -1684,7 +1706,7 @@ values can be specified via <code>na_values</code>.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.uniqueness.UniquenessRule.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
+   (gchq_data_quality.rules.uniqueness.ValuesAreUnique.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
             <td>
                   <code><span title="Any">Any</span> | <span title="list">list</span>[<span title="Any">Any</span>] | None</code>
             </td>
@@ -1695,7 +1717,28 @@ values can be specified via <code>na_values</code>.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.uniqueness.UniquenessRule.data_quality_dimension">data_quality_dimension</span></code></td>
+            <td><code><a class="autorefs autorefs-internal" title="filter = Field(default=None, description='The boolean filter to apply, using pandas eval syntax, before evaluating each rule.')
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.uniqueness.ValuesAreUnique.filter)" href="#gchq_data_quality.rules.base.BaseRule.filter">filter</a></code></td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="data_quality_dimension = Field(..., description='The Dama dimension for each rule')
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.uniqueness.ValuesAreUnique.data_quality_dimension)" href="#gchq_data_quality.rules.base.BaseRule.data_quality_dimension">data_quality_dimension</a></code></td>
             <td>
                   <code><a class="autorefs autorefs-internal" title="gchq_data_quality.models.DamaFramework" href="#gchq_data_quality.models.DamaFramework">DamaFramework</a></code>
             </td>
@@ -1711,7 +1754,7 @@ values can be specified via <code>na_values</code>.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.uniqueness.UniquenessRule.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
+   (gchq_data_quality.rules.uniqueness.ValuesAreUnique.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -1727,7 +1770,7 @@ values can be specified via <code>na_values</code>.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.uniqueness.UniquenessRule.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
+   (gchq_data_quality.rules.uniqueness.ValuesAreUnique.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -1751,7 +1794,7 @@ values can be specified via <code>na_values</code>.</p>
       </thead>
       <tbody>
             <tr class="doc-section-item">
-              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source, index_name='', query=None) (gchq_data_quality.rules.uniqueness.UniquenessRule.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
+              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source) (gchq_data_quality.rules.uniqueness.ValuesAreUnique.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
               <td>
                 <div class="doc-md-description">
                   <p>pd.DataFrame | SparkDataFrame) -&gt; DataQualityResult
@@ -1767,21 +1810,27 @@ the metrics and diagnostics of the rule evaluation.</p>
 <details class="example" open>
   <summary>Example</summary>
   <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">gchq_data_quality.rules.uniqueness</span><span class="w"> </span><span class="kn">import</span> <span class="n">UniquenessRule</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">gchq_data_quality</span><span class="w"> </span><span class="kn">import</span> <span class="n">ValuesAreUnique</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">]})</span>
 
 <span class="c1"># Basic uniqueness check</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">UniquenessRule</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesAreUnique</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">pass_rate</span><span class="p">)</span>
 <span class="mf">0.75</span>
 
 <span class="c1"># Specify additional NA values</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">UniquenessRule</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesAreUnique</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">pass_rate</span><span class="p">)</span>
 <span class="mf">0.75</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesAreUnique</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;`region` == &#39;UK&#39;&quot;</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </code></pre></div>
 </details>
 
@@ -1868,8 +1917,8 @@ of records).</p>
 
 
 
-<h3 id="gchq_data_quality.rules.completeness.CompletenessRule" class="doc doc-heading">
-            <code>gchq_data_quality.rules.completeness.CompletenessRule</code>
+<h3 id="gchq_data_quality.rules.completeness.ValuesAreComplete" class="doc doc-heading">
+            <code>gchq_data_quality.rules.completeness.ValuesAreComplete</code>
 
 
 </h3>
@@ -1877,13 +1926,14 @@ of records).</p>
 
     <div class="doc doc-contents first">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="gchq_data_quality.rules.base.BaseRule" href="#gchq_data_quality.rules.base.BaseRule">BaseRule</a></code></p>
+              Bases: <code><span title="gchq_data_quality.rules.completeness.CompletenessBaseRule">CompletenessBaseRule</span></code></p>
 
 
 
         <p>Rule to calculate the completeness score for a field.</p>
-<p>Completeness is measured as the proportion of non-null values in the specified
-column. Values specified in <code>na_values</code> are converted to nulls prior to calculation.</p>
+<p>Preferred alias for <code>CompletenessRule</code>. Completeness is measured as the proportion
+of non-null values in the specified column. Values specified in <code>na_values</code> are
+converted to nulls prior to calculation.</p>
 
 
 <p><span class="doc-section-title">Attributes:</span></p>
@@ -1902,7 +1952,7 @@ column. Values specified in <code>na_values</code> are converted to nulls prior 
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.completeness.CompletenessRule.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
+   (gchq_data_quality.rules.completeness.ValuesAreComplete.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
@@ -1918,7 +1968,7 @@ column. Values specified in <code>na_values</code> are converted to nulls prior 
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.completeness.CompletenessRule.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
+   (gchq_data_quality.rules.completeness.ValuesAreComplete.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
             <td>
                   <code><span title="str">str</span> | <span title="list">list</span>[<span title="Any">Any</span>] | None</code>
             </td>
@@ -1929,12 +1979,28 @@ column. Values specified in <code>na_values</code> are converted to nulls prior 
             </td>
           </tr>
           <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="filter = Field(default=None, description='The boolean filter to apply, using pandas eval syntax, before evaluating each rule.')
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.completeness.ValuesAreComplete.filter)" href="#gchq_data_quality.rules.base.BaseRule.filter">filter</a></code></td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional pandas eval boolean expression used to filter rows before evaluation. Use backticks around column names.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
             <td><code><a class="autorefs autorefs-internal" title="rule_id = Field(default=None, description='Identifier for this rule')
 
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.completeness.CompletenessRule.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
+   (gchq_data_quality.rules.completeness.ValuesAreComplete.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -1950,7 +2016,7 @@ column. Values specified in <code>na_values</code> are converted to nulls prior 
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.completeness.CompletenessRule.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
+   (gchq_data_quality.rules.completeness.ValuesAreComplete.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -1974,7 +2040,7 @@ column. Values specified in <code>na_values</code> are converted to nulls prior 
       </thead>
       <tbody>
             <tr class="doc-section-item">
-              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source, index_name='', query=None) (gchq_data_quality.rules.completeness.CompletenessRule.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
+              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source) (gchq_data_quality.rules.completeness.ValuesAreComplete.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
               <td>
                 <div class="doc-md-description">
                   <p>pd.DataFrame | SparkDataFrame) -&gt; DataQualityResult
@@ -1989,11 +2055,17 @@ Returns the metrics and diagnostics of the rule evaluation.</p>
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">CompletenessRule</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;column_name&quot;</span><span class="p">)</span>
+  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesAreComplete</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;column_name&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">pass_rate</span><span class="p">)</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">CompletenessRule</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;column_name&quot;</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="s2">&quot;missing&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesAreComplete</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;column_name&quot;</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="s2">&quot;missing&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesAreComplete</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;column_name&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;`country` == &#39;UK&#39;&quot;</span>
+<span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </code></pre></div>
 </details>
@@ -2070,8 +2142,8 @@ Returns the metrics and diagnostics of the rule evaluation.</p>
 
 
 
-<h3 id="gchq_data_quality.rules.accuracy.AccuracyRule" class="doc doc-heading">
-            <code>gchq_data_quality.rules.accuracy.AccuracyRule</code>
+<h3 id="gchq_data_quality.rules.accuracy.ValuesMatchList" class="doc doc-heading">
+            <code>gchq_data_quality.rules.accuracy.ValuesMatchList</code>
 
 
 </h3>
@@ -2079,13 +2151,14 @@ Returns the metrics and diagnostics of the rule evaluation.</p>
 
     <div class="doc doc-contents first">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="gchq_data_quality.rules.base.BaseRule" href="#gchq_data_quality.rules.base.BaseRule">BaseRule</a></code></p>
+              Bases: <code><span title="gchq_data_quality.rules.accuracy.AccuracyBaseRule">AccuracyBaseRule</span></code></p>
 
 
 
         <p>Rule to check if values meet a list of valid (or invalid) values.</p>
-<p>Skips NULLs, including those recognised via <code>na_values</code>. Instantiate this class and
-call <code>.evaluate(df)</code> to assess data quality for the chosen column.</p>
+<p>Preferred alias for <code>AccuracyRule</code>. Skips NULLs, including those recognised via
+<code>na_values</code>. Instantiate this class and call <code>.evaluate(df)</code> to assess data quality
+for the chosen column.</p>
 
 
 <p><span class="doc-section-title">Attributes:</span></p>
@@ -2104,7 +2177,7 @@ call <code>.evaluate(df)</code> to assess data quality for the chosen column.</p
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.accuracy.AccuracyRule.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
+   (gchq_data_quality.rules.accuracy.ValuesMatchList.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
@@ -2115,7 +2188,7 @@ call <code>.evaluate(df)</code> to assess data quality for the chosen column.</p
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.accuracy.AccuracyRule.valid_values">valid_values</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.accuracy.ValuesMatchList.valid_values">valid_values</span></code></td>
             <td>
                   <code><span title="list">list</span>[<span title="typing.Any">Any</span>]</code>
             </td>
@@ -2126,7 +2199,7 @@ call <code>.evaluate(df)</code> to assess data quality for the chosen column.</p
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.accuracy.AccuracyRule.inverse">inverse</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.accuracy.ValuesMatchList.inverse">inverse</span></code></td>
             <td>
                   <code><span title="bool">bool</span></code>
             </td>
@@ -2142,7 +2215,7 @@ call <code>.evaluate(df)</code> to assess data quality for the chosen column.</p
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.accuracy.AccuracyRule.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
+   (gchq_data_quality.rules.accuracy.ValuesMatchList.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
             <td>
                   <code><span title="str">str</span> | <span title="list">list</span>[<span title="typing.Any">Any</span>] | None</code>
             </td>
@@ -2153,12 +2226,28 @@ call <code>.evaluate(df)</code> to assess data quality for the chosen column.</p
             </td>
           </tr>
           <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="filter = Field(default=None, description='The boolean filter to apply, using pandas eval syntax, before evaluating each rule.')
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.accuracy.ValuesMatchList.filter)" href="#gchq_data_quality.rules.base.BaseRule.filter">filter</a></code></td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional pandas eval boolean expression used to filter rows before evaluation. Use backticks around column names.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
             <td><code><a class="autorefs autorefs-internal" title="rule_id = Field(default=None, description='Identifier for this rule')
 
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.accuracy.AccuracyRule.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
+   (gchq_data_quality.rules.accuracy.ValuesMatchList.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -2174,7 +2263,7 @@ call <code>.evaluate(df)</code> to assess data quality for the chosen column.</p
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.accuracy.AccuracyRule.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
+   (gchq_data_quality.rules.accuracy.ValuesMatchList.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -2198,7 +2287,7 @@ call <code>.evaluate(df)</code> to assess data quality for the chosen column.</p
       </thead>
       <tbody>
             <tr class="doc-section-item">
-              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source, index_name='', query=None) (gchq_data_quality.rules.accuracy.AccuracyRule.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
+              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source) (gchq_data_quality.rules.accuracy.ValuesMatchList.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
               <td>
                 <div class="doc-md-description">
                   <p>pd.DataFrame | SparkDataFrame) -&gt; DataQualityResult
@@ -2213,22 +2302,29 @@ the metrics and diagnostics of the rule evaluation.</p>
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">AccuracyRule</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;category&quot;</span><span class="p">,</span> <span class="n">valid_values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">])</span>
+  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchList</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;category&quot;</span><span class="p">,</span> <span class="n">valid_values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">pass_rate</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">records_failed_ids</span><span class="p">)</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">AccuracyRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchList</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;department&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">valid_values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;HR&quot;</span><span class="p">,</span> <span class="s2">&quot;IT&quot;</span><span class="p">,</span> <span class="s2">&quot;Sales&quot;</span><span class="p">],</span>
 <span class="o">...</span>     <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;N/A&quot;</span><span class="p">,</span> <span class="s2">&quot;N/K&quot;</span><span class="p">]</span>
 <span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">AccuracyRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchList</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;status&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">valid_values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;expired&quot;</span><span class="p">,</span> <span class="s2">&quot;deleted&quot;</span><span class="p">],</span>
 <span class="o">...</span>     <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span> <span class="c1"># value must NOT be expired or deleted</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchList</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;category&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">valid_values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">],</span>
+<span class="o">...</span>     <span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;`region` == &#39;UK&#39;&quot;</span>
 <span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </code></pre></div>
@@ -2315,8 +2411,8 @@ the metrics and diagnostics of the rule evaluation.</p>
 
 
 
-<h3 id="gchq_data_quality.rules.consistency.ConsistencyRule" class="doc doc-heading">
-            <code>gchq_data_quality.rules.consistency.ConsistencyRule</code>
+<h3 id="gchq_data_quality.rules.consistency.ValuesMatchExpression" class="doc doc-heading">
+            <code>gchq_data_quality.rules.consistency.ValuesMatchExpression</code>
 
 
 </h3>
@@ -2324,12 +2420,13 @@ the metrics and diagnostics of the rule evaluation.</p>
 
     <div class="doc doc-contents first">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="gchq_data_quality.rules.base.BaseRule" href="#gchq_data_quality.rules.base.BaseRule">BaseRule</a></code></p>
+              Bases: <code><span title="gchq_data_quality.rules.consistency.ConsistencyBaseRule">ConsistencyBaseRule</span></code></p>
 
 
 
         <p>Rule for evaluating data consistency based on boolean expressions (with an optional condition).</p>
-<p>Expressions may use any valid Pandas eval syntax that returns a boolean result. Backticks are required around all column names.
+<p>Preferred alias for <code>ConsistencyRule</code>. Expressions may use any valid Pandas eval syntax
+that returns a boolean result. Backticks are required around all column names.
 Nulls and additional na_values are handled according to the skip policy.</p>
 
 
@@ -2349,7 +2446,7 @@ Nulls and additional na_values are handled according to the skip policy.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.consistency.ConsistencyRule.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
+   (gchq_data_quality.rules.consistency.ValuesMatchExpression.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
@@ -2360,7 +2457,7 @@ Nulls and additional na_values are handled according to the skip policy.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.consistency.ConsistencyRule.expression">expression</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.consistency.ValuesMatchExpression.expression">expression</span></code></td>
             <td>
                   <code><span title="str">str</span> | <span title="dict">dict</span>[<span title="str">str</span>, <span title="str">str</span>]</code>
             </td>
@@ -2371,7 +2468,12 @@ Nulls and additional na_values are handled according to the skip policy.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.consistency.ConsistencyRule.skip_if_null">skip_if_null</span></code></td>
+            <td><code><a class="autorefs autorefs-internal" title="skip_if_null = Field(default='any', description="Controls which rows are skipped that contain null values. If 'all' then it will only skip if all columns used are NULL.most rules this will just apply to the 'field' column, but some like TimelinessRelativeRule can use more than one column.If values aren't skipped, then NULL values are passed into the calculations so be cautious as to what you allow through. Any logical expression compared with NA returns NA.")
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.consistency.ValuesMatchExpression.skip_if_null)" href="#gchq_data_quality.rules.base.BaseRule.skip_if_null">skip_if_null</a></code></td>
             <td>
                   <code><span title="typing.Literal">Literal</span>[&#39;all&#39;, &#39;any&#39;, &#39;never&#39;]</code>
             </td>
@@ -2387,7 +2489,7 @@ Nulls and additional na_values are handled according to the skip policy.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.consistency.ConsistencyRule.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
+   (gchq_data_quality.rules.consistency.ValuesMatchExpression.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
             <td>
                   <code><span title="str">str</span> | <span title="list">list</span>[<span title="Any">Any</span>] | None</code>
             </td>
@@ -2398,7 +2500,28 @@ Nulls and additional na_values are handled according to the skip policy.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.consistency.ConsistencyRule.data_quality_dimension">data_quality_dimension</span></code></td>
+            <td><code><a class="autorefs autorefs-internal" title="filter = Field(default=None, description='The boolean filter to apply, using pandas eval syntax, before evaluating each rule.')
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.consistency.ValuesMatchExpression.filter)" href="#gchq_data_quality.rules.base.BaseRule.filter">filter</a></code></td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="data_quality_dimension = Field(..., description='The Dama dimension for each rule')
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.consistency.ValuesMatchExpression.data_quality_dimension)" href="#gchq_data_quality.rules.base.BaseRule.data_quality_dimension">data_quality_dimension</a></code></td>
             <td>
                   <code><a class="autorefs autorefs-internal" title="gchq_data_quality.models.DamaFramework" href="#gchq_data_quality.models.DamaFramework">DamaFramework</a></code>
             </td>
@@ -2414,7 +2537,7 @@ Nulls and additional na_values are handled according to the skip policy.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.consistency.ConsistencyRule.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
+   (gchq_data_quality.rules.consistency.ValuesMatchExpression.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -2430,7 +2553,7 @@ Nulls and additional na_values are handled according to the skip policy.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.consistency.ConsistencyRule.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
+   (gchq_data_quality.rules.consistency.ValuesMatchExpression.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -2454,7 +2577,7 @@ Nulls and additional na_values are handled according to the skip policy.</p>
       </thead>
       <tbody>
             <tr class="doc-section-item">
-              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source, index_name='', query=None) (gchq_data_quality.rules.consistency.ConsistencyRule.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
+              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source) (gchq_data_quality.rules.consistency.ValuesMatchExpression.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
               <td>
                 <div class="doc-md-description">
                   <p>pd.DataFrame | SparkDataFrame) -&gt; DataQualityResult
@@ -2469,13 +2592,13 @@ the metrics and diagnostics of the rule evaluation.</p>
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ConsistencyRule</span><span class="p">(</span>
+  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchExpression</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;score&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">expression</span><span class="o">=</span><span class="s2">&quot;`score` &gt;= 50&quot;</span>
 <span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ConsistencyRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchExpression</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;completion_date&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">expression</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;if&quot;</span><span class="p">:</span> <span class="s2">&quot;`status` == &#39;completed&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;then&quot;</span><span class="p">:</span> <span class="s2">&quot;`completion_date`.notnull()&quot;</span><span class="p">},</span>
         <span class="n">data_quality_dimension</span><span class="o">=</span><span class="s1">&#39;Completeness&#39;</span> <span class="c1"># you can override the DAMA Dimension</span>
@@ -2483,7 +2606,7 @@ the metrics and diagnostics of the rule evaluation.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># all series .str. methods are available</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ConsistencyRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchExpression</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;postcode&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">expression</span><span class="o">=</span><span class="p">{</span>
 <span class="o">...</span>         <span class="s2">&quot;if&quot;</span><span class="p">:</span> <span class="s2">&quot;`country` == &#39;UK&#39;&quot;</span><span class="p">,</span>
@@ -2493,23 +2616,31 @@ the metrics and diagnostics of the rule evaluation.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># Date parts and arithmetic using .dt accessor</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ConsistencyRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchExpression</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;report_year&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">expression</span><span class="o">=</span><span class="s2">&quot;`report_date`.dt.year == `report_year`&quot;</span>
 <span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># Boolean logic (AND, OR, NOT) with grouping and comparisons</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ConsistencyRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchExpression</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;flag&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">expression</span><span class="o">=</span><span class="s2">&quot;(`score` &gt; 90) &amp; ((`status` == &#39;active&#39;) | ~`is_archived`)&quot;</span>
 <span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># Using mathematical operations</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ConsistencyRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchExpression</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;predicted&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">expression</span><span class="o">=</span><span class="s2">&quot;abs(`actual` - `predicted`) &lt; 10&quot;</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Evaluate only a filtered subset of rows</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchExpression</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;score&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">expression</span><span class="o">=</span><span class="s2">&quot;`score` &gt;= 50&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;`region` == &#39;UK&#39;&quot;</span>
 <span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </code></pre></div>
@@ -2587,8 +2718,8 @@ the metrics and diagnostics of the rule evaluation.</p>
 
 
 
-<h3 id="gchq_data_quality.rules.timeliness.TimelinessRelativeRule" class="doc doc-heading">
-            <code>gchq_data_quality.rules.timeliness.TimelinessRelativeRule</code>
+<h3 id="gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds" class="doc doc-heading">
+            <code>gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds</code>
 
 
 </h3>
@@ -2596,16 +2727,16 @@ the metrics and diagnostics of the rule evaluation.</p>
 
     <div class="doc doc-contents first">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="gchq_data_quality.rules.timeliness.TimelinessBaseRule">TimelinessBaseRule</span></code></p>
+              Bases: <code><span title="gchq_data_quality.rules.timeliness.TimelinessRelativeBaseRule">TimelinessRelativeBaseRule</span></code></p>
 
 
 
         <p>Rule to assess whether datetime values fall between relative time boundaries
 from a reference date (which can be a static value or come from a column in the data source).</p>
-<p>Timedelta bounds are specified for start and end, relative to a reference date or reference column.
-All datetime comparisons are performed in UTC, with date-only values assumed midnight.
-Only one of <code>reference_date</code> or <code>reference_column</code> may be provided. If neither is given,
-current UTC time is used as the reference_date.</p>
+<p>Preferred alias for <code>TimelinessRelativeRule</code>. Timedelta bounds are specified for start and end,
+relative to a reference date or reference column. All datetime comparisons are performed in UTC,
+with date-only values assumed midnight. Only one of <code>reference_date</code> or <code>reference_column</code> may be
+provided. If neither is given, current UTC time is used as the reference_date.</p>
 
 
 <p><span class="doc-section-title">Attributes:</span></p>
@@ -2624,7 +2755,7 @@ current UTC time is used as the reference_date.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.timeliness.TimelinessRelativeRule.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
+   (gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
@@ -2635,7 +2766,7 @@ current UTC time is used as the reference_date.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.timeliness.TimelinessRelativeRule.start_timedelta">start_timedelta</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds.start_timedelta">start_timedelta</span></code></td>
             <td>
                   <code><span title="datetime.timedelta">timedelta</span> | <span title="str">str</span> | <span title="int">int</span> | <span title="float">float</span> | None</code>
             </td>
@@ -2646,7 +2777,7 @@ current UTC time is used as the reference_date.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.timeliness.TimelinessRelativeRule.end_timedelta">end_timedelta</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds.end_timedelta">end_timedelta</span></code></td>
             <td>
                   <code><span title="datetime.timedelta">timedelta</span> | <span title="str">str</span> | <span title="int">int</span> | <span title="float">float</span> | None</code>
             </td>
@@ -2657,7 +2788,7 @@ current UTC time is used as the reference_date.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.timeliness.TimelinessRelativeRule.reference_date">reference_date</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds.reference_date">reference_date</span></code></td>
             <td>
                   <code><span title="str">str</span> | <span title="datetime.datetime">datetime</span> | <span title="pandas.Timestamp">Timestamp</span> | None</code>
             </td>
@@ -2668,7 +2799,7 @@ current UTC time is used as the reference_date.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.timeliness.TimelinessRelativeRule.reference_column">reference_column</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds.reference_column">reference_column</span></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -2679,7 +2810,7 @@ current UTC time is used as the reference_date.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.timeliness.TimelinessRelativeRule.dayfirst">dayfirst</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds.dayfirst">dayfirst</span></code></td>
             <td>
                   <code><span title="bool">bool</span></code>
             </td>
@@ -2695,7 +2826,7 @@ current UTC time is used as the reference_date.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.timeliness.TimelinessRelativeRule.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
+   (gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
             <td>
                   <code><span title="str">str</span> | <span title="list">list</span>[<span title="Any">Any</span>] | None</code>
             </td>
@@ -2706,12 +2837,28 @@ current UTC time is used as the reference_date.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="filter = Field(default=None, description='The boolean filter to apply, using pandas eval syntax, before evaluating each rule.')
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds.filter)" href="#gchq_data_quality.rules.base.BaseRule.filter">filter</a></code></td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
             <td><code><a class="autorefs autorefs-internal" title="data_quality_dimension = Field(..., description='The Dama dimension for each rule')
 
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.timeliness.TimelinessRelativeRule.data_quality_dimension)" href="#gchq_data_quality.rules.base.BaseRule.data_quality_dimension">data_quality_dimension</a></code></td>
+   (gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds.data_quality_dimension)" href="#gchq_data_quality.rules.base.BaseRule.data_quality_dimension">data_quality_dimension</a></code></td>
             <td>
                   <code><a class="autorefs autorefs-internal" title="gchq_data_quality.models.DamaFramework" href="#gchq_data_quality.models.DamaFramework">DamaFramework</a></code>
             </td>
@@ -2727,7 +2874,7 @@ current UTC time is used as the reference_date.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.timeliness.TimelinessRelativeRule.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
+   (gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -2743,7 +2890,7 @@ current UTC time is used as the reference_date.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.timeliness.TimelinessRelativeRule.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
+   (gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -2767,7 +2914,7 @@ current UTC time is used as the reference_date.</p>
       </thead>
       <tbody>
             <tr class="doc-section-item">
-              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source, index_name='', query=None) (gchq_data_quality.rules.timeliness.TimelinessRelativeRule.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
+              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source) (gchq_data_quality.rules.timeliness.ValuesMatchRelativeTimeBounds.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
               <td>
                 <div class="doc-md-description">
                   <p>pd.DataFrame | SparkDataFrame) -&gt; DataQualityResult
@@ -2787,7 +2934,7 @@ the metrics and diagnostics of the rule evaluation.</p>
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">TimelinessRelativeRule</span><span class="p">(</span>
+  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchRelativeTimeBounds</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;event_date&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">start_timedelta</span><span class="o">=</span><span class="s2">&quot;0d&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">end_timedelta</span><span class="o">=</span><span class="s2">&quot;30d&quot;</span><span class="p">,</span>
@@ -2795,7 +2942,7 @@ the metrics and diagnostics of the rule evaluation.</p>
 <span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">TimelinessRelativeRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchRelativeTimeBounds</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;booking_date&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">start_timedelta</span><span class="o">=</span><span class="s2">&quot;-1d&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">end_timedelta</span><span class="o">=</span><span class="s2">&quot;5d&quot;</span><span class="p">,</span>
@@ -2804,7 +2951,7 @@ the metrics and diagnostics of the rule evaluation.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># Require event dates at least 5 days after the reference date</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">TimelinessRelativeRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchRelativeTimeBounds</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;event_date&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">start_timedelta</span><span class="o">=</span><span class="s2">&quot;5d&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">end_timedelta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2813,10 +2960,19 @@ the metrics and diagnostics of the rule evaluation.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">TimelinessRelativeRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchRelativeTimeBounds</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;sensor_timestamp&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">start_timedelta</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=-</span><span class="mi">12</span><span class="p">),</span>
 <span class="o">...</span>     <span class="n">end_timedelta</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchRelativeTimeBounds</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;booking_date&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">start_timedelta</span><span class="o">=</span><span class="s2">&quot;-1d&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">end_timedelta</span><span class="o">=</span><span class="s2">&quot;5d&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">reference_column</span><span class="o">=</span><span class="s2">&quot;event_date&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;`region` == &#39;UK&#39;&quot;</span>
 <span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </code></pre></div>
@@ -2885,8 +3041,8 @@ the metrics and diagnostics of the rule evaluation.</p>
 
 
 
-<h3 id="gchq_data_quality.rules.timeliness.TimelinessStaticRule" class="doc doc-heading">
-            <code>gchq_data_quality.rules.timeliness.TimelinessStaticRule</code>
+<h3 id="gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds" class="doc doc-heading">
+            <code>gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds</code>
 
 
 </h3>
@@ -2894,14 +3050,15 @@ the metrics and diagnostics of the rule evaluation.</p>
 
     <div class="doc doc-contents first">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="gchq_data_quality.rules.timeliness.TimelinessBaseRule">TimelinessBaseRule</span></code></p>
+              Bases: <code><span title="gchq_data_quality.rules.timeliness.TimelinessStaticBaseRule">TimelinessStaticBaseRule</span></code></p>
 
 
 
         <p>Rule to check whether datetime values in a column fall between absolute start and end date boundaries (inclusive).</p>
-<p>Suitable where both boundaries are fixed or known in advance (e.g., events occurring in January 2024).
-All dates are treated as, or coerced to, UTC, with date-only strings assumed to be midnight. Invalid or unparsable datetime
-values are treated as missing. Combine with a validity rule and completeness rule on the same field for the best insights.</p>
+<p>Preferred alias for <code>TimelinessStaticRule</code>. Suitable where both boundaries are fixed or known in advance
+(e.g., events occurring in January 2024). All dates are treated as, or coerced to, UTC, with date-only strings
+assumed to be midnight. Invalid or unparsable datetime values are treated as missing.
+Combine with a validity rule and completeness rule on the same field for the best insights.</p>
 
 
 <p><span class="doc-section-title">Attributes:</span></p>
@@ -2920,7 +3077,7 @@ values are treated as missing. Combine with a validity rule and completeness rul
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.timeliness.TimelinessStaticRule.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
+   (gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
@@ -2931,7 +3088,7 @@ values are treated as missing. Combine with a validity rule and completeness rul
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.timeliness.TimelinessStaticRule.start_date">start_date</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds.start_date">start_date</span></code></td>
             <td>
                   <code><span title="str">str</span> | <span title="datetime.datetime">datetime</span> | <span title="pandas.Timestamp">Timestamp</span> | None</code>
             </td>
@@ -2942,7 +3099,7 @@ values are treated as missing. Combine with a validity rule and completeness rul
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.timeliness.TimelinessStaticRule.end_date">end_date</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds.end_date">end_date</span></code></td>
             <td>
                   <code><span title="str">str</span> | <span title="datetime.datetime">datetime</span> | <span title="pandas.Timestamp">Timestamp</span> | None</code>
             </td>
@@ -2953,7 +3110,7 @@ values are treated as missing. Combine with a validity rule and completeness rul
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.timeliness.TimelinessStaticRule.dayfirst">dayfirst</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds.dayfirst">dayfirst</span></code></td>
             <td>
                   <code><span title="bool">bool</span></code>
             </td>
@@ -2969,7 +3126,7 @@ values are treated as missing. Combine with a validity rule and completeness rul
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.timeliness.TimelinessStaticRule.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
+   (gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
             <td>
                   <code><span title="str">str</span> | <span title="list">list</span>[<span title="Any">Any</span>] | None</code>
             </td>
@@ -2980,12 +3137,28 @@ values are treated as missing. Combine with a validity rule and completeness rul
             </td>
           </tr>
           <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="filter = Field(default=None, description='The boolean filter to apply, using pandas eval syntax, before evaluating each rule.')
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds.filter)" href="#gchq_data_quality.rules.base.BaseRule.filter">filter</a></code></td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
             <td><code><a class="autorefs autorefs-internal" title="data_quality_dimension = Field(..., description='The Dama dimension for each rule')
 
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.timeliness.TimelinessStaticRule.data_quality_dimension)" href="#gchq_data_quality.rules.base.BaseRule.data_quality_dimension">data_quality_dimension</a></code></td>
+   (gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds.data_quality_dimension)" href="#gchq_data_quality.rules.base.BaseRule.data_quality_dimension">data_quality_dimension</a></code></td>
             <td>
                   <code><a class="autorefs autorefs-internal" title="gchq_data_quality.models.DamaFramework" href="#gchq_data_quality.models.DamaFramework">DamaFramework</a></code>
             </td>
@@ -3002,7 +3175,7 @@ values are treated as missing. Combine with a validity rule and completeness rul
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.timeliness.TimelinessStaticRule.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
+   (gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -3018,7 +3191,7 @@ values are treated as missing. Combine with a validity rule and completeness rul
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.timeliness.TimelinessStaticRule.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
+   (gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -3042,7 +3215,7 @@ values are treated as missing. Combine with a validity rule and completeness rul
       </thead>
       <tbody>
             <tr class="doc-section-item">
-              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source, index_name='', query=None) (gchq_data_quality.rules.timeliness.TimelinessStaticRule.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
+              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source) (gchq_data_quality.rules.timeliness.ValuesMatchStaticTimeBounds.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
               <td>
                 <div class="doc-md-description">
                   <p>pd.DataFrame | SparkDataFrame) -&gt; DataQualityResult
@@ -3057,7 +3230,7 @@ the metrics and diagnostics of the rule evaluation.</p>
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">TimelinessStaticRule</span><span class="p">(</span>
+  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchStaticTimeBounds</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;event_date&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">start_date</span><span class="o">=</span><span class="s2">&quot;2024-01-01T00:00:00Z&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;2024-01-31T23:59:59Z&quot;</span>
@@ -3065,7 +3238,7 @@ the metrics and diagnostics of the rule evaluation.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># Only require that dates are on or after 2023-06-01</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">TimelinessStaticRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchStaticTimeBounds</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;date_col&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">start_date</span><span class="o">=</span><span class="s2">&quot;2023-06-01&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span>
@@ -3073,7 +3246,7 @@ the metrics and diagnostics of the rule evaluation.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># Using string-based boundaries with day-first format</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">TimelinessStaticRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchStaticTimeBounds</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">start_date</span><span class="o">=</span><span class="s2">&quot;01/06/2023&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;30/06/2023&quot;</span><span class="p">,</span>
@@ -3083,10 +3256,18 @@ the metrics and diagnostics of the rule evaluation.</p>
 
 <span class="c1"># Using Python datetime objects as boundaries</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">TimelinessStaticRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchStaticTimeBounds</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">start_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">),</span>
 <span class="o">...</span>     <span class="n">end_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">),</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchStaticTimeBounds</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;event_date&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">start_date</span><span class="o">=</span><span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;2024-01-31&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;`region` == &#39;UK&#39;&quot;</span>
 <span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </code></pre></div>
@@ -3155,8 +3336,8 @@ the metrics and diagnostics of the rule evaluation.</p>
 
 
 
-<h3 id="gchq_data_quality.rules.validity.ValidityNumericalRangeRule" class="doc doc-heading">
-            <code>gchq_data_quality.rules.validity.ValidityNumericalRangeRule</code>
+<h3 id="gchq_data_quality.rules.validity.ValuesMatchNumericalRange" class="doc doc-heading">
+            <code>gchq_data_quality.rules.validity.ValuesMatchNumericalRange</code>
 
 
 </h3>
@@ -3164,14 +3345,14 @@ the metrics and diagnostics of the rule evaluation.</p>
 
     <div class="doc doc-contents first">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="gchq_data_quality.rules.base.BaseRule" href="#gchq_data_quality.rules.base.BaseRule">BaseRule</a></code></p>
+              Bases: <code><span title="gchq_data_quality.rules.validity.ValidityNumericalRangeBaseRule">ValidityNumericalRangeBaseRule</span></code></p>
 
 
 
         <p>Rule for validating numerical values against a specified range.</p>
-<p>Considers only non-null values; values outside the range or failing coercion to
-numeric are considered invalid. Diagnostic samples and record indices are
-returned for values outside the allowed range.</p>
+<p>Preferred alias for <code>ValidityNumericalRangeRule</code>. Considers only non-null values;
+values outside the range or failing coercion to numeric are considered invalid.
+Diagnostic samples and record indices are returned for values outside the allowed range.</p>
 
 
 <p><span class="doc-section-title">Attributes:</span></p>
@@ -3190,7 +3371,7 @@ returned for values outside the allowed range.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.validity.ValidityNumericalRangeRule.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
+   (gchq_data_quality.rules.validity.ValuesMatchNumericalRange.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
@@ -3201,7 +3382,7 @@ returned for values outside the allowed range.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.validity.ValidityNumericalRangeRule.min_value">min_value</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.validity.ValuesMatchNumericalRange.min_value">min_value</span></code></td>
             <td>
                   <code><span title="float">float</span></code>
             </td>
@@ -3212,7 +3393,7 @@ returned for values outside the allowed range.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.validity.ValidityNumericalRangeRule.max_value">max_value</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.validity.ValuesMatchNumericalRange.max_value">max_value</span></code></td>
             <td>
                   <code><span title="float">float</span></code>
             </td>
@@ -3228,7 +3409,7 @@ returned for values outside the allowed range.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.validity.ValidityNumericalRangeRule.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
+   (gchq_data_quality.rules.validity.ValuesMatchNumericalRange.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
             <td>
                   <code><span title="str">str</span> | <span title="list">list</span>[<span title="Any">Any</span>] | None</code>
             </td>
@@ -3239,7 +3420,28 @@ returned for values outside the allowed range.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.validity.ValidityNumericalRangeRule.data_quality_dimension">data_quality_dimension</span></code></td>
+            <td><code><a class="autorefs autorefs-internal" title="filter = Field(default=None, description='The boolean filter to apply, using pandas eval syntax, before evaluating each rule.')
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.validity.ValuesMatchNumericalRange.filter)" href="#gchq_data_quality.rules.base.BaseRule.filter">filter</a></code></td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="data_quality_dimension = Field(..., description='The Dama dimension for each rule')
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.validity.ValuesMatchNumericalRange.data_quality_dimension)" href="#gchq_data_quality.rules.base.BaseRule.data_quality_dimension">data_quality_dimension</a></code></td>
             <td>
                   <code><a class="autorefs autorefs-internal" title="gchq_data_quality.models.DamaFramework" href="#gchq_data_quality.models.DamaFramework">DamaFramework</a></code>
             </td>
@@ -3255,7 +3457,7 @@ returned for values outside the allowed range.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.validity.ValidityNumericalRangeRule.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
+   (gchq_data_quality.rules.validity.ValuesMatchNumericalRange.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -3271,7 +3473,7 @@ returned for values outside the allowed range.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.validity.ValidityNumericalRangeRule.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
+   (gchq_data_quality.rules.validity.ValuesMatchNumericalRange.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -3295,7 +3497,7 @@ returned for values outside the allowed range.</p>
       </thead>
       <tbody>
             <tr class="doc-section-item">
-              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source, index_name='', query=None) (gchq_data_quality.rules.validity.ValidityNumericalRangeRule.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
+              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source) (gchq_data_quality.rules.validity.ValuesMatchNumericalRange.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
               <td>
                 <div class="doc-md-description">
                   <p>pd.DataFrame | SparkDataFrame) -&gt; DataQualityResult
@@ -3310,7 +3512,7 @@ the metrics and diagnostics of the rule evaluation.</p>
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValidityNumericalRangeRule</span><span class="p">(</span>
+  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchNumericalRange</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;age&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">max_value</span><span class="o">=</span><span class="mi">120</span>
@@ -3318,7 +3520,7 @@ the metrics and diagnostics of the rule evaluation.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># no upper limit</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValidityNumericalRangeRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchNumericalRange</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;temp_c&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">na_values</span><span class="o">=-</span><span class="mi">999</span>
@@ -3326,10 +3528,18 @@ the metrics and diagnostics of the rule evaluation.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># no lower limit</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValidityNumericalRangeRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchNumericalRange</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;score&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">max_value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;missing&#39;</span><span class="p">,</span> <span class="s1">&#39;N/A&#39;</span><span class="p">]</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchNumericalRange</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;age&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">min_value</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">max_value</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span>
+<span class="o">...</span>     <span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;`region` == &#39;UK&#39;&quot;</span>
 <span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </code></pre></div>
@@ -3407,8 +3617,8 @@ the metrics and diagnostics of the rule evaluation.</p>
 
 
 
-<h3 id="gchq_data_quality.rules.validity.ValidityRegexRule" class="doc doc-heading">
-            <code>gchq_data_quality.rules.validity.ValidityRegexRule</code>
+<h3 id="gchq_data_quality.rules.validity.ValuesMatchRegex" class="doc doc-heading">
+            <code>gchq_data_quality.rules.validity.ValuesMatchRegex</code>
 
 
 </h3>
@@ -3416,13 +3626,14 @@ the metrics and diagnostics of the rule evaluation.</p>
 
     <div class="doc doc-contents first">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="gchq_data_quality.rules.base.BaseRule" href="#gchq_data_quality.rules.base.BaseRule">BaseRule</a></code></p>
+              Bases: <code><span title="gchq_data_quality.rules.validity.ValidityRegexBaseRule">ValidityRegexBaseRule</span></code></p>
 
 
 
         <p>Rule for validating string values against a regular expression.</p>
-<p>Considers only non-null entries, with additional missing-value patterns specified via
-<code>na_values</code>. A diagnostic sample of values failing the regex is returned if present.</p>
+<p>Preferred alias for <code>ValidityRegexRule</code>. Considers only non-null entries, with
+additional missing-value patterns specified via <code>na_values</code>. A diagnostic sample of
+values failing the regex is returned if present.</p>
 
 
 <p><span class="doc-section-title">Attributes:</span></p>
@@ -3441,7 +3652,7 @@ the metrics and diagnostics of the rule evaluation.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.validity.ValidityRegexRule.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
+   (gchq_data_quality.rules.validity.ValuesMatchRegex.field)" href="#gchq_data_quality.rules.base.BaseRule.field">field</a></code></td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
@@ -3452,7 +3663,7 @@ the metrics and diagnostics of the rule evaluation.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.validity.ValidityRegexRule.regex_pattern">regex_pattern</span></code></td>
+            <td><code><span title="gchq_data_quality.rules.validity.ValuesMatchRegex.regex_pattern">regex_pattern</span></code></td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
@@ -3468,7 +3679,7 @@ the metrics and diagnostics of the rule evaluation.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.validity.ValidityRegexRule.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
+   (gchq_data_quality.rules.validity.ValuesMatchRegex.na_values)" href="#gchq_data_quality.rules.base.BaseRule.na_values">na_values</a></code></td>
             <td>
                   <code><span title="str">str</span> | <span title="list">list</span>[<span title="Any">Any</span>] | None</code>
             </td>
@@ -3479,7 +3690,28 @@ the metrics and diagnostics of the rule evaluation.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="gchq_data_quality.rules.validity.ValidityRegexRule.data_quality_dimension">data_quality_dimension</span></code></td>
+            <td><code><a class="autorefs autorefs-internal" title="filter = Field(default=None, description='The boolean filter to apply, using pandas eval syntax, before evaluating each rule.')
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.validity.ValuesMatchRegex.filter)" href="#gchq_data_quality.rules.base.BaseRule.filter">filter</a></code></td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional pandas eval boolean expression used to filter rows before evaluation. Must evaluate to bool and use backticks around column names.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="data_quality_dimension = Field(..., description='The Dama dimension for each rule')
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.validity.ValuesMatchRegex.data_quality_dimension)" href="#gchq_data_quality.rules.base.BaseRule.data_quality_dimension">data_quality_dimension</a></code></td>
             <td>
                   <code><a class="autorefs autorefs-internal" title="gchq_data_quality.models.DamaFramework" href="#gchq_data_quality.models.DamaFramework">DamaFramework</a></code>
             </td>
@@ -3495,7 +3727,7 @@ the metrics and diagnostics of the rule evaluation.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.validity.ValidityRegexRule.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
+   (gchq_data_quality.rules.validity.ValuesMatchRegex.rule_id)" href="#gchq_data_quality.rules.base.BaseRule.rule_id">rule_id</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -3511,7 +3743,7 @@ the metrics and diagnostics of the rule evaluation.</p>
   
       class-attribute
       instance-attribute
-   (gchq_data_quality.rules.validity.ValidityRegexRule.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
+   (gchq_data_quality.rules.validity.ValuesMatchRegex.rule_description)" href="#gchq_data_quality.rules.base.BaseRule.rule_description">rule_description</a></code></td>
             <td>
                   <code><span title="str">str</span> | None</code>
             </td>
@@ -3535,7 +3767,7 @@ the metrics and diagnostics of the rule evaluation.</p>
       </thead>
       <tbody>
             <tr class="doc-section-item">
-              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source, index_name='', query=None) (gchq_data_quality.rules.validity.ValidityRegexRule.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
+              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source) (gchq_data_quality.rules.validity.ValuesMatchRegex.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
               <td>
                 <div class="doc-md-description">
                   <p>pd.DataFrame | SparkDataFrame) -&gt; DataQualityResult
@@ -3550,15 +3782,22 @@ the metrics and diagnostics of the rule evaluation.</p>
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValidityRegexRule</span><span class="p">(</span>
+  <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchRegex</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;email&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">regex_pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;^[^@]+@[^@]+\.[^@]+$&#39;</span>
 <span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValidityRegexRule</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchRegex</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;country_code&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">regex_pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;^[A-Z]</span><span class="si">{2}</span><span class="s1">$&#39;</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">ValuesMatchRegex</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">field</span><span class="o">=</span><span class="s2">&quot;email&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">regex_pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;^[^@]+@[^@]+\.[^@]+$&#39;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;`region` == &#39;UK&#39;&quot;</span>
 <span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </code></pre></div>
@@ -3572,23 +3811,6 @@ main configuration files wherever referenced, enabling consistent and maintainab
 regex use.</p>
 <p>When storing regex patterns in YAML, always use single quotes ('pattern') rather than double quotes to ensure correct
 handling of typical regex escape characters, such as \d or \w.</p>
-<div class="codehilite"><pre><span></span><code># regex_patterns.yaml
-EMAIL_REGEX: &#39;^[^@]+@[^@]+\.[^@]+$&#39;
-POSTCODE_REGEX: &#39;^[A-Z]{2}[0-9]{2,3}\s?[0-9][A-Z]{2}$&#39;
-
-# In your DQ config YAML, use the key in place of the regex pattern:
-rules:
-- function: validity_regex
-    field: email
-    regex_pattern: EMAIL_REGEX
-
-# Python code to load with substitution:
-&gt;&gt;&gt; from gchq_data_quality.config import DataQualityConfig
-&gt;&gt;&gt; dq_config = DataQualityConfig.from_yaml(
-...     &#39;your_config.yaml&#39;,
-...     regex_yaml_path=&#39;regex_patterns.yaml&#39;
-... )
-</code></pre></div>
 </details>
 
     <p><span class="doc-section-title">Returns:</span></p>
@@ -3778,7 +4000,7 @@ of rule definitions. Can also be created programmatically.</p>
 <span class="n">config2</span> <span class="o">=</span> <span class="n">DataQualityConfig</span><span class="p">(</span>
     <span class="n">dataset_name</span><span class="o">=</span><span class="s2">&quot;my_data&quot;</span><span class="p">,</span>
     <span class="n">rules</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">ValidityRegexRule</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="n">regex_pattern</span><span class="o">=</span><span class="s1">&#39;.+@example.com&#39;</span><span class="p">),</span>
+        <span class="n">ValuesMatchRegex</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="n">regex_pattern</span><span class="o">=</span><span class="s1">&#39;.+@example.com&#39;</span><span class="p">),</span>
     <span class="p">],</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -4072,6 +4294,17 @@ Noting that some rules may reference additional columns, such as ConsistencyRule
             </td>
           </tr>
           <tr class="doc-section-item">
+            <td><code><span title="gchq_data_quality.results.models.DataQualityResult.records_passed">records_passed</span></code></td>
+            <td>
+                  <code><span title="int">int</span> | None | <span title="pydantic.experimental.missing_sentinel.MISSING">MISSING</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Total records that passed the rule. If records_evaluated is 0, then this is None by definition.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
             <td><code><span title="gchq_data_quality.results.models.DataQualityResult.pass_rate">pass_rate</span></code></td>
             <td>
                   <code><span title="float">float</span> | None</code>
@@ -4154,7 +4387,8 @@ Noting that some rules may reference additional columns, such as ConsistencyRule
 <details class="note" open>
   <summary>Note</summary>
   <p>Direct construction of DataQualityResult or DataQualityReport are rare; results are typically gathered in production using
-RuleType.evaluate(df) or DataQualityConfig.execute(data)</p>
+RuleType.evaluate(df) or DataQualityConfig.execute(data)
+records_passed can be 'missing' from creation and then will not get serialised. This is for backwards compatibility with versions &lt; 1.2</p>
 </details>
 
 
@@ -4448,6 +4682,22 @@ implemented via subclass overrides.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="filter = Field(default=None, description='The boolean filter to apply, using pandas eval syntax, before evaluating each rule.')
+
+  
+      class-attribute
+      instance-attribute
+   (gchq_data_quality.rules.base.BaseRule.filter)" href="#gchq_data_quality.rules.base.BaseRule.filter">filter</a></code></td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Boolean filter in pandas eval syntax to apply prior to rule evaluation. Defaults to None.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
             <td><code><a class="autorefs autorefs-internal" title="rule_id = Field(default=None, description='Identifier for this rule')
 
   
@@ -4541,10 +4791,10 @@ implemented via subclass overrides.</p>
       </thead>
       <tbody>
             <tr class="doc-section-item">
-              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source, index_name='', query=None) (gchq_data_quality.rules.base.BaseRule.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
+              <td><code><a class="autorefs autorefs-internal" title="evaluate(data_source) (gchq_data_quality.rules.base.BaseRule.evaluate)" href="#gchq_data_quality.rules.base.BaseRule.evaluate">evaluate</a></code></td>
               <td>
                 <div class="doc-md-description">
-                  <p>pd.DataFrame | SparkDataFrame | Elasticsearch) -&gt; DataQualityResult
+                  <p>pd.DataFrame | SparkDataFrame) -&gt; DataQualityResult
 Applies the rule to source data and returns evaluation metrics and diagnostics.</p>
                 </div>
               </td>
@@ -4556,7 +4806,10 @@ Applies the rule to source data and returns evaluation metrics and diagnostics.<
 <details class="note" open>
   <summary>Note</summary>
   <p>This base class should not be instantiated directly. Use a rule subclass for
-actual configuration or evaluation.</p>
+actual configuration or evaluation.
+The order of operations is dataframe type coercian &gt; replace na_values &gt; filter dataframe.
+There are edge cases where this order creates different results, e.g. if -1 is NULL,
+    then -1 values will become NULL before any filtering happens</p>
 </details>
 
     <p><span class="doc-section-title">Returns:</span></p>
@@ -4643,6 +4896,27 @@ actual configuration or evaluation.</p>
 
 <h4 id="gchq_data_quality.rules.base.BaseRule.field" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">field</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Column to check&#39;</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="gchq_data_quality.rules.base.BaseRule.filter" class="doc doc-heading">
+            <code class="highlight language-python"><span class="nb">filter</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The boolean filter to apply, using pandas eval syntax, before evaluating each rule.&#39;</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4758,9 +5032,10 @@ actual configuration or evaluation.</p>
 
         <p>Some rules require values to be coerced to a different data type.
 Timeliness &gt; UTC datetime,
-ValiditiyNumericalRange &gt; numeric</p>
+ValidityNumericalRange &gt; numeric</p>
 <p>This function handles coercing to the relevant data type
 for the rule. Override if needed, the default behaviour is no coercion</p>
+<p>The columns unique to self.filter expression are not coerced by default.</p>
 
 
     <p><span class="doc-section-title">Returns:</span></p>
@@ -4778,7 +5053,7 @@ for the rule. Override if needed, the default behaviour is no coercion</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>pd.DataFrame: If no coercion, the original df. If coerced, a modifed dataframe</p>
+                <p>pd.DataFrame: If no coercion, the original df. If coerced, a modified dataframe</p>
               </div>
             </td>
           </tr>
@@ -4804,22 +5079,6 @@ for the rule. Override if needed, the default behaviour is no coercion</p>
         <p>Copies the dataframe to avoid later mutations when we replace NA values
 or coerce to a different data type.</p>
 <p>Also ensures the dataframe columns are kept in the same order as the orginal df</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="gchq_data_quality.rules.base.BaseRule._evaluate_in_elastic" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">_evaluate_in_elastic</span><span class="p">(</span><span class="n">es</span><span class="p">,</span> <span class="n">index_name</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
-</h4>
-
-
-    <div class="doc doc-contents ">
 
 
     </div>
@@ -4978,6 +5237,79 @@ we then aggregate the resulting data.</p>
 <div class="doc doc-object doc-function">
 
 
+<h4 id="gchq_data_quality.rules.base.BaseRule._filter_dataframe" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_filter_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Filters the dataframe after it has been copied subset via _copy_and_subset_dataframe.
+uses self.filter as a boolean evaluation to return a filtered subset.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>df</code>
+            </td>
+            <td>
+                  <code><span title="pandas.DataFrame">DataFrame</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The dataframe to filter (already copied from the original)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="pandas.DataFrame">DataFrame</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>pd.DataFrame: The filtered dataframe</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h4 id="gchq_data_quality.rules.base.BaseRule._get_columns_used_pandas" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">_get_columns_used_pandas</span><span class="p">()</span></code>
 
@@ -4986,7 +5318,7 @@ we then aggregate the resulting data.</p>
 
     <div class="doc doc-contents ">
 
-        <p>The columns used in evaluting the rule, defaults to just the field, but other rules
+        <p>The columns used in evaluting the rule, defaults to just the field and filter expression, but other rules
 such as consistency may use more than one column and will override this.</p>
 
 
@@ -5295,8 +5627,8 @@ In format [{colA : valueA, colB : valueB}, {...etc}]</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="gchq_data_quality.rules.base.BaseRule._get_records_passing_mask_pandas" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">_get_records_passing_mask_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">)</span></code>
+<h4 id="gchq_data_quality.rules.base.BaseRule._get_records_passed_mask_pandas" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_get_records_passed_mask_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -5319,8 +5651,8 @@ if it has not been evaluated.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="gchq_data_quality.rules.base.BaseRule._get_records_passing_pandas" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">_get_records_passing_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">)</span></code>
+<h4 id="gchq_data_quality.rules.base.BaseRule._get_records_passed_pandas" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_get_records_passed_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">)</span></code>
 
 </h4>
 
@@ -5670,18 +6002,9 @@ to a new datatype.</p>
 
 
 <h4 id="gchq_data_quality.rules.base.BaseRule.evaluate" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">data_source</span><span class="p">,</span> <span class="n">index_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">data_source</span><span class="p">)</span></code>
 
 </h4>
-          <div class="doc-overloads">
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">evaluate</span><span class="p">(</span><span class="n">data_source</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataQualityResult</span>
-</code></pre></div><div class="doc-signature highlight"><pre><span></span><code><span class="nf">evaluate</span><span class="p">(</span><span class="n">data_source</span><span class="p">:</span> <span class="n">SparkDataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataQualityResult</span>
-</code></pre></div><div class="doc-signature highlight"><pre><span></span><code><span class="nf">evaluate</span><span class="p">(</span>
-    <span class="n">data_source</span><span class="p">:</span> <span class="n">Elasticsearch</span><span class="p">,</span>
-    <span class="n">index_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
-    <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataQualityResult</span>
-</code></pre></div>          </div>
 
 
     <div class="doc doc-contents ">
@@ -5689,9 +6012,7 @@ to a new datatype.</p>
         <p>Evaluates this rule against the provided data source.</p>
 <p>Supports both Pandas and Spark DataFrames as input. Applies all
 rule configuration, handles nulls and data coercion, and computes
-relevant data quality metrics. If an Elasticsearch index and client
-are supplied, an error is raised unless that backend is implemented.
-Currently not implemented.</p>
+relevant data quality metrics.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -5710,48 +6031,16 @@ Currently not implemented.</p>
                 <code>data_source</code>
             </td>
             <td>
-                  <code><span title="pandas.DataFrame">DataFrame</span> | <span title="pyspark.sql.DataFrame">DataFrame</span> | <span title="elasticsearch.Elasticsearch">Elasticsearch</span></code>
+                  <code><span title="pandas.DataFrame">DataFrame</span> | <span title="pyspark.sql.DataFrame">DataFrame</span></code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>The data to evaluate—
-can be a Pandas DataFrame, a Spark DataFrame, or an Elasticsearch client.</p>
+can be a Pandas DataFrame or a Spark DataFrame.</p>
               </div>
             </td>
             <td>
                 <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>index_name</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Required if evaluating with Elasticsearch; the index to check.</p>
-              </div>
-            </td>
-            <td>
-                  <code>&#39;&#39;</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>query</code>
-            </td>
-            <td>
-                  <code><span title="dict">dict</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Required if evaluating with Elaticsearch, defaults to a query that matches all documents</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
             </td>
           </tr>
       </tbody>
@@ -5769,6 +6058,7 @@ can be a Pandas DataFrame, a Spark DataFrame, or an Elasticsearch client.</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>DataQualityResult</code></td>            <td>
+                  <code><a class="autorefs autorefs-internal" title="gchq_data_quality.results.models.DataQualityResult" href="#gchq_data_quality.results.models.DataQualityResult">DataQualityResult</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5778,6 +6068,7 @@ can be a Pandas DataFrame, a Spark DataFrame, or an Elasticsearch client.</p>
           </tr>
           <tr class="doc-section-item">
 <td></td>            <td>
+                  <code><a class="autorefs autorefs-internal" title="gchq_data_quality.results.models.DataQualityResult" href="#gchq_data_quality.results.models.DataQualityResult">DataQualityResult</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5787,6 +6078,7 @@ can be a Pandas DataFrame, a Spark DataFrame, or an Elasticsearch client.</p>
           </tr>
           <tr class="doc-section-item">
 <td></td>            <td>
+                  <code><a class="autorefs autorefs-internal" title="gchq_data_quality.results.models.DataQualityResult" href="#gchq_data_quality.results.models.DataQualityResult">DataQualityResult</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5814,16 +6106,6 @@ can be a Pandas DataFrame, a Spark DataFrame, or an Elasticsearch client.</p>
             <td>
               <div class="doc-md-description">
                 <p>If an unsupported data source is provided.</p>
-              </div>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="NotImplementedError">NotImplementedError</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>If Elasticsearch evaluation is requested but not supported.</p>
               </div>
             </td>
           </tr>
