@@ -337,13 +337,6 @@ len(FINAL_REPORT)  # returns the number of DataQualityResult objects
 | `report_a + report_b` | Returns a **new** `DataQualityReport`; neither operand is changed | No |
 | `report_a += report_b` | Extends `report_a` **in place**; `report_a` itself grows | Yes |
 
-```python
-# Non-mutating: original reports unchanged
-combined_report = report_a + report_b
-
-# In-place: report_a grows
-report_a += report_b
-```
 
 ## 4. Combine & Export Results
 
@@ -400,4 +393,9 @@ df_report.to_csv("data_quality_report.csv", index=False)
 - Generate rule definitions from your report using:
     ```python
     dc = DataQualityConfig.from_report(dq_report)
-    dc.to_yaml("rules.yaml", overwrite=True) # save the rules to a YAML file and use this a fast way of creating a template for changing them
+    # Useful if you share your results with someone
+    #  - they can recreate the rules from your report!
+
+    dc.to_yaml("rules.yaml", overwrite=True) 
+    # save the rules to a YAML file for later use in production
+    ```

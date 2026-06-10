@@ -102,7 +102,7 @@ Note: you do not need to surround this with any quote character.
 
 ```yaml
 regex_pattern: |
-  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
 
 ```
 
@@ -131,7 +131,7 @@ report = config.execute(df)
 print(report.to_dataframe(measurement_time_format="%Y-%m-%d %H:%M"))
 ```
 
-You can adjust config metadata programmatically. It can be useful to override `measurement_time`, as you may want to pretend the data was measured at the date of ingest, rather than when you actually measured it. It can help make sense of your analysis later to understand the quality of the data based on what it landed.
+You can adjust config metadata programmatically. It can be useful to override `measurement_time`, as you may want to pretend the data was measured at the date of ingest, rather than when you actually measured it. It can help make sense of your analysis later to understand the quality of the data based on when it landed.
 
 ```python
 from datetime import timezone
@@ -164,6 +164,7 @@ print(len(config))   # number of rules currently in the config
 ## 6. Creating a Config File From a Report
 
 A typical workflow:
+
 - Experiment with rules in Python
 - Produce a DataQualityReport
 - Extract those rules back into a deployable YAML config and modify
@@ -199,6 +200,7 @@ config = DataQualityConfig.from_yaml(
     regex_yaml_path="regex_patterns.yaml"
 )
 ```
+This is a 'dumb' find-and-replace operation. It will replace EMAIL_REGEX with the equivalent regex value from your regex file.
 
 ## 8. Tweak Output Display (Advanced)
 
@@ -208,3 +210,5 @@ Control sample output size globally:
 from gchq_data_quality.globals import SampleConfig
 SampleConfig.RECORDS_FAILED_SAMPLE_SIZE = 25
 ```
+
+This value can be made very large. If you wanted a list of every failed record in a dataset of 100,000 you could in theory set this to be 100,000. Just be aware that the values are held in memory so you will need suitable amounts of RAM, although this is only likely to be an issue if you are storing ~1 million or more.

@@ -77,7 +77,7 @@ You can re-use your YAML config and regex pattern files:
 from gchq_data_quality import DataQualityConfig
 
 dq_config = DataQualityConfig.from_yaml(
-    file_paths="SOLUTION_rules_with_regex.yaml",
+    file_paths="rules.yaml",
     regex_yaml_path="regex_patterns.yaml"
 )
 dq_report = dq_config.execute(dfs)
@@ -85,6 +85,8 @@ dq_report.to_dataframe()
 ```
 
 **You can also repartition the Spark DataFrame to control the parallelism:**
+
+This might be useful to experiment with to see the impact on any `ValuesMatchExpression` rules. We use it internally in our test suite to check that consistent records are returned no matter how Spark ends up partitioning your data.
 
 ```python
 dfs_2 = dfs.repartition(2) # override Spark's default
@@ -98,11 +100,12 @@ dq_report.to_dataframe()
 - **Pandas & Spark parity:** Most rules are run by partitioning Spark data to small pandas DataFrames, processed in parallel using `mapInPandas`. Therefore take care with any expression in your `ValuesMatchExpression` rule that might use values like `ColumnA.mean()` - as this mean value will be based on a partition, not the whole dataset!
 - **Uniqueness:** Runs in pure Spark (not split by partition, as we need knowledge of all values).
 - **Measurement time:** Each partition is measured independently; `measurement_time` from the latest partition is used when we aggregate the results back.
+- **Filter**. All rules now take a `filter` parameter. This filtering is done as a separate step via `MapInPandas`, and will be much more inefficient than pre-filtering your data in Spark and then passing that filtered dataframe into the `DataQualityConfig`. Although depending on the variety and amount of filtering you are doing this may or may not matter that much.
 
 
 ## 4. Handling Nested Data
 
-A unique strength of this package is **support for deeply nested data** (arrays, structs).
+A strength of this package is **support for deeply nested data** (arrays, structs).
 
 ### Example: Pet Shop Customers
 
@@ -279,9 +282,10 @@ dq_pets_nested_report.to_dataframe()
 ```
 
 ## 5. PySpark Specifics & Tips
+
 - It's OK to sample, you don't need to measure all your data to get a repeatable data quality pass rate; experiment to find the best sample size.
 - **No records failed IDS (row numbers):** Invalid row numbers are not reported (Spark DataFrames are unordered).
-- **Column name mapping:** After flattening, columns are renamed (`.` -> `_`, etc). If generating configs from a report, you may have to "reverse" the renaming when moving from report output to config file.
+- **Column name mapping:** After flattening, columns are renamed (`.` -> `_`, etc). If generating configs from a report, you may have to "reverse" the renaming when moving from report output to config file. Just do a local find-and-replace to do this.
 - **DataFrame-wide statistics:** `ValuesMatchExpression` rules using group statistics can be unreliable on partitioned data (e.g. `col1 <= other_col.mean()`). For reliable results, repartition to a single worker or precompute the statistic.
 - **Timezones:** Always coerce to UTC. Spark can assign local timezones in datetimes without a timezone (depending on local configuration) and cause subtle errors in DQ Timeliness rules.
 
