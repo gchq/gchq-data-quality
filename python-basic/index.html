@@ -1303,11 +1303,34 @@ The example above will filter the dataframe where score &gt; 0, then apply the r
 <p>Use <code>len()</code> to check how many results are currently in the report:
 <div class="highlight"><pre><span></span><code><span class="nb">len</span><span class="p">(</span><span class="n">FINAL_REPORT</span><span class="p">)</span>  <span class="c1"># returns the number of DataQualityResult objects</span>
 </code></pre></div></p>
-<p><strong>Combining two reports:</strong> adding two <code>DataQualityReport</code> objects concatenates their <code>.results</code> lists (the second report's results are appended onto the first):
-<div class="highlight"><pre><span></span><code><span class="n">combined_report</span> <span class="o">=</span> <span class="n">report_a</span> <span class="o">+</span> <span class="n">report_b</span>
-<span class="c1"># or in-place:</span>
+<p><strong>Combining two reports:</strong> adding two <code>DataQualityReport</code> objects concatenates their <code>.results</code> lists.</p>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Behaviour</th>
+<th>Original modified?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>report_a + report_b</code></td>
+<td>Returns a <strong>new</strong> <code>DataQualityReport</code>; neither operand is changed</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>report_a += report_b</code></td>
+<td>Extends <code>report_a</code> <strong>in place</strong>; <code>report_a</code> itself grows</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="c1"># Non-mutating: original reports unchanged</span>
+<span class="n">combined_report</span> <span class="o">=</span> <span class="n">report_a</span> <span class="o">+</span> <span class="n">report_b</span>
+
+<span class="c1"># In-place: report_a grows</span>
 <span class="n">report_a</span> <span class="o">+=</span> <span class="n">report_b</span>
-</code></pre></div></p>
+</code></pre></div>
 <h2 id="4-combine-export-results">4. Combine &amp; Export Results</h2>
 <p>You can turn your results into a DataFrame (or other formats) for reporting:</p>
 <div class="highlight"><pre><span></span><code><span class="n">df_report</span> <span class="o">=</span> <span class="n">FINAL_REPORT</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>

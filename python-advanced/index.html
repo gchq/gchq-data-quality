@@ -535,10 +535,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-creating-a-config-file-from-a-report" class="md-nav__link">
+  <a href="#5-building-a-config-incrementally" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Creating a Config File From a Report
+        5. Building a Config Incrementally
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Building a Config Incrementally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checking-the-rule-count" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking the rule count
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-creating-a-config-file-from-a-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Creating a Config File From a Report
       
     </span>
   </a>
@@ -546,10 +585,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-managing-regular-expressions" class="md-nav__link">
+  <a href="#7-managing-regular-expressions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Managing Regular Expressions
+        7. Managing Regular Expressions
       
     </span>
   </a>
@@ -557,10 +596,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#7-tweak-output-display-advanced" class="md-nav__link">
+  <a href="#8-tweak-output-display-advanced" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7. Tweak Output Display (Advanced)
+        8. Tweak Output Display (Advanced)
       
     </span>
   </a>
@@ -816,10 +855,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-creating-a-config-file-from-a-report" class="md-nav__link">
+  <a href="#5-building-a-config-incrementally" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Creating a Config File From a Report
+        5. Building a Config Incrementally
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Building a Config Incrementally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checking-the-rule-count" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking the rule count
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-creating-a-config-file-from-a-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Creating a Config File From a Report
       
     </span>
   </a>
@@ -827,10 +905,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-managing-regular-expressions" class="md-nav__link">
+  <a href="#7-managing-regular-expressions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Managing Regular Expressions
+        7. Managing Regular Expressions
       
     </span>
   </a>
@@ -838,10 +916,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#7-tweak-output-display-advanced" class="md-nav__link">
+  <a href="#8-tweak-output-display-advanced" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7. Tweak Output Display (Advanced)
+        8. Tweak Output Display (Advanced)
       
     </span>
   </a>
@@ -971,7 +1049,40 @@ Note: you do not need to surround this with any quote character.</p>
 <span class="n">config</span><span class="o">.</span><span class="n">dataset_name</span> <span class="o">=</span> <span class="s2">&quot;Overwrite Dataset Name&quot;</span>
 <span class="n">config</span><span class="o">.</span><span class="n">measurement_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="5-creating-a-config-file-from-a-report">5. Creating a Config File From a Report</h2>
+<h2 id="5-building-a-config-incrementally">5. Building a Config Incrementally</h2>
+<p><code>DataQualityConfig</code> supports <code>len()</code>, <code>+</code>, and <code>+=</code> so you can inspect and grow a config programmatically.</p>
+<h3 id="checking-the-rule-count">Checking the rule count</h3>
+<div class="highlight"><pre><span></span><code><span class="n">config</span> <span class="o">=</span> <span class="n">DataQualityConfig</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="s2">&quot;config.yaml&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="p">))</span>   <span class="c1"># number of rules currently in the config</span>
+</code></pre></div>
+<h3 id="adding-rules">Adding rules</h3>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Behaviour</th>
+<th>Original modified?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>config + rule</code></td>
+<td>Returns a new <code>DataQualityConfig</code> with the rule appended; original unchanged</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>config += rule</code></td>
+<td>Appends the rule to <code>config</code> in place</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>config += [rule1, rule2]</code></td>
+<td>Appends all rules from the list in place</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-creating-a-config-file-from-a-report">6. Creating a Config File From a Report</h2>
 <p>A typical workflow:
 - Experiment with rules in Python
 - Produce a DataQualityReport
@@ -980,7 +1091,7 @@ Note: you do not need to surround this with any quote character.</p>
 <div class="highlight"><pre><span></span><code><span class="n">config_from_report</span> <span class="o">=</span> <span class="n">DataQualityConfig</span><span class="o">.</span><span class="n">from_report</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 <span class="n">config_from_report</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">(</span><span class="s2">&quot;yaml_from_report.yaml&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="6-managing-regular-expressions">6. Managing Regular Expressions</h2>
+<h2 id="7-managing-regular-expressions">7. Managing Regular Expressions</h2>
 <p>Use a separate YAML file for regex patterns, to keep config rules readable and maintainable.</p>
 <p><code>regex_patterns.yaml</code>:
 <div class="highlight"><pre><span></span><code><span class="nt">EMAIL_REGEX</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$&#39;</span>
@@ -997,11 +1108,11 @@ Note: you do not need to surround this with any quote character.</p>
     <span class="n">regex_yaml_path</span><span class="o">=</span><span class="s2">&quot;regex_patterns.yaml&quot;</span>
 <span class="p">)</span>
 </code></pre></div>
-<h2 id="7-tweak-output-display-advanced">7. Tweak Output Display (Advanced)</h2>
+<h2 id="8-tweak-output-display-advanced">8. Tweak Output Display (Advanced)</h2>
 <p>Control sample output size globally:</p>
-<p>```python
-from gchq_data_quality.globals import SampleConfig
-SampleConfig.RECORDS_FAILED_SAMPLE_SIZE = 25</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">gchq_data_quality.globals</span><span class="w"> </span><span class="kn">import</span> <span class="n">SampleConfig</span>
+<span class="n">SampleConfig</span><span class="o">.</span><span class="n">RECORDS_FAILED_SAMPLE_SIZE</span> <span class="o">=</span> <span class="mi">25</span>
+</code></pre></div>
 
 
 
