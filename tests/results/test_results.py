@@ -567,10 +567,72 @@ def test_add_unsupported_type_returns_not_implemented(
     assert result is NotImplemented
 
     # Test for adding a list of results where one is invalid
-    with pytest.raises(
-        TypeError, match="every item in the list needs to be a DataQualityResult"
-    ):
-        result = basic_data_quality_report + [basic_data_quality_result, "not a result"]
+    with pytest.raises(TypeError, match="every item must be a DataQualityResult"):
+        result = basic_data_quality_report + [basic_data_quality_result, "not a result"]  # type: ignore
+
+
+# ---- __iadd__ tests ----
+
+
+def test_iadd_two_reports(basic_data_quality_result: DataQualityResult) -> None:
+    """'+=' with another report extends the original in place and returns the same object."""
+    report_a = DataQualityReport(results=[basic_data_quality_result])
+    second = basic_data_quality_result.model_copy()
+    report_b = DataQualityReport(results=[second])
+    original_id = id(report_a)
+    original_len_a = len(report_a)
+    report_a += report_b
+    assert id(report_a) == original_id
+    assert len(report_a) == original_len_a + len(report_b)
+
+
+def test_iadd_single_result(basic_data_quality_result: DataQualityResult) -> None:
+    """'+=' with a single DataQualityResult appends it in place."""
+    report = DataQualityReport(results=[basic_data_quality_result])
+    extra = basic_data_quality_result.model_copy()
+    original_id = id(report)
+    original_len = len(report)
+    report += extra
+    assert id(report) == original_id
+    assert len(report) == original_len + 1
+    assert report.results[-1] == extra
+
+
+def test_iadd_list_of_results(basic_data_quality_result: DataQualityResult) -> None:
+    """'+=' with a list of DataQualityResults extends the report in place."""
+    report = DataQualityReport(results=[basic_data_quality_result])
+    extra_a = basic_data_quality_result.model_copy()
+    extra_b = basic_data_quality_result.model_copy()
+    original_len = len(report)
+    report += [extra_a, extra_b]
+    assert len(report) == original_len + 2
+
+
+def test_iadd_empty_report_to_report(
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """'+=' an empty report leaves the original unchanged."""
+    report = DataQualityReport(results=[basic_data_quality_result])
+    original_len = len(report)
+    report += DataQualityReport(results=[])
+    assert len(report) == original_len
+
+
+def test_iadd_unsupported_type_raises_type_error(
+    basic_data_quality_report: DataQualityReport,
+) -> None:
+    """'+=' with an unsupported type raises TypeError (not NotImplemented)."""
+    with pytest.raises(TypeError):
+        basic_data_quality_report += "not a report"  # type: ignore[operator]
+
+
+def test_iadd_list_with_invalid_item_raises_type_error(
+    basic_data_quality_report: DataQualityReport,
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """'+=' with a list containing a non-result item raises TypeError."""
+    with pytest.raises(TypeError):
+        basic_data_quality_report += [basic_data_quality_result, "not a result"]  # type: ignore[operator]
 
 
 def test_to_json_writes_and_roundtrips(

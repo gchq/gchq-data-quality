@@ -268,29 +268,41 @@ class DataQualityReport(DataQualityBaseModel):
     ) -> DataQualityReport:
         """Return a new DataQualityReport whose results are the concatenation of this
         report's results with *other*.
-
-        Args:
-            other: Either a :class:`DataQualityReport` (all of its results are appended)
-                or a single :class:`DataQualityResult` (appended as one record).
-
-        Returns:
-            DataQualityReport: A new report containing the combined results.
-
-        Raises:
-            TypeError: If *other* is neither a DataQualityReport nor a DataQualityResult.
         """
         if isinstance(other, DataQualityReport):
-            return DataQualityReport(results=self.results + other.results)
+            new_results = self.results + other.results
+
         elif isinstance(other, DataQualityResult):
-            return DataQualityReport(results=self.results + [other])
+            new_results = self.results + [other]
+
         elif isinstance(other, list):
-            if all(isinstance(x, DataQualityResult) for x in other):
-                return DataQualityReport(results=self.results + other)
-            else:
+            if not all(isinstance(x, DataQualityResult) for x in other):
                 raise TypeError(
-                    "If adding a list to a DataQualityReport, every item in the list needs to be a DataQualityResult. Check items in your list"
+                    "If adding a list to a DataQualityReport, every item must be a DataQualityResult."
                 )
-        return NotImplemented
+            new_results = self.results + other
+
+        else:
+            return NotImplemented
+
+        return DataQualityReport(results=new_results)
+
+    def __iadd__(
+        self, other: DataQualityReport | DataQualityResult | list[DataQualityResult]
+    ) -> DataQualityReport:
+        if isinstance(other, DataQualityReport):
+            self.results.extend(other.results)
+        elif isinstance(other, DataQualityResult):
+            self.results.append(other)
+        elif isinstance(other, list) and all(
+            isinstance(x, DataQualityResult) for x in other
+        ):
+            self.results.extend(other)
+        else:
+            raise TypeError(
+                "Can only add DataQualityReport, DataQualityResult, or list[DataQualityResult]"
+            )
+        return self
 
     def to_dataframe(
         self,

@@ -47,14 +47,13 @@ from pydantic import (
     ValidationError,
 )
 
-from gchq_data_quality.models import (
-    UTCDateTime,
-)
+from gchq_data_quality.models import UTCDateTime
 from gchq_data_quality.results.models import DataQualityReport, DataQualityResult
 
 # Legacy rule imports (e.g. AccuracyRule)
 # New preferred rule imports from >=v1.2 (e.g. ValuesMatchList)
 from gchq_data_quality.rules.accuracy import AccuracyRule, ValuesMatchList
+from gchq_data_quality.rules.base import BaseRule
 from gchq_data_quality.rules.completeness import CompletenessRule, ValuesAreComplete
 from gchq_data_quality.rules.consistency import ConsistencyRule, ValuesMatchExpression
 from gchq_data_quality.rules.timeliness import (
@@ -111,7 +110,7 @@ class DataQualityConfig(BaseModel):
         lifecycle_stage (str | None): The lifecycle stage at which data is measured.
         measurement_time (datetime | None): Measurement timestamp.
         dataset_id (str | int | float | None): Local data catalogue ID.
-        rules (list[RuleType] | None): List of rule models.
+        rules (list[BaseRule] | None): List of rule models.
 
     Example:
         ```python
@@ -331,6 +330,36 @@ class DataQualityConfig(BaseModel):
 
         with open(file_path, "w") as f:
             yaml.safe_dump(export_dict, f, sort_keys=False)
+
+    def __len__(self) -> int:
+        """Length is defined as the number of rules
+
+        Returns:
+            int: Number of rules in the config instance
+        """
+        return len(self.rules)
+
+    def __add__(self, other: RuleType | list[RuleType]) -> DataQualityConfig:
+        new = self.model_copy()
+
+        if isinstance(other, BaseRule):
+            new.rules = self.rules + [other]
+        elif isinstance(other, list) and all(isinstance(x, BaseRule) for x in other):
+            new.rules = self.rules + other
+        else:
+            return NotImplemented
+
+        return new
+
+    def __iadd__(self, other: RuleType | list[RuleType]) -> DataQualityConfig:
+        if isinstance(other, BaseRule):
+            self.rules.append(other)
+        elif isinstance(other, list) and all(isinstance(x, BaseRule) for x in other):
+            self.rules.extend(other)
+        else:
+            return NotImplemented
+
+        return self
 
 
 def _copy_config_values_to_dq_result(

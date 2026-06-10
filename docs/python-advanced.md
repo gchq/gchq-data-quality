@@ -86,6 +86,7 @@ Regular expressions often contain characters (`\`, `'`, `:`, `{}`, etc.) that YA
 
 **1. Single‑quoted string (recommended for most simple regex)**
 
+
 Single quotes treat almost everything literally, including backslashes.
 
 ```yaml
@@ -140,7 +141,27 @@ config.dataset_name = "Overwrite Dataset Name"
 config.measurement_time = datetime.now(tz=timezone.utc)
 ```
 
-## 5. Creating a Config File From a Report
+## 5. Building a Config Incrementally
+
+`DataQualityConfig` supports `len()`, `+`, and `+=` so you can inspect and grow a config programmatically.
+
+### Checking the rule count
+
+```python
+config = DataQualityConfig.from_yaml("config.yaml")
+print(len(config))   # number of rules currently in the config
+```
+
+### Adding rules
+
+| Operator | Behaviour | Original modified? |
+|----------|-----------|-------------------|
+| `config + rule` | Returns a new `DataQualityConfig` with the rule appended; original unchanged | No |
+| `config += rule` | Appends the rule to `config` in place | Yes |
+| `config += [rule1, rule2]` | Appends all rules from the list in place | Yes |
+
+
+## 6. Creating a Config File From a Report
 
 A typical workflow:
 - Experiment with rules in Python
@@ -153,7 +174,7 @@ config_from_report = DataQualityConfig.from_report(report)
 config_from_report.to_yaml("yaml_from_report.yaml", overwrite=True)
 ```
 
-## 6. Managing Regular Expressions
+## 7. Managing Regular Expressions
 
 Use a separate YAML file for regex patterns, to keep config rules readable and maintainable.
 
@@ -179,10 +200,11 @@ config = DataQualityConfig.from_yaml(
 )
 ```
 
-## 7. Tweak Output Display (Advanced)
+## 8. Tweak Output Display (Advanced)
 
 Control sample output size globally:
 
 ```python
 from gchq_data_quality.globals import SampleConfig
 SampleConfig.RECORDS_FAILED_SAMPLE_SIZE = 25
+```

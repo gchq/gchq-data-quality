@@ -330,10 +330,18 @@ Use `len()` to check how many results are currently in the report:
 len(FINAL_REPORT)  # returns the number of DataQualityResult objects
 ```
 
-**Combining two reports:** adding two `DataQualityReport` objects concatenates their `.results` lists (the second report's results are appended onto the first):
+**Combining two reports:** adding two `DataQualityReport` objects concatenates their `.results` lists.
+
+| Operator | Behaviour | Original modified? |
+|----------|-----------|-------------------|
+| `report_a + report_b` | Returns a **new** `DataQualityReport`; neither operand is changed | No |
+| `report_a += report_b` | Extends `report_a` **in place**; `report_a` itself grows | Yes |
+
 ```python
+# Non-mutating: original reports unchanged
 combined_report = report_a + report_b
-# or in-place:
+
+# In-place: report_a grows
 report_a += report_b
 ```
 
