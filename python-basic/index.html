@@ -1325,12 +1325,6 @@ The example above will filter the dataframe where score &gt; 0, then apply the r
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><span class="c1"># Non-mutating: original reports unchanged</span>
-<span class="n">combined_report</span> <span class="o">=</span> <span class="n">report_a</span> <span class="o">+</span> <span class="n">report_b</span>
-
-<span class="c1"># In-place: report_a grows</span>
-<span class="n">report_a</span> <span class="o">+=</span> <span class="n">report_b</span>
-</code></pre></div>
 <h2 id="4-combine-export-results">4. Combine &amp; Export Results</h2>
 <p>You can turn your results into a DataFrame (or other formats) for reporting:</p>
 <div class="highlight"><pre><span></span><code><span class="n">df_report</span> <span class="o">=</span> <span class="n">FINAL_REPORT</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
@@ -1372,9 +1366,13 @@ The example above will filter the dataframe where score &gt; 0, then apply the r
 </li>
 <li>
 <p>Generate rule definitions from your report using:
-    ```python
-    dc = DataQualityConfig.from_report(dq_report)
-    dc.to_yaml("rules.yaml", overwrite=True) # save the rules to a YAML file and use this a fast way of creating a template for changing them</p>
+    <div class="highlight"><pre><span></span><code><span class="n">dc</span> <span class="o">=</span> <span class="n">DataQualityConfig</span><span class="o">.</span><span class="n">from_report</span><span class="p">(</span><span class="n">dq_report</span><span class="p">)</span>
+<span class="c1"># Useful if you share your results with someone</span>
+<span class="c1">#  - they can recreate the rules from your report!</span>
+
+<span class="n">dc</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">(</span><span class="s2">&quot;rules.yaml&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="c1"># save the rules to a YAML file for later use in production</span>
+</code></pre></div></p>
 </li>
 </ul>
 

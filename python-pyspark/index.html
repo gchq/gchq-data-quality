@@ -909,13 +909,14 @@
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">gchq_data_quality</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataQualityConfig</span>
 
 <span class="n">dq_config</span> <span class="o">=</span> <span class="n">DataQualityConfig</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span>
-    <span class="n">file_paths</span><span class="o">=</span><span class="s2">&quot;SOLUTION_rules_with_regex.yaml&quot;</span><span class="p">,</span>
+    <span class="n">file_paths</span><span class="o">=</span><span class="s2">&quot;rules.yaml&quot;</span><span class="p">,</span>
     <span class="n">regex_yaml_path</span><span class="o">=</span><span class="s2">&quot;regex_patterns.yaml&quot;</span>
 <span class="p">)</span>
 <span class="n">dq_report</span> <span class="o">=</span> <span class="n">dq_config</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">dfs</span><span class="p">)</span>
 <span class="n">dq_report</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 </code></pre></div>
 <p><strong>You can also repartition the Spark DataFrame to control the parallelism:</strong></p>
+<p>This might be useful to experiment with to see the impact on any <code>ValuesMatchExpression</code> rules. We use it internally in our test suite to check that consistent records are returned no matter how Spark ends up partitioning your data.</p>
 <div class="highlight"><pre><span></span><code><span class="n">dfs_2</span> <span class="o">=</span> <span class="n">dfs</span><span class="o">.</span><span class="n">repartition</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># override Spark&#39;s default</span>
 <span class="n">dq_report</span> <span class="o">=</span> <span class="n">dq_config</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">dfs_2</span><span class="p">)</span>
 <span class="n">dq_report</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
@@ -925,9 +926,10 @@
 <li><strong>Pandas &amp; Spark parity:</strong> Most rules are run by partitioning Spark data to small pandas DataFrames, processed in parallel using <code>mapInPandas</code>. Therefore take care with any expression in your <code>ValuesMatchExpression</code> rule that might use values like <code>ColumnA.mean()</code> - as this mean value will be based on a partition, not the whole dataset!</li>
 <li><strong>Uniqueness:</strong> Runs in pure Spark (not split by partition, as we need knowledge of all values).</li>
 <li><strong>Measurement time:</strong> Each partition is measured independently; <code>measurement_time</code> from the latest partition is used when we aggregate the results back.</li>
+<li><strong>Filter</strong>. All rules now take a <code>filter</code> parameter. This filtering is done as a separate step via <code>MapInPandas</code>, and will be much more inefficient than pre-filtering your data in Spark and then passing that filtered dataframe into the <code>DataQualityConfig</code>. Although depending on the variety and amount of filtering you are doing this may or may not matter that much.</li>
 </ul>
 <h2 id="4-handling-nested-data">4. Handling Nested Data</h2>
-<p>A unique strength of this package is <strong>support for deeply nested data</strong> (arrays, structs).</p>
+<p>A strength of this package is <strong>support for deeply nested data</strong> (arrays, structs).</p>
 <h3 id="example-pet-shop-customers">Example: Pet Shop Customers</h3>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.types</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
@@ -1093,7 +1095,7 @@
 <ul>
 <li>It's OK to sample, you don't need to measure all your data to get a repeatable data quality pass rate; experiment to find the best sample size.</li>
 <li><strong>No records failed IDS (row numbers):</strong> Invalid row numbers are not reported (Spark DataFrames are unordered).</li>
-<li><strong>Column name mapping:</strong> After flattening, columns are renamed (<code>.</code> -&gt; <code>_</code>, etc). If generating configs from a report, you may have to "reverse" the renaming when moving from report output to config file.</li>
+<li><strong>Column name mapping:</strong> After flattening, columns are renamed (<code>.</code> -&gt; <code>_</code>, etc). If generating configs from a report, you may have to "reverse" the renaming when moving from report output to config file. Just do a local find-and-replace to do this.</li>
 <li><strong>DataFrame-wide statistics:</strong> <code>ValuesMatchExpression</code> rules using group statistics can be unreliable on partitioned data (e.g. <code>col1 &lt;= other_col.mean()</code>). For reliable results, repartition to a single worker or precompute the statistic.</li>
 <li><strong>Timezones:</strong> Always coerce to UTC. Spark can assign local timezones in datetimes without a timezone (depending on local configuration) and cause subtle errors in DQ Timeliness rules.</li>
 </ul>

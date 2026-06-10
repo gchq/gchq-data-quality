@@ -1026,7 +1026,7 @@ You should know about pandas DataFrames and basic Python syntax.</p>
 <p>Preserves the string exactly as written. Useful for long or complex regex patterns. Or where you have many single quotes in the regex.
 Note: you do not need to surround this with any quote character.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">regex_pattern</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">  </span><span class="no">/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/</span>
+<span class="w">  </span><span class="no">^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</span>
 </code></pre></div>
 <h2 id="3-loading-and-validating-config-files">3. Loading and Validating Config Files</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">gchq_data_quality</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataQualityConfig</span>
@@ -1042,7 +1042,7 @@ Note: you do not need to surround this with any quote character.</p>
 <div class="highlight"><pre><span></span><code><span class="n">report</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(</span><span class="n">measurement_time_format</span><span class="o">=</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M&quot;</span><span class="p">))</span>
 </code></pre></div>
-<p>You can adjust config metadata programmatically. It can be useful to override <code>measurement_time</code>, as you may want to pretend the data was measured at the date of ingest, rather than when you actually measured it. It can help make sense of your analysis later to understand the quality of the data based on what it landed.</p>
+<p>You can adjust config metadata programmatically. It can be useful to override <code>measurement_time</code>, as you may want to pretend the data was measured at the date of ingest, rather than when you actually measured it. It can help make sense of your analysis later to understand the quality of the data based on when it landed.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timezone</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">measurement_sample</span> <span class="o">=</span> <span class="s2">&quot;Test Sample&quot;</span>
@@ -1083,11 +1083,13 @@ Note: you do not need to surround this with any quote character.</p>
 </tbody>
 </table>
 <h2 id="6-creating-a-config-file-from-a-report">6. Creating a Config File From a Report</h2>
-<p>A typical workflow:
-- Experiment with rules in Python
-- Produce a DataQualityReport
-- Extract those rules back into a deployable YAML config and modify
-  - saves you writing out the entire YAML file from scratch</p>
+<p>A typical workflow:</p>
+<ul>
+<li>Experiment with rules in Python</li>
+<li>Produce a DataQualityReport</li>
+<li>Extract those rules back into a deployable YAML config and modify</li>
+<li>saves you writing out the entire YAML file from scratch</li>
+</ul>
 <div class="highlight"><pre><span></span><code><span class="n">config_from_report</span> <span class="o">=</span> <span class="n">DataQualityConfig</span><span class="o">.</span><span class="n">from_report</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 <span class="n">config_from_report</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">(</span><span class="s2">&quot;yaml_from_report.yaml&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
@@ -1103,16 +1105,18 @@ Note: you do not need to surround this with any quote character.</p>
 <span class="w">  </span><span class="nt">regex_pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EMAIL_REGEX</span>
 </code></pre></div></p>
 <p>When loading your config:</p>
-<div class="highlight"><pre><span></span><code><span class="n">config</span> <span class="o">=</span> <span class="n">DataQualityConfig</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span>
+<p><div class="highlight"><pre><span></span><code><span class="n">config</span> <span class="o">=</span> <span class="n">DataQualityConfig</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span>
     <span class="s2">&quot;config_with_regex_refs.yaml&quot;</span><span class="p">,</span> 
     <span class="n">regex_yaml_path</span><span class="o">=</span><span class="s2">&quot;regex_patterns.yaml&quot;</span>
 <span class="p">)</span>
 </code></pre></div>
+This is a 'dumb' find-and-replace operation. It will replace EMAIL_REGEX with the equivalent regex value from your regex file.</p>
 <h2 id="8-tweak-output-display-advanced">8. Tweak Output Display (Advanced)</h2>
 <p>Control sample output size globally:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">gchq_data_quality.globals</span><span class="w"> </span><span class="kn">import</span> <span class="n">SampleConfig</span>
 <span class="n">SampleConfig</span><span class="o">.</span><span class="n">RECORDS_FAILED_SAMPLE_SIZE</span> <span class="o">=</span> <span class="mi">25</span>
 </code></pre></div>
+<p>This value can be made very large. If you wanted a list of every failed record in a dataset of 100,000 you could in theory set this to be 100,000. Just be aware that the values are held in memory so you will need suitable amounts of RAM, although this is only likely to be an issue if you are storing ~1 million or more.</p>
 
 
 
