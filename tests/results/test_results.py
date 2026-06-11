@@ -22,6 +22,15 @@ from gchq_data_quality.rules import (
     UniquenessRule,
     ValidityNumericalRangeRule,
     ValidityRegexRule,
+    # New preferred names
+    ValuesAreComplete,
+    ValuesAreUnique,
+    ValuesMatchExpression,
+    ValuesMatchList,
+    ValuesMatchNumericalRange,
+    ValuesMatchRegex,
+    ValuesMatchRelativeTimeBounds,
+    ValuesMatchStaticTimeBounds,
 )
 from tests.conftest import (
     assert_dq_result_matches_expected,
@@ -162,6 +171,9 @@ def get_inputs_for_round_trip(
     return config, df, expected
 
 
+# ---- Legacy name round-trip tests ----
+
+
 def test_validity_regex_roundtrip(validity_regex_case: dict, tmp_path: Path) -> None:
     """Check all the models interoperate properly YAML <> DataQualityConfig <> DataQualityReport"""
     config, df, expected_results = get_inputs_for_round_trip(
@@ -240,12 +252,100 @@ def test_timeliness_relative_roundtrip(
     validate_round_trip(config, df, expected_results, tmp_path)
 
 
+# ---- New preferred name round-trip tests ----
+
+
+def test_accuracy_new_name_roundtrip(accuracy_case: dict, tmp_path: Path) -> None:
+    """Check ValuesMatchList round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        accuracy_case, ValuesMatchList
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_match_regex_roundtrip(
+    validity_regex_case: dict, tmp_path: Path
+) -> None:
+    """Check ValuesMatchRegex round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        validity_regex_case, ValuesMatchRegex
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_match_numerical_range_roundtrip(
+    validity_numerical_range_case: dict, tmp_path: Path
+) -> None:
+    """Check ValuesMatchNumericalRange round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        validity_numerical_range_case, ValuesMatchNumericalRange
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_are_complete_roundtrip(completeness_case: dict, tmp_path: Path) -> None:
+    """Check ValuesAreComplete round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        completeness_case, ValuesAreComplete
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_match_expression_roundtrip(
+    consistency_case: dict, tmp_path: Path
+) -> None:
+    """Check ValuesMatchExpression round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        consistency_case, ValuesMatchExpression
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_are_unique_roundtrip(uniqueness_case: dict, tmp_path: Path) -> None:
+    """Check ValuesAreUnique round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        uniqueness_case, ValuesAreUnique
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_match_static_time_bounds_roundtrip(
+    timeliness_static_case: dict, tmp_path: Path
+) -> None:
+    """Check ValuesMatchStaticTimeBounds round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        timeliness_static_case, ValuesMatchStaticTimeBounds
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+def test_values_match_relative_time_bounds_roundtrip(
+    timeliness_relative_case: dict, tmp_path: Path
+) -> None:
+    """Check ValuesMatchRelativeTimeBounds round-trips properly YAML <> DataQualityConfig <> DataQualityReport"""
+    config, df, expected_results = get_inputs_for_round_trip(
+        timeliness_relative_case, ValuesMatchRelativeTimeBounds
+    )
+
+    validate_round_trip(config, df, expected_results, tmp_path)
+
+
+# ---- Other result/report tests ----
+
+
 def test_data_quality_config_created_from_base_rule(tmp_path: Path) -> None:
     """Sometimes we need to pass a rule set List[RuleType] into a DataQualityConfig
     class to create it, rather than a basic dictionary"""
 
-    simple_rule = UniquenessRule(field="field_A")
-    simple_rule2 = CompletenessRule(field="fieldA")
+    simple_rule = ValuesAreUnique(field="field_A")
+    simple_rule2 = ValuesAreComplete(field="fieldA")
 
     rules = [simple_rule, simple_rule2]
 
@@ -257,7 +357,7 @@ def test_data_quality_config_created_from_base_rule(tmp_path: Path) -> None:
 
 def test_default_measurement_time_behaviour(test_df: pd.DataFrame) -> None:
     # In the config, if we don't set a time, it should be None
-    simple_rule = UniquenessRule(field="id")
+    simple_rule = ValuesAreUnique(field="id")
     config = DataQualityConfig(rules=[simple_rule])
     assert config.measurement_time is None
     assert isinstance(config.model_dump_json(), str)
@@ -368,6 +468,173 @@ def test_empty_report_outputs_empty_dataframe() -> None:
     assert df.empty
 
 
+# ---- __len__ tests ----
+
+
+def test_len_empty_report() -> None:
+    """An empty report has length zero."""
+    report = DataQualityReport(results=[])
+    assert len(report) == 0
+
+
+def test_len_report_with_results(basic_data_quality_report: DataQualityReport) -> None:
+    """len() matches the number of results stored in the report."""
+    assert len(basic_data_quality_report) == len(basic_data_quality_report.results)
+
+
+def test_len_matches_results_count(
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """Explicitly build a report with a known number of results and verify len()."""
+    report = DataQualityReport(results=[basic_data_quality_result])
+    assert len(report) == 1
+    second = basic_data_quality_result.model_copy()
+    report2 = DataQualityReport(results=[basic_data_quality_result, second])
+    assert len(report2) == 2
+
+
+# ---- __add__ tests ----
+
+
+def test_add_two_reports(basic_data_quality_result: DataQualityResult) -> None:
+    """Adding two DataQualityReports returns a new report whose length is the sum of both."""
+    report_a = DataQualityReport(results=[basic_data_quality_result])
+    second = basic_data_quality_result.model_copy()
+    report_b = DataQualityReport(results=[second])
+    combined = report_a + report_b
+    assert isinstance(combined, DataQualityReport)
+    assert len(combined) == len(report_a) + len(report_b)
+    assert combined.results == report_a.results + report_b.results
+
+    combined_as_list = DataQualityReport() + [basic_data_quality_result, second]
+    assert combined_as_list == combined
+
+
+def test_add_report_does_not_mutate_originals(
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """__add__ must not modify either operand."""
+    report_a = DataQualityReport(results=[basic_data_quality_result])
+    second = basic_data_quality_result.model_copy()
+    report_b = DataQualityReport(results=[second])
+    original_len_a = len(report_a)
+    original_len_b = len(report_b)
+    _ = report_a + report_b
+    assert len(report_a) == original_len_a
+    assert len(report_b) == original_len_b
+
+
+def test_add_single_result_to_report(
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """Adding a single DataQualityResult to a report appends it as one record."""
+    report = DataQualityReport(results=[basic_data_quality_result])
+    extra = basic_data_quality_result.model_copy()
+    combined = report + extra
+    assert isinstance(combined, DataQualityReport)
+    assert len(combined) == len(report) + 1
+    assert combined.results[-1] == extra
+
+
+def test_add_result_to_empty_report(
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """Adding a result to an empty report gives a single-record report."""
+    empty = DataQualityReport(results=[])
+    combined = empty + basic_data_quality_result
+    assert isinstance(combined, DataQualityReport)
+    assert len(combined) == 1
+    assert combined.results[0] == basic_data_quality_result
+
+
+def test_add_empty_report_to_report(
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """Adding an empty report to a non-empty report preserves all records."""
+    report = DataQualityReport(results=[basic_data_quality_result])
+    empty = DataQualityReport(results=[])
+    combined = report + empty
+    assert isinstance(combined, DataQualityReport)
+    assert len(combined) == len(report)
+
+
+def test_add_unsupported_type_returns_not_implemented(
+    basic_data_quality_report: DataQualityReport,
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """Adding an unsupported type should return NotImplemented (Python will raise TypeError)."""
+    result = basic_data_quality_report.__add__("not a report")  # type: ignore[arg-type]
+    assert result is NotImplemented
+
+    # Test for adding a list of results where one is invalid
+    with pytest.raises(TypeError, match="every item must be a DataQualityResult"):
+        result = basic_data_quality_report + [basic_data_quality_result, "not a result"]  # type: ignore
+
+
+# ---- __iadd__ tests ----
+
+
+def test_iadd_two_reports(basic_data_quality_result: DataQualityResult) -> None:
+    """'+=' with another report extends the original in place and returns the same object."""
+    report_a = DataQualityReport(results=[basic_data_quality_result])
+    second = basic_data_quality_result.model_copy()
+    report_b = DataQualityReport(results=[second])
+    original_id = id(report_a)
+    original_len_a = len(report_a)
+    report_a += report_b
+    assert id(report_a) == original_id
+    assert len(report_a) == original_len_a + len(report_b)
+
+
+def test_iadd_single_result(basic_data_quality_result: DataQualityResult) -> None:
+    """'+=' with a single DataQualityResult appends it in place."""
+    report = DataQualityReport(results=[basic_data_quality_result])
+    extra = basic_data_quality_result.model_copy()
+    original_id = id(report)
+    original_len = len(report)
+    report += extra
+    assert id(report) == original_id
+    assert len(report) == original_len + 1
+    assert report.results[-1] == extra
+
+
+def test_iadd_list_of_results(basic_data_quality_result: DataQualityResult) -> None:
+    """'+=' with a list of DataQualityResults extends the report in place."""
+    report = DataQualityReport(results=[basic_data_quality_result])
+    extra_a = basic_data_quality_result.model_copy()
+    extra_b = basic_data_quality_result.model_copy()
+    original_len = len(report)
+    report += [extra_a, extra_b]
+    assert len(report) == original_len + 2
+
+
+def test_iadd_empty_report_to_report(
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """'+=' an empty report leaves the original unchanged."""
+    report = DataQualityReport(results=[basic_data_quality_result])
+    original_len = len(report)
+    report += DataQualityReport(results=[])
+    assert len(report) == original_len
+
+
+def test_iadd_unsupported_type_raises_type_error(
+    basic_data_quality_report: DataQualityReport,
+) -> None:
+    """'+=' with an unsupported type raises TypeError (not NotImplemented)."""
+    with pytest.raises(TypeError):
+        basic_data_quality_report += "not a report"  # type: ignore[operator]
+
+
+def test_iadd_list_with_invalid_item_raises_type_error(
+    basic_data_quality_report: DataQualityReport,
+    basic_data_quality_result: DataQualityResult,
+) -> None:
+    """'+=' with a list containing a non-result item raises TypeError."""
+    with pytest.raises(TypeError):
+        basic_data_quality_report += [basic_data_quality_result, "not a result"]  # type: ignore[operator]
+
+
 def test_to_json_writes_and_roundtrips(
     tmp_path: Path, basic_data_quality_report: DataQualityReport
 ) -> None:
@@ -392,7 +659,7 @@ def test_failed_records_outputs(test_df: pd.DataFrame) -> None:
     in particular when in spark, we need to output a JSON string for our records_failed samples
     to accommodate the spark schema"""
     # In the config, if we don't set a time, it should be None
-    uniqueness_rule = UniquenessRule(field="id")
+    uniqueness_rule = ValuesAreUnique(field="id")
     dq_result = uniqueness_rule.evaluate(test_df)
 
     assert isinstance(dq_result, DataQualityResult)

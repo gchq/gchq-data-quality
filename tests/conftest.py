@@ -44,10 +44,11 @@ def basic_data_quality_result() -> DataQualityResult:
         rule_id="R1",
         rule_description="Dummy rule",
         rule_data=json.dumps({"field": "test_field", "function": "completeness"}),
-        records_evaluated=1,
+        records_evaluated=10,
+        records_passed=4,
         records_failed_ids=[1, 2, 3, 4, 5],
         records_failed_sample=[{"id": 1}],
-        pass_rate=1.0,
+        pass_rate=0.4,
     )
     return minimal_result
 
@@ -241,6 +242,14 @@ def test_df() -> pd.DataFrame:
 @pytest.fixture
 def test_config_file() -> Path:
     test_yaml_path = Path(__file__).parent / "artifacts" / "test_config.yaml"
+    return test_yaml_path
+
+
+@pytest.fixture
+def test_bad_regex_in_config_file() -> Path:
+    test_yaml_path = (
+        Path(__file__).parent / "artifacts" / "test_bad_regex_in_config.yaml"
+    )
     return test_yaml_path
 
 

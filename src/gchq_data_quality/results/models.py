@@ -30,6 +30,7 @@ from pydantic import (
     field_serializer,
     field_validator,
 )
+from pydantic.experimental.missing_sentinel import MISSING
 
 from gchq_data_quality.globals import SampleConfig
 from gchq_data_quality.models import (
@@ -38,9 +39,9 @@ from gchq_data_quality.models import (
     UTCDateTimeStrict,
 )
 from gchq_data_quality.results.utils import (
-    add_records_passing,
     aggregate_records_failed_ids,
     aggregate_records_failed_samples,
+    aggregate_records_passed,
     coerce_nan_to_none,
     shift_records_failed_ids,
 )
@@ -63,6 +64,7 @@ class DataQualityResult(DataQualityBaseModel):
         field (str): Name of the column the rule applies to.
         data_quality_dimension (DamaFramework): Data quality dimension evaluated (Uniqueness, Completeness, etc.).
         records_evaluated (int | None): Total records evaluated by this rule.
+        records_passed (int | None | MISSING): Total records that passed the rule. If records_evaluated is 0, then this is None by definition.
         pass_rate (float | None): Ratio (0-1) of passing records to evaluated records.
         rule_id (Any | None): Local identifier for the applied rule.
         rule_description (Any): Text, dict, or JSON describing rule parameters and logic.
@@ -82,6 +84,7 @@ class DataQualityResult(DataQualityBaseModel):
     Note:
         Direct construction of DataQualityResult or DataQualityReport are rare; results are typically gathered in production using
         RuleType.evaluate(df) or DataQualityConfig.execute(data)
+        records_passed can be 'missing' from creation and then will not get serialised. This is for backwards compatibility with versions < 1.2
     """
 
     dataset_name: float | str | int | None = Field(
@@ -115,6 +118,11 @@ class DataQualityResult(DataQualityBaseModel):
     records_evaluated: int | None = Field(
         default=None,
         description="Total number of records evaluated / checked for this rule.",
+    )
+    records_passed: int | None | MISSING = Field(  # pyright: ignore[reportInvalidTypeForm]
+        default=MISSING,
+        ge=0,
+        description="The number of records that passed the rule. If records_evaluated is 0, then records_passed will be None.",
     )
     pass_rate: float | None = Field(
         ...,
@@ -204,7 +212,7 @@ class DataQualityResult(DataQualityBaseModel):
                 )
                 return None
 
-    @field_validator("pass_rate", mode="before")
+    @field_validator("pass_rate", "records_passed", mode="before")
     @classmethod
     def _set_to_none_if_nan(cls, v: float | None) -> float | None:
         """Needed as Spark coerces to NaN"""
@@ -250,6 +258,51 @@ class DataQualityReport(DataQualityBaseModel):
     """
 
     results: list[DataQualityResult] = Field(default_factory=list)
+
+    def __len__(self) -> int:
+        """Return the number of results (records) in this report."""
+        return len(self.results)
+
+    def __add__(
+        self, other: DataQualityReport | DataQualityResult | list[DataQualityResult]
+    ) -> DataQualityReport:
+        """Return a new DataQualityReport whose results are the concatenation of this
+        report's results with *other*.
+        """
+        if isinstance(other, DataQualityReport):
+            new_results = self.results + other.results
+
+        elif isinstance(other, DataQualityResult):
+            new_results = self.results + [other]
+
+        elif isinstance(other, list):
+            if not all(isinstance(x, DataQualityResult) for x in other):
+                raise TypeError(
+                    "If adding a list to a DataQualityReport, every item must be a DataQualityResult."
+                )
+            new_results = self.results + other
+
+        else:
+            return NotImplemented
+
+        return DataQualityReport(results=new_results)
+
+    def __iadd__(
+        self, other: DataQualityReport | DataQualityResult | list[DataQualityResult]
+    ) -> DataQualityReport:
+        if isinstance(other, DataQualityReport):
+            self.results.extend(other.results)
+        elif isinstance(other, DataQualityResult):
+            self.results.append(other)
+        elif isinstance(other, list) and all(
+            isinstance(x, DataQualityResult) for x in other
+        ):
+            self.results.extend(other)
+        else:
+            raise TypeError(
+                "Can only add DataQualityReport, DataQualityResult, or list[DataQualityResult]"
+            )
+        return self
 
     def to_dataframe(
         self,
@@ -328,7 +381,6 @@ class DataQualityReport(DataQualityBaseModel):
         """
 
         df = self.to_dataframe()
-        df = add_records_passing(df)
         groupby_columns = self._get_groupby_columns()
         aggregation_dict = self._get_aggregation_dict()
 
@@ -351,14 +403,13 @@ class DataQualityReport(DataQualityBaseModel):
         return df[ordered_columns].reset_index()
 
     def _recalculate_pass_rate(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Recalculates the pass rate following aggregation of each parition during spark execution"""
+        """Recalculates the pass rate following aggregation of each partition during spark execution"""
         df["pass_rate"] = df.agg(
             lambda row: calculate_pass_rate(
-                row["records_passing"], row["records_evaluated"]
+                row["records_passed"], row["records_evaluated"]
             ),
             axis=1,
         )
-        df.drop(["records_passing"], axis=1, inplace=True)
         return df
 
     def _round_pass_rate(self, df: pd.DataFrame, decimals: int) -> pd.DataFrame:
@@ -408,7 +459,7 @@ class DataQualityReport(DataQualityBaseModel):
             "records_evaluated": "sum",
             "records_failed_sample": aggregate_records_failed_samples,
             "records_failed_ids": aggregate_records_failed_ids,
-            "records_passing": "sum",
+            "records_passed": aggregate_records_passed,
             "measurement_time": "max",
         }
 

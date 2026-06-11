@@ -10,14 +10,14 @@ Rule classes (imported from gchq_data_quality.rules) define specific data qualit
 
 This module provides:
     - DataQualityConfig for describing data quality measurement settings and rules.
-    - Support for execution against pandas DataFrames and Spark DataFrames (Elasticsearch indices not yet implemented).
+    - Support for execution against pandas DataFrames and Spark DataFrames.
 
 Usage Example:
     ```python
-    from gchq_data_quality.rules import ValidityRegexRule
+    from gchq_data_quality.rules import ValuesMatchRegex
     from gchq_data_quality.config import DataQualityConfig
 
-    rule = ValidityRegexRule(field="email", regex_pattern=r"[^@]+@[^@]+\.[^@]+")
+    rule = ValuesMatchRegex(field="email", regex_pattern=r"[^@]+@[^@]+\.[^@]+")
     config = DataQualityConfig(dataset_name="customer_data", rules=[rule])
     report = config.execute(dataframe)
 
@@ -31,13 +31,12 @@ from __future__ import annotations
 import json
 import warnings
 from pathlib import Path
-from typing import TYPE_CHECKING, Annotated, overload
+from typing import TYPE_CHECKING, Annotated, Any
 
 import pandas as pd
 import yaml
 
 if TYPE_CHECKING:
-    from elasticsearch import Elasticsearch
     from pyspark.sql import DataFrame as SparkDataFrame
 
 from pydantic import (
@@ -48,33 +47,49 @@ from pydantic import (
     ValidationError,
 )
 
-from gchq_data_quality.models import (
-    UTCDateTime,
-)
+from gchq_data_quality.models import UTCDateTime
 from gchq_data_quality.results.models import DataQualityReport, DataQualityResult
-from gchq_data_quality.rules.accuracy import AccuracyRule
-from gchq_data_quality.rules.completeness import CompletenessRule
-from gchq_data_quality.rules.consistency import ConsistencyRule
+
+# Legacy rule imports (e.g. AccuracyRule)
+# New preferred rule imports from >=v1.2 (e.g. ValuesMatchList)
+from gchq_data_quality.rules.accuracy import AccuracyRule, ValuesMatchList
+from gchq_data_quality.rules.base import BaseRule
+from gchq_data_quality.rules.completeness import CompletenessRule, ValuesAreComplete
+from gchq_data_quality.rules.consistency import ConsistencyRule, ValuesMatchExpression
 from gchq_data_quality.rules.timeliness import (
     TimelinessRelativeRule,
     TimelinessStaticRule,
+    ValuesMatchRelativeTimeBounds,
+    ValuesMatchStaticTimeBounds,
 )
-from gchq_data_quality.rules.uniqueness import UniquenessRule
+from gchq_data_quality.rules.uniqueness import UniquenessRule, ValuesAreUnique
 from gchq_data_quality.rules.validity import (
     ValidityNumericalRangeRule,
+    ValidityRegexBaseRule,
     ValidityRegexRule,
+    ValuesMatchNumericalRange,
+    ValuesMatchRegex,
 )
 
-# Union type for all possible rules
+# Union type for all possible rules — includes both legacy and new preferred names.
+# Pydantic uses the 'function' literal field as a discriminator to select the right class.
 RuleType = Annotated[
     UniquenessRule
+    | ValuesAreUnique
     | CompletenessRule
+    | ValuesAreComplete
     | ValidityRegexRule
+    | ValuesMatchRegex
     | ValidityNumericalRangeRule
+    | ValuesMatchNumericalRange
     | ConsistencyRule
+    | ValuesMatchExpression
     | AccuracyRule
+    | ValuesMatchList
     | TimelinessRelativeRule
-    | TimelinessStaticRule,
+    | ValuesMatchRelativeTimeBounds
+    | TimelinessStaticRule
+    | ValuesMatchStaticTimeBounds,
     Field(discriminator="function"),
 ]
 
@@ -95,7 +110,7 @@ class DataQualityConfig(BaseModel):
         lifecycle_stage (str | None): The lifecycle stage at which data is measured.
         measurement_time (datetime | None): Measurement timestamp.
         dataset_id (str | int | float | None): Local data catalogue ID.
-        rules (list[RuleType] | None): List of rule models.
+        rules (list[BaseRule] | None): List of rule models.
 
     Example:
         ```python
@@ -113,7 +128,7 @@ class DataQualityConfig(BaseModel):
         config2 = DataQualityConfig(
             dataset_name="my_data",
             rules=[
-                ValidityRegexRule(field="email", regex_pattern='.+@example.com'),
+                ValuesMatchRegex(field="email", regex_pattern='.+@example.com'),
             ],
         )
         ```
@@ -163,33 +178,13 @@ class DataQualityConfig(BaseModel):
         default_factory=list, description="List of data quality rules"
     )
 
-    @overload
-    def execute(self, data_source: pd.DataFrame) -> DataQualityReport: ...
-    @overload
-    def execute(self, data_source: SparkDataFrame) -> DataQualityReport: ...
-    @overload
-    def execute(
-        self,
-        data_source: Elasticsearch,
-        index_name: str = ...,
-        query: dict | None = ...,
-    ) -> DataQualityReport: ...
-
-    def execute(
-        self,
-        data_source,
-        index_name: str = "",
-        query: dict | None = None,
-    ):
+    def execute(self, data_source: pd.DataFrame | SparkDataFrame) -> DataQualityReport:
         """
         Execute all data quality rules defined in the configuration against the specified data source.
-        Note: Elasticsearch execution not yet implemented.
+
         Args:
-            data_source (pandas.DataFrame | pyspark.sql.DataFrame | Elasticsearch):
-                The data to be checked. Should be a pandas DataFrame, a Spark DataFrame, or an Elasticsearch client.
-            index_name (str, optional): Name of the index if using Elasticsearch.
-            query (dict, optional): Query DSL dict to select records from the index (Elasticsearch only).
-            Defaults to {'query': {'match_all': {}}} if not supplied.
+            data_source (pandas.DataFrame | pyspark.sql.DataFrame):
+                The data to be checked. Should be a pandas DataFrame or a Spark DataFrame.
 
         Returns:
             DataQualityReport: A report containing the result of each data quality rule.
@@ -201,17 +196,12 @@ class DataQualityConfig(BaseModel):
 
             # For Spark DataFrames
             dq_report = config.execute(spark_df)
-
-            # For Elasticsearch * not yet implemented *
-            dq_report = config.execute(elasticsearch_client, index_name="index")
             ```
         """
         results: list[DataQualityResult] = []
 
         for rule in self.rules:
-            dq_result = rule.evaluate(
-                data_source=data_source, index_name=index_name, query=query
-            )
+            dq_result = rule.evaluate(data_source=data_source)
             dq_result = _copy_config_values_to_dq_result(self, dq_result)
             results.append(dq_result)
 
@@ -341,6 +331,36 @@ class DataQualityConfig(BaseModel):
         with open(file_path, "w") as f:
             yaml.safe_dump(export_dict, f, sort_keys=False)
 
+    def __len__(self) -> int:
+        """Length is defined as the number of rules
+
+        Returns:
+            int: Number of rules in the config instance
+        """
+        return len(self.rules)
+
+    def __add__(self, other: RuleType | list[RuleType]) -> DataQualityConfig:
+        new = self.model_copy()
+
+        if isinstance(other, BaseRule):
+            new.rules = self.rules + [other]
+        elif isinstance(other, list) and all(isinstance(x, BaseRule) for x in other):
+            new.rules = self.rules + other
+        else:
+            return NotImplemented
+
+        return new
+
+    def __iadd__(self, other: RuleType | list[RuleType]) -> DataQualityConfig:
+        if isinstance(other, BaseRule):
+            self.rules.append(other)
+        elif isinstance(other, list) and all(isinstance(x, BaseRule) for x in other):
+            self.rules.extend(other)
+        else:
+            return NotImplemented
+
+        return self
+
 
 def _copy_config_values_to_dq_result(
     config: DataQualityConfig, dq_result: DataQualityResult
@@ -366,6 +386,30 @@ def _copy_config_values_to_dq_result(
         dq_result_new.measurement_time = config.measurement_time
 
     return dq_result_new
+
+
+def _load_yaml_with_helpful_debug(path: Path) -> Any:  # noqa: ANN401
+    try:
+        with open(path) as f:
+            return yaml.safe_load(f)
+
+    except yaml.YAMLError as e:
+        if hasattr(e, "problem_mark"):
+            mark = e.problem_mark  # type: ignore
+            line = mark.line + 1
+            column = mark.column + 1
+
+            raise ValueError(
+                f"You have a bad YAML file.\n"
+                f"Location: line {line}, column {column}\n"
+                f"Problem: {e.problem}\n"  # type: ignore
+                f"Path: {path}\n"
+                "If this relates to a regex pattern, check for:\n"
+                "- unescaped single quotes\n"
+                "- or place the regex after a '|' block indicator on the next line and indent it"
+            ) from e
+
+        raise
 
 
 def _load_data_quality_config_files(
@@ -409,17 +453,17 @@ def _load_data_quality_config_files(
     # Load regex patterns if path provided
     regex_patterns = {}
     if regex_yaml_path:
+        regex_yaml_path = Path(regex_yaml_path)
         regex_patterns = _load_regex_yaml(regex_yaml_path)
 
     # Load and validate configs
     configs = []
     for fp in list_of_file_paths:
-        with open(fp) as f:
-            cfg = yaml.safe_load(f)
-            validated_cfg = DataQualityConfig(**cfg)
+        cfg = _load_yaml_with_helpful_debug(Path(fp))
+        validated_cfg = DataQualityConfig(**cfg)
 
-            validated_cfg = _replace_regex_values(validated_cfg, regex_patterns)
-            configs.append(validated_cfg)
+        validated_cfg = _replace_regex_values(validated_cfg, regex_patterns)
+        configs.append(validated_cfg)
 
     # Merge configs
     if len(configs) == 1:
@@ -440,7 +484,7 @@ def _load_data_quality_config_files(
         return combined
 
 
-def _load_regex_yaml(file_path: str | Path) -> dict[str, str]:
+def _load_regex_yaml(file_path: Path) -> dict[str, str]:
     r"""
     Load regular expression patterns from a YAML file and validate that all values are strings.
 
@@ -460,8 +504,8 @@ def _load_regex_yaml(file_path: str | Path) -> dict[str, str]:
             FOOD_WEIGHT_REGEX: '^\d+(\.\d{1,2})?\s?(kg|g|lb|oz)$'
             ```
     """
-    with open(file_path) as f:
-        data = yaml.safe_load(f)
+
+    data = _load_yaml_with_helpful_debug(file_path)
 
     if not isinstance(data, dict):
         raise ValueError(
@@ -481,8 +525,9 @@ def _replace_regex_values(
     config: DataQualityConfig, regex_dict: dict
 ) -> DataQualityConfig:
     """
-    Substitute the 'regex_pattern' attribute for rules using the 'validity_regex' function,
+    Substitute the 'regex_pattern' attribute for rules using a regex validity function,
     replacing named patterns with strings from a provided mapping.
+    Handles both ValidityRegexRule and ValuesMatchRegex (and any future subclass of ValidityRegexBaseRule).
 
     Args:
         config (DataQualityConfig): The data quality configuration object.
@@ -498,7 +543,7 @@ def _replace_regex_values(
     updated_config = config.model_copy()
 
     for rule in updated_config.rules:
-        if isinstance(rule, ValidityRegexRule):
+        if isinstance(rule, ValidityRegexBaseRule):
             pattern_value = rule.regex_pattern
             if pattern_value and pattern_value in regex_dict:
                 rule.regex_pattern = regex_dict[pattern_value]

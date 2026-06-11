@@ -9,6 +9,31 @@
     pass_rate: 1.0
     records_evaluated: 4
 
+- description: All rows satisfy a simple string comparison rule (with filter)
+  inputs:
+    df:
+      a: [1, 2, 3, 4]
+      b: [10, 20, 30, 40]
+    field: a
+    filter: "`a` <= 3"
+    expression: "`a` < `b`"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 3
+
+- description: All rows satisfy a simple string comparison rule (with filter on colC)
+  inputs:
+    df:
+      a: [1, 2, 3, 4]
+      b: [10, 20, 30, 40]
+      c: [1, 1, 1, 0]
+    field: a
+    filter: "`c` == 1"
+    expression: "`a` < `b`"
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 3
+
 - description: All rows fail a simple string comparison rule
   inputs:
     df:

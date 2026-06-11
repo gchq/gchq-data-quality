@@ -62,10 +62,10 @@ measurement_sample: 10% of records
 lifecycle_stage: null
 rules:
   - field: id
-    function: uniqueness
+    function: values_are_unique
   - field: name
     na_values: ''
-    function: validity_regex
+    function: values_match_regex
     regex_pattern: '[A-z0-9_]'
 ```
 
@@ -82,12 +82,28 @@ valid_values:
 
 #### Regex in YAML
 
-Always surround `regex_pattern` with **single quotes**:
+Regular expressions often contain characters (`\`, `'`, `:`, `{}`, etc.) that YAML may misinterpret. The safest approach is to treat the regex as a **string literal**. Our recommended approach:
+
+**1. Single‑quoted string (recommended for most simple regex)**
+
+
+Single quotes treat almost everything literally, including backslashes.
 
 ```yaml
 regex_pattern: '[A-Za-z]+'
 regex_pattern: '\d{4}-\d{2}-\d{2}'
-regex_pattern: 'don''t'    # To include a single quote
+regex_pattern: 'don''t'   # escape single quote by doubling it
+```
+
+**2. Literal block (`|`)**
+
+Preserves the string exactly as written. Useful for long or complex regex patterns. Or where you have many single quotes in the regex.
+Note: you do not need to surround this with any quote character.
+
+```yaml
+regex_pattern: |
+  ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+
 ```
 
 ## 3. Loading and Validating Config Files
@@ -115,7 +131,7 @@ report = config.execute(df)
 print(report.to_dataframe(measurement_time_format="%Y-%m-%d %H:%M"))
 ```
 
-You can adjust config metadata programmatically. It can be useful to override `measurement_time`, as you may want to pretend the data was measured at the date of ingest, rather than when you actually measured it. It can help make sense of your analysis later to understand the quality of the data based on what it landed.
+You can adjust config metadata programmatically. It can be useful to override `measurement_time`, as you may want to pretend the data was measured at the date of ingest, rather than when you actually measured it. It can help make sense of your analysis later to understand the quality of the data based on when it landed.
 
 ```python
 from datetime import timezone
@@ -125,9 +141,30 @@ config.dataset_name = "Overwrite Dataset Name"
 config.measurement_time = datetime.now(tz=timezone.utc)
 ```
 
-## 5. Creating a Config File From a Report
+## 5. Building a Config Incrementally
+
+`DataQualityConfig` supports `len()`, `+`, and `+=` so you can inspect and grow a config programmatically.
+
+### Checking the rule count
+
+```python
+config = DataQualityConfig.from_yaml("config.yaml")
+print(len(config))   # number of rules currently in the config
+```
+
+### Adding rules
+
+| Operator | Behaviour | Original modified? |
+|----------|-----------|-------------------|
+| `config + rule` | Returns a new `DataQualityConfig` with the rule appended; original unchanged | No |
+| `config += rule` | Appends the rule to `config` in place | Yes |
+| `config += [rule1, rule2]` | Appends all rules from the list in place | Yes |
+
+
+## 6. Creating a Config File From a Report
 
 A typical workflow:
+
 - Experiment with rules in Python
 - Produce a DataQualityReport
 - Extract those rules back into a deployable YAML config and modify
@@ -138,7 +175,7 @@ config_from_report = DataQualityConfig.from_report(report)
 config_from_report.to_yaml("yaml_from_report.yaml", overwrite=True)
 ```
 
-## 6. Mangaing Regular Expressions
+## 7. Managing Regular Expressions
 
 Use a separate YAML file for regex patterns, to keep config rules readable and maintainable.
 
@@ -151,7 +188,7 @@ PHONE_REGEX: '[0-9]+'
 Reference pattern names instead of raw regex in your rules:
 ```yaml
 - field: email
-  function: validity_regex
+  function: values_match_regex
   regex_pattern: EMAIL_REGEX
 ```
 
@@ -163,8 +200,9 @@ config = DataQualityConfig.from_yaml(
     regex_yaml_path="regex_patterns.yaml"
 )
 ```
+This is a 'dumb' find-and-replace operation. It will replace EMAIL_REGEX with the equivalent regex value from your regex file.
 
-## 7. Tweak Output Display (Advanced)
+## 8. Tweak Output Display (Advanced)
 
 Control sample output size globally:
 
@@ -172,3 +210,5 @@ Control sample output size globally:
 from gchq_data_quality.globals import SampleConfig
 SampleConfig.RECORDS_FAILED_SAMPLE_SIZE = 25
 ```
+
+This value can be made very large. If you wanted a list of every failed record in a dataset of 100,000 you could in theory set this to be 100,000. Just be aware that the values are held in memory so you will need suitable amounts of RAM, although this is only likely to be an issue if you are storing ~1 million or more.

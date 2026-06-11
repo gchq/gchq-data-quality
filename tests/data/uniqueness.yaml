@@ -7,6 +7,16 @@
     pass_rate: 1.0
     records_evaluated: 4
 
+- description: All unique values (test records_passed)
+  inputs:
+    df:
+      id: [1, 2, 3, 4]
+    field: id
+  expected:
+    pass_rate: 1.0
+    records_evaluated: 4
+    records_passed: 4
+
 - description: All duplicates
   inputs:
     df:
@@ -15,6 +25,29 @@
   expected:
     pass_rate: 0.5
     records_evaluated: 4
+    records_failed_sample: [{"id": 1}, {"id": 2}]
+
+- description: All duplicates after filter applied
+  inputs:
+    df:
+      id: [1, 1, 2, 2, 3, 4]
+    field: id
+    filter: "`id` < 4"
+  expected:
+    records_evaluated: 5
+    pass_rate: 0.6
+    records_failed_sample: [{"id": 1}, {"id": 2}]
+
+- description: All duplicates after filter applied (test records_passed)
+  inputs:
+    df:
+      id: [1, 1, 2, 2, 3, 4]
+    field: id
+    filter: "`id` < 4"
+  expected:
+    records_evaluated: 5
+    records_passed: 3
+    pass_rate: 0.6
     records_failed_sample: [{"id": 1}, {"id": 2}]
 
 - description: All duplicates with null
@@ -27,6 +60,17 @@
     records_evaluated: 4
     records_failed_sample: [{"id": 1}, {"id": 2}]
 
+- description: All duplicates with null (test records_passed)
+  inputs:
+    df:
+      id: [1, 1, 2, 2, null, null]
+    field: id
+  expected:
+    pass_rate: 0.5
+    records_evaluated: 4
+    records_passed: 2
+    records_failed_sample: [{"id": 1}, {"id": 2}]
+
 - description: All null values
   inputs:
     df:
@@ -35,6 +79,16 @@
   expected:
     pass_rate: null
     records_evaluated: 0
+
+- description: All null values (test records_passed)
+  inputs:
+    df:
+      id: [null, null]
+    field: id
+  expected:
+    pass_rate: null
+    records_evaluated: 0
+    records_passed: null
 
 - description: Partial null values
   inputs:
@@ -50,7 +104,7 @@
     df:
       id: [1,2,0, null]
     field: id
-    na_values: [0.0]
+    na_values: [0]
   expected:
     pass_rate: 1.0
     records_evaluated: 2

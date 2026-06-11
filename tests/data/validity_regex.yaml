@@ -50,6 +50,18 @@
     pass_rate: 0.75
     records_evaluated: 4
 
+- description: Using na_values, one excluded from checks (with records_passed)
+  inputs:
+    df:
+      note: ["ok", "error", "N/A", "fail", "ok"]
+    field: note
+    regex_pattern: 'ok|fail'
+    na_values: "N/A"
+  expected:
+    pass_rate: 0.75
+    records_evaluated: 4
+    records_passed: 3
+
 - description: Null values in data
   inputs:
     df:
@@ -70,6 +82,18 @@
   expected:
     pass_rate: null
     records_evaluated: 0
+
+- description: All missing/na_values (records_passed)
+  inputs:
+    df:
+      comment: [null, "N/A", "", "N/A"]
+    field: comment
+    regex_pattern: '.*'
+    na_values: ["N/A", ""]
+  expected:
+    pass_rate: null
+    records_evaluated: 0
+    records_passed: null
 
 - description: Special character pattern
   inputs:

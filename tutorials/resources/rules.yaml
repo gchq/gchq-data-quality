@@ -7,18 +7,18 @@ rules:
 - field: id
   skip_if_null: any
   data_quality_dimension: Uniqueness
-  function: uniqueness
+  function: values_are_unique
 - field: name
   na_values: Missing
   skip_if_null: never
   data_quality_dimension: Completeness
-  function: completeness
+  function: values_are_complete
 - field: category
   na_values:
   - X
   skip_if_null: never
   data_quality_dimension: Accuracy
-  function: accuracy
+  function: values_match_list
   valid_values:
   - A
   - B
@@ -29,7 +29,7 @@ rules:
   skip_if_null: any
   data_quality_dimension: Timeliness
   dayfirst: false
-  function: timeliness_relative
+  function: values_match_relative_time_bounds
   start_timedelta: P0DT0H0M0S
   end_timedelta: P730DT0H0M0S
   reference_date: '2023-01-01T00:00:00+00:00'
@@ -37,22 +37,22 @@ rules:
   skip_if_null: any
   data_quality_dimension: Timeliness
   dayfirst: false
-  function: timeliness_static
+  function: values_match_static_time_bounds
   end_date: '2023-06-01T00:00:00+00:00'
 - field: age
   na_values: -5
   skip_if_null: all
   data_quality_dimension: Consistency
-  function: consistency
+  function: values_match_expression
   expression: '`age` > 3'
 - field: age
   skip_if_null: any
   data_quality_dimension: Validity
-  function: validity_numerical_range
+  function: values_match_numerical_range
   min_value: 1.0
   max_value: 120.0
 - field: email
   skip_if_null: any
   data_quality_dimension: Validity
-  function: validity_regex
+  function: values_match_regex
   regex_pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$

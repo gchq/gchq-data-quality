@@ -25,9 +25,9 @@ We use `uv` for dependency management. Here's how to set up your environment:
    ```shell
    uv sync --all-extras
    ```
-   `gchq-data-quality`runs on Pandas and Spark dataframes. We don't want to force users to install pyspark if it's not needed, so pyspark is an 'extra' within our `pyproject.toml` file. Elasticsearch is also an extra, but this feature is not yet implemented.
+   `gchq-data-quality`runs on Pandas and Spark dataframes. We don't want to force users to install pyspark if it's not needed, so pyspark is an 'extra' within our `pyproject.toml` file.
 
-   `--all-extras` will install both pyspark and elasticsearch packages, which is recommended for dev work.
+   `--all-extras` will install pyspark, which is recommended for dev work.
 
 3. You can:
    - Run commands in a virtual environment with `uv run <command>`:
@@ -74,7 +74,13 @@ We follow a **GitHub Flow** development approach for `gchq-data-quality`. Here's
   - Use `feature/<feature-name>` for new features or refactoring.
   - Use `fix/<bug-name>` for bug fixes.
 - Ensure changes are limited to related files and meet the following criteria:
-  - Sufficient test coverage (use `pytest` and `coverage` to verify).
+  - Sufficient test coverage (use `pytest` and `coverage` to verify). For example:
+
+      ```shell
+      uv run coverage run -m pytest tests/
+      uv run coverage html
+      open htmlcov/index.html
+      ```
   - Conformity to style guides (`ruff` and `pre-commit hooks`).
   - Add related entries to `CHANGELOG.md`.
 
@@ -97,7 +103,6 @@ Tests for `gchq-data-quality` are located in the `tests/` directory and can be r
 
 - `tests/`: Main directory for unit tests.
 - `tests/spark/`: Spark-specific tests (requires `pyspark`).
-- `tests/elasticsearch/`: Elasticsearch-specific tests (requires `elasticsearch`).
 
 ### Running Tests:
 ```shell
@@ -110,14 +115,6 @@ For specific extras:
 ```shell
   uv sync --extra pyspark
   uv run pytest tests/spark/
-  ```
-
-- **Elasticsearch Tests**:
-(Not yet implemented)
-
-```shell
-  uv sync --extra elasticsearch
-  uv run pytest tests/elasticsearch/
   ```
 
 We use pytest for testing, and `pre-commit` ensures proper linting and formatting.
@@ -173,9 +170,9 @@ The above command starts a local development server, typically at `http://127.0.
 
 Code submissions are verified via GitHub Actions, which run tests across **Linux**, **macOS**, and **Windows** platforms. The testing matrix covers the following:
 
-- **Linux**: Full tests for Pandas, Spark & Elasticsearch
-- **macOS**: Full tests for Pandas, Spark & Elasticsearch
-- **Windows**: Limited to Pandas tests (unusual to have Spark or Elasticsearch setup on a Windows machine).
+- **Linux**: Full tests for Pandas & Spark
+- **macOS**: Full tests for Pandas & Spark
+- **Windows**: Limited to Pandas tests (unusual to have Spark setup on a Windows machine).
 
 
 [github-issues]: https://github.com/gchq/gchq-data-quality/issues

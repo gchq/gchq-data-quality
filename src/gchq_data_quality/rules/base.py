@@ -14,19 +14,12 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections.abc import Iterator
-from typing import Any, Literal, Self, overload
+from typing import Any, Literal, Self
 from warnings import warn
 
 import pandas as pd
 
-# Do not force users to have access to pyspark or elasticsearch unless required
-
-try:
-    from elasticsearch import Elasticsearch
-
-    _has_elasticsearch = True
-except ImportError:
-    _has_elasticsearch = False
+# Do not force users to have access to pyspark unless required
 
 try:
     from pyspark.sql import DataFrame as SparkDataFrame
@@ -47,8 +40,11 @@ from gchq_data_quality.models import (
 )
 from gchq_data_quality.results.models import DataQualityResult
 from gchq_data_quality.rules.utils.rules_utils import (
+    adjust_records_passed,
     calculate_pass_rate,
     ensure_columns_exist_pandas,
+    evaluate_bool_expression,
+    extract_columns_from_expression,
     get_records_failed_ids,
     replace_na_values_pandas,
 )
@@ -65,6 +61,7 @@ class BaseRule(DataQualityBaseModel, ABC):
 
     Attributes:
         field (str): Column to check for rule evaluation.
+        filter (str | None): Boolean filter in pandas eval syntax to apply prior to rule evaluation. Defaults to None.
         rule_id (str | None): Optional identifier for this rule.
         rule_description (str | None): Optional summary or explanation of the rule.
         na_values (str | int | float | list[Any] | None): Values to treat as NULL.
@@ -72,12 +69,15 @@ class BaseRule(DataQualityBaseModel, ABC):
         data_quality_dimension (DamaFramework): Linked DAMA data quality dimension.
 
     Methods:
-        evaluate(data_source: pd.DataFrame | SparkDataFrame | Elasticsearch) -> DataQualityResult
+        evaluate(data_source: pd.DataFrame | SparkDataFrame) -> DataQualityResult
             Applies the rule to source data and returns evaluation metrics and diagnostics.
 
     Note:
         This base class should not be instantiated directly. Use a rule subclass for
         actual configuration or evaluation.
+        The order of operations is dataframe type coercian > replace na_values > filter dataframe.
+        There are edge cases where this order creates different results, e.g. if -1 is NULL,
+            then -1 values will become NULL before any filtering happens
 
     Returns:
         DataQualityResult: Contains metrics of evaluation such as pass rate,
@@ -86,6 +86,10 @@ class BaseRule(DataQualityBaseModel, ABC):
     """
 
     field: str = Field(..., description="Column to check")
+    filter: str | None = Field(
+        default=None,
+        description="The boolean filter to apply, using pandas eval syntax, before evaluating each rule.",
+    )
     rule_id: str | None = Field(default=None, description="Identifier for this rule")
     rule_description: str | None = Field(
         default=None, description="Description of the rule"
@@ -105,38 +109,17 @@ class BaseRule(DataQualityBaseModel, ABC):
         ..., description="The Dama dimension for each rule"
     )
 
-    @overload
-    def evaluate(self, data_source: pd.DataFrame) -> DataQualityResult: ...
-    @overload
-    def evaluate(self, data_source: SparkDataFrame) -> DataQualityResult: ...
-    @overload
-    def evaluate(
-        self,
-        data_source: Elasticsearch,
-        index_name: str = ...,
-        query: dict | None = ...,
-    ) -> DataQualityResult: ...
-
-    def evaluate(
-        self,
-        data_source: pd.DataFrame | SparkDataFrame | Elasticsearch,
-        index_name: str = "",
-        query: dict | None = None,
-    ):
+    def evaluate(self, data_source: pd.DataFrame | SparkDataFrame) -> DataQualityResult:
         """
         Evaluates this rule against the provided data source.
 
         Supports both Pandas and Spark DataFrames as input. Applies all
         rule configuration, handles nulls and data coercion, and computes
-        relevant data quality metrics. If an Elasticsearch index and client
-        are supplied, an error is raised unless that backend is implemented.
-        Currently not implemented.
+        relevant data quality metrics.
 
         Args:
-            data_source (pd.DataFrame | SparkDataFrame | Elasticsearch): The data to evaluate—
-                can be a Pandas DataFrame, a Spark DataFrame, or an Elasticsearch client.
-            index_name (str, optional): Required if evaluating with Elasticsearch; the index to check.
-            query (dict, optional): Required if evaluating with Elaticsearch, defaults to a query that matches all documents
+            data_source (pd.DataFrame | SparkDataFrame): The data to evaluate—
+                can be a Pandas DataFrame or a Spark DataFrame.
 
         Returns:
             DataQualityResult: Contains the metrics and diagnostics of rule evaluation,
@@ -145,19 +128,16 @@ class BaseRule(DataQualityBaseModel, ABC):
 
         Raises:
             ValueError: If an unsupported data source is provided.
-            NotImplementedError: If Elasticsearch evaluation is requested but not supported.
         """
 
         if isinstance(data_source, pd.DataFrame):
             return self._evaluate_in_pandas(data_source)
         elif _has_pyspark and isinstance(data_source, SparkDataFrame):  # pyright: ignore[reportPossiblyUnboundVariable]
             return self._evaluate_in_spark(data_source)  # pyright: ignore[reportArgumentType]
-        elif _has_elasticsearch and isinstance(data_source, Elasticsearch):  # pyright: ignore[reportPossiblyUnboundVariable]
-            return self._evaluate_in_elastic(data_source, index_name, query)  # pyright: ignore[reportArgumentType]
         else:
             raise ValueError(
-                "You must pass in either a pandas or spark dataframe or an Elasticsearch client with an index name."
-                "If you are passing in a spark dataframe or elasticsearch client, ensure these package are installed. pip install elasticsearch; pip install pyspark - "
+                "You must pass in either a pandas or spark dataframe."
+                "If you are passing in a spark dataframe, ensure these package are installed. pip install gchq-data-quality[pyspark]"
                 "our code will run even if these packages are not present."
             )
 
@@ -181,20 +161,21 @@ class BaseRule(DataQualityBaseModel, ABC):
         columns_used = self._get_columns_used_pandas()
         ensure_columns_exist_pandas(df, columns_used)
         df = self._copy_and_subset_dataframe(df, columns_used)
+        # df now only contains the subset of columns required (by default, just df[field] and any in self.filter) and has been copied
 
-        # df now only contains the subset of columns required (by default, just df[field]) and has been copied
         df = self._handle_dataframe_coercion(df)
         df = self._handle_na_values_pandas(df, columns_used, self.na_values)
-
+        df = self._filter_dataframe(df)
         # the defining logic in every rule is what records are passed and which are evaluated
         records_evaluated = self._get_records_evaluated_pandas(df)
-        records_passing = self._get_records_passing_pandas(df)
-        pass_rate = calculate_pass_rate(records_passing, records_evaluated)
-
+        records_passed = self._get_records_passed_pandas(df)
+        pass_rate = calculate_pass_rate(records_passed, records_evaluated)
+        records_passed = adjust_records_passed(records_passed, records_evaluated)
         data_quality_result = DataQualityResult(
             field=self.field,
             data_quality_dimension=self.data_quality_dimension,
             records_evaluated=records_evaluated,
+            records_passed=records_passed,
             pass_rate=pass_rate,
             rule_id=self.rule_id,
             rule_description=self.rule_description,
@@ -214,7 +195,7 @@ class BaseRule(DataQualityBaseModel, ABC):
     # --------------- Pandas helper functions ---------------
 
     @abstractmethod
-    def _get_records_passing_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
+    def _get_records_passed_mask_pandas(self, df: pd.DataFrame) -> pd.Series:
         """The bool mask of what records are passing (i.e. this function is the main way we define our data quality rules), this is also an AND with
         the records_evaluated_mask by definition, as we cannot pass a record
         if it has not been evaluated."""
@@ -245,9 +226,14 @@ class BaseRule(DataQualityBaseModel, ABC):
         # although pydantic will not allow any other option so this ValueError should never raise
 
     def _get_columns_used_pandas(self) -> list[str]:
-        """The columns used in evaluting the rule, defaults to just the field, but other rules
+        """The columns used in evaluting the rule, defaults to just the field and filter expression, but other rules
         such as consistency may use more than one column and will override this."""
-        return [self.field]
+
+        columns_used = [self.field]
+        if self.filter:
+            filter_columns = extract_columns_from_expression(self.filter)
+            columns_used.extend(filter_columns)
+        return list(set(columns_used))
 
     def _copy_and_subset_dataframe(
         self, df: pd.DataFrame, columns_used: list[str]
@@ -259,6 +245,22 @@ class BaseRule(DataQualityBaseModel, ABC):
 
         sorted_cols = sorted(columns_used, key=lambda x: list(df.columns).index(x))
         return df[sorted_cols].copy()
+
+    def _filter_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Filters the dataframe after it has been copied subset via _copy_and_subset_dataframe.
+        uses self.filter as a boolean evaluation to return a filtered subset.
+
+        Args:
+            df (pd.DataFrame): The dataframe to filter (already copied from the original)
+
+        Returns:
+            pd.DataFrame: The filtered dataframe
+        """
+        if not self.filter:
+            return df
+        filter_mask = evaluate_bool_expression(df, self.filter)
+
+        return df.loc[filter_mask]
 
     def _handle_dataframe_coercion(self, df: pd.DataFrame) -> pd.DataFrame:
         """Coerce the dataframe to a new datatype (if required).
@@ -302,13 +304,15 @@ class BaseRule(DataQualityBaseModel, ABC):
     def _coerce_dataframe_type(self, df: pd.DataFrame) -> pd.DataFrame:
         """Some rules require values to be coerced to a different data type.
         Timeliness > UTC datetime,
-        ValiditiyNumericalRange > numeric
+        ValidityNumericalRange > numeric
 
         This function handles coercing to the relevant data type
         for the rule. Override if needed, the default behaviour is no coercion
 
+        The columns unique to self.filter expression are not coerced by default.
+
         Returns:
-            pd.DataFrame: If no coercion, the original df. If coerced, a modifed dataframe
+            pd.DataFrame: If no coercion, the original df. If coerced, a modified dataframe
         """
         return df
 
@@ -350,7 +354,7 @@ class BaseRule(DataQualityBaseModel, ABC):
 
         return records_evaluated_mask.sum()
 
-    def _get_records_passing_pandas(self, df: pd.DataFrame) -> int:
+    def _get_records_passed_pandas(self, df: pd.DataFrame) -> int:
         """
         Abstract method to compute the number of records passing the data quality rule.
 
@@ -363,7 +367,7 @@ class BaseRule(DataQualityBaseModel, ABC):
             int: The count of records passing the rule's criteria.
         """
         evaluated_mask = self._get_records_evaluated_mask_pandas(df)
-        passing_mask = self._get_records_passing_mask_pandas(df)
+        passing_mask = self._get_records_passed_mask_pandas(df)
         passing_mask = self._replace_na_in_bool_mask(passing_mask)
         return (evaluated_mask & passing_mask).sum()
 
@@ -398,7 +402,7 @@ class BaseRule(DataQualityBaseModel, ABC):
             pd.Series: Boolean mask where True indicates a failing record.
         """
 
-        passing_mask = self._get_records_passing_mask_pandas(df)
+        passing_mask = self._get_records_passed_mask_pandas(df)
         passing_mask = self._replace_na_in_bool_mask(passing_mask)
         evaluated_mask = self._get_records_evaluated_mask_pandas(df)
         return evaluated_mask & ~passing_mask
@@ -474,10 +478,19 @@ class BaseRule(DataQualityBaseModel, ABC):
         This is overridden for each subrule type if more than self.field is used"""
         from gchq_data_quality.spark.utils.rules_utils import (
             get_spark_safe_column_name,
+            get_spark_safe_expression,
         )
 
         rule_copy = self.model_copy()
         rule_copy.field = get_spark_safe_column_name(self.field)
+        if self.filter:
+            spark_safe_filter = get_spark_safe_expression(self.filter)
+            if isinstance(spark_safe_filter, str):
+                rule_copy.filter = spark_safe_filter
+            else:
+                raise ValueError(
+                    f"Should not happen, but your filter expression is not returning as a string: f{spark_safe_filter=}"
+                )
         return rule_copy
 
     def _evaluate_in_pandas_output_dataframe(
@@ -493,16 +506,3 @@ class BaseRule(DataQualityBaseModel, ABC):
 
         # We can't return a DataQualityResult object in Spark, it has to be a pandas dataframe
         return dq_result._to_spark_schema_df()
-
-    # ---------- Elasticsearch ---------------
-
-    def _evaluate_in_elastic(
-        self, es: Elasticsearch, index_name: str, query: dict | None = None
-    ) -> DataQualityResult:
-        if query is None:
-            query = {"query": {"match_all": {}}}
-        """Not yet implemented"""
-
-        raise NotImplementedError(
-            "Elasticsearch querying not yet implemented - just dataframes"
-        )
