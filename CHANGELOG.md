@@ -31,6 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - `DataQualityReport.__add__` and `__len__` support: reports can now be combined with `+`/`+=`, and `len(report)` returns the number of results.
 - `records_passed` is now included in the standard rule evaluation output (`DataQualityResult`), enabling weighted pass rate calculations in dashboards (e.g. weighting by `records_evaluated` rather than a simple average of `pass_rate`).
+- `filter` parameter for every rule allowing you to only evaluate a rule for records that pass the filter.
 
 ### Changed
 - Rule classes have been renamed to more descriptive `Values*` names (old names remain importable as aliases for backward compatibility):
