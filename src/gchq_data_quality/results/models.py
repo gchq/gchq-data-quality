@@ -30,7 +30,6 @@ from pydantic import (
     field_serializer,
     field_validator,
 )
-from pydantic.experimental.missing_sentinel import MISSING
 
 from gchq_data_quality.globals import SampleConfig
 from gchq_data_quality.models import (
@@ -64,7 +63,7 @@ class DataQualityResult(DataQualityBaseModel):
         field (str): Name of the column the rule applies to.
         data_quality_dimension (DamaFramework): Data quality dimension evaluated (Uniqueness, Completeness, etc.).
         records_evaluated (int | None): Total records evaluated by this rule.
-        records_passed (int | None | MISSING): Total records that passed the rule. If records_evaluated is 0, then this is None by definition.
+        records_passed (int | None): Total records that passed the rule. If records_evaluated is 0, then this is None by definition.
         pass_rate (float | None): Ratio (0-1) of passing records to evaluated records.
         rule_id (Any | None): Local identifier for the applied rule.
         rule_description (Any): Text, dict, or JSON describing rule parameters and logic.
@@ -119,8 +118,8 @@ class DataQualityResult(DataQualityBaseModel):
         default=None,
         description="Total number of records evaluated / checked for this rule.",
     )
-    records_passed: int | None | MISSING = Field(  # pyright: ignore[reportInvalidTypeForm]
-        default=MISSING,
+    records_passed: int | None = Field(  # pyright: ignore[reportInvalidTypeForm]
+        default=None,
         ge=0,
         description="The number of records that passed the rule. If records_evaluated is 0, then records_passed will be None.",
     )
