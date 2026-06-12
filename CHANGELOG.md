@@ -26,6 +26,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 -
 
+## [1.2.1] - 2026-06-12
+
+### Removed
+- Removed use of Pydantic's experimental `MISSING` sentinel for `records_passed` in `DataQualityResult`. Relying on experimental Pydantic internals is fragile and may break across versions; `records_passed` now defaults to `None`.
+
+> **Note:** `1.2.0` has been yanked on PyPI due to this issue. Users should upgrade directly to `1.2.1`.
+
 ## [1.2.0] - 2026-06-09
 
 ### Added
@@ -89,6 +96,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [//]: # (### Deprecated)
 [//]: # (This is where existing but deprecated elements should be noted.)
 
+[1.2.1]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.2.1
 [1.2.0]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.2.0
 [1.1.0]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.1.0
 [1.0.0]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.0.0
