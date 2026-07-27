@@ -108,7 +108,7 @@ def _validate_date(
 
 def _set_now_if_none(value: datetime | None) -> datetime:
     """The default measurement_time is UTC now if None is provided"""
-    if value is None:
+    if value is None or pd.isna(value):
         return datetime.now(UTC)
     else:
         return value
@@ -123,7 +123,7 @@ def _to_isoformat_or_none(
     value: datetime | pd.Timestamp | None | NaTType,
 ) -> str | None:
     """ISO formart strings or None is returned if the value is null - for JSON serialisation"""
-    if pd.isnull(value):
+    if pd.isna(value):
         return None
     else:
         return _to_isoformat(value)

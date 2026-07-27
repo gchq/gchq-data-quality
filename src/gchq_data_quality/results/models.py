@@ -197,10 +197,11 @@ class DataQualityResult(DataQualityBaseModel):
     ) -> list[dict] | None:
         """If it's a string we need to load back into a list[dict] - this happens during
         Spark execution"""
-        if v is None:
-            return None
-        elif isinstance(v, list):  # already deserialized
+
+        if isinstance(v, list):  # already deserialized
             return v
+        elif v is None or pd.isna(v):
+            return None
         else:
             try:
                 return json.loads(v)
@@ -211,14 +212,38 @@ class DataQualityResult(DataQualityBaseModel):
                 )
                 return None
 
-    @field_validator("pass_rate", "records_passed", mode="before")
+    @field_validator(
+        "dataset_name",
+        "dataset_id",
+        "measurement_sample",
+        "lifecycle_stage",
+        "records_evaluated",
+        "records_passed",
+        "pass_rate",
+        "rule_id",
+        "rule_description",
+        "rule_data",
+        mode="before",
+    )
     @classmethod
-    def _set_to_none_if_nan(cls, v: float | None) -> float | None:
+    def _set_to_none_if_nan(
+        cls, v: float | int | str | None, info: ValidationInfo
+    ) -> float | int | str | None:
         """Needed as Spark coerces to NaN"""
-        if pd.isna(v):
+
+        if v is None:
             return None
-        else:
-            return v
+
+        na_check = pd.isna(v)
+
+        if not isinstance(na_check, bool):
+            raise ValueError(
+                f"Expected float, int, str or None, got {type(v).__name__}. Ensure you aren't passing in a list or set"
+            )
+
+        if na_check:
+            return None
+        return v
 
     def _set_records_failed_sample(self, records_failed: list[dict] | None) -> None:
         """Limit the number of failing records captured"""
