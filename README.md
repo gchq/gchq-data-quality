@@ -72,9 +72,9 @@ Import the rule classes and supporting components:
 ```python
 import pandas as pd
 from gchq_data_quality import (
-    UniquenessRule,
-    CompletenessRule,
-    ValidityRegexRule,
+    ValuesAreUnique,
+    ValuesAreComplete,
+    ValuesMatchRegex,
     DataQualityConfig,
 )
 ```
@@ -94,17 +94,17 @@ Instantiate each rule for the field of interest, and evaluate against your DataF
 
 ```python
 # Uniqueness
-uniqueness_rule = UniquenessRule(field="id")
+uniqueness_rule = ValuesAreUnique(field="id")
 uniqueness_result = uniqueness_rule.evaluate(df)
 print("Uniqueness:", uniqueness_result.pass_rate)  # e.g. 0.75 if 3/4 unique
 
 # Completeness
-completeness_rule = CompletenessRule(field="email")
+completeness_rule = ValuesAreComplete(field="email")
 completeness_result = completeness_rule.evaluate(df)
 print("Completeness:", completeness_result.pass_rate)
 
 # Validity using regular expressions
-validity_rule = ValidityRegexRule(
+validity_rule = ValuesMatchRegex(
     field="email", regex_pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$"
 )
 validity_result = validity_rule.evaluate(df)
