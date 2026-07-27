@@ -26,6 +26,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 -
 
+## [1.2.2] - 2026-07-27
+
+### Fixed
+- Fixed a bug where optional `None`-able fields in `DataQualityResult` could be populated with `NaN` instead of `None`, causing Pydantic validation errors. This arose from differences in how `NaN`/`NULL` values are handled across PySpark and pandas versions.
+
 ## [1.2.1] - 2026-06-12
 
 ### Removed
@@ -96,6 +101,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [//]: # (### Deprecated)
 [//]: # (This is where existing but deprecated elements should be noted.)
 
+[1.2.2]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.2.2
 [1.2.1]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.2.1
 [1.2.0]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.2.0
 [1.1.0]: https://github.com/gchq/gchq-data-quality/releases/tag/v1.1.0
