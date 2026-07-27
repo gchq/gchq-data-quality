@@ -694,3 +694,55 @@ def test_failed_records_outputs(test_df: pd.DataFrame) -> None:
     assert len(samples_json_dict) == 2
     assert samples_json_dict[0]["nan"] is None
     assert samples_json_dict[1]["nat"] is None
+
+
+def test_nan_into_results() -> None:
+    # There is some inconsitent behaviour across pyspark and pandas versions whereby a NULL value
+    # in Spark can resolve to a NaN in pandas even though the column type should be string
+
+    default_row = {
+        "dataset_name": np.nan,
+        "dataset_id": np.nan,
+        "measurement_sample": np.nan,
+        "lifecycle_stage": np.nan,
+        "measurement_time": pd.NaT,
+        "field": "mandatory",
+        "data_quality_dimension": "completeness",
+        "records_evaluated": np.nan,
+        "records_passed": np.nan,
+        "pass_rate": np.nan,
+        "rule_id": np.nan,
+        "rule_description": np.nan,
+        "rule_data": json.dumps({"field": "mandatory"}),
+        "records_failed_ids": np.nan,
+        "records_failed_sample": np.nan,
+    }
+    df = pd.DataFrame([default_row])
+    result = DataQualityResult.model_validate(df.to_dict(orient="records")[0])
+    assert result.measurement_sample is None
+
+
+def test_wrong_collections_into_results() -> None:
+    # If a user tries to pass a list or set into a DataQualityResult e.g. ['MyDataset'] then as we
+    # run pd.isna(v) we will get an unhelpful error message around ambiguity as pd.isna(list[str])
+    # will return a bool array and therefore not work after an 'if' statement.
+
+    default_row = {
+        "dataset_name": [np.nan],
+        "dataset_id": np.nan,
+        "measurement_sample": np.nan,
+        "lifecycle_stage": np.nan,
+        "field": "mandatory",
+        "data_quality_dimension": "completeness",
+        "records_evaluated": np.nan,
+        "records_passed": np.nan,
+        "pass_rate": np.nan,
+        "rule_id": np.nan,
+        "rule_description": np.nan,
+        "rule_data": json.dumps({"field": "mandatory"}),
+        "records_failed_ids": np.nan,
+        "records_failed_sample": np.nan,
+    }
+    df = pd.DataFrame([default_row])
+    with pytest.raises(ValueError, match="dataset_name"):
+        _ = DataQualityResult.model_validate(df.to_dict(orient="records")[0])
